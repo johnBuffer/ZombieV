@@ -10,9 +10,9 @@ public:
     LifeForm();
 
 protected:
-    double __speed;
+    float _speed;
 
-    Animation __currentAnimation;
+    Animation _currentAnimation;
 };
 
 #endif // LIFEFORM_HPP_INCLUDED

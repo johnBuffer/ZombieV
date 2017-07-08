@@ -3,162 +3,174 @@
 
 #include <iostream>
 
-float              GameRender::__quality;
-sf::Vector2u       GameRender::__renderSize;
-sf::RenderTexture  GameRender::__renderTexture;
-sf::RenderTexture  GameRender::__blurTexture;
-sf::RenderTexture  GameRender::__groundTexture;
+float              GameRender::_quality;
+sf::Vector2u       GameRender::_renderSize;
+sf::Vector2f       GameRender::_focus;
+sf::RenderTexture  GameRender::_renderTexture;
+sf::RenderTexture  GameRender::_blurTexture;
+sf::RenderTexture  GameRender::_groundTexture;
 
-const WorldEntity* GameRender::__focus;
-DynamicBlur        GameRender::__blur;
+size_t             GameRender::_drawCalls;
+
+std::vector<sf::Texture> GameRender::_textures;
+std::vector<std::vector<sf::VertexArray>> GameRender::_vertices;
+
+DynamicBlur        GameRender::_blur;
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    __quality = 0.5;
-    __focus = nullptr;
-    __renderSize = sf::Vector2u(width*__quality, height*__quality);
-    __renderTexture.create(__renderSize.x, __renderSize.y);
-    __blurTexture  .create(__renderSize.x, __renderSize.y);
-    __groundTexture.create(MAP_SIZE, MAP_SIZE);
+    _quality = 0.375;
+    _focus = sf::Vector2f(0.0, 0.0);
+    _renderSize = sf::Vector2u(width*_quality, height*_quality);
+    _renderTexture.create(_renderSize.x, _renderSize.y);
+    _blurTexture  .create(_renderSize.x, _renderSize.y);
+    _groundTexture.create(MAP_SIZE, MAP_SIZE);
+    _blur.init(_renderSize.x, _renderSize.y);
 
-    __blur.init(__renderSize.x, __renderSize.y);
+    _vertices.resize(3);
 
     GraphicUtils::init();
 }
 
-void GameRender::setFocus(const WorldEntity* body)
+void GameRender::setFocus(const sf::Vector2f& focus)
 {
-    __focus = body;
+    _focus = focus;
 }
 
 void GameRender::clear()
 {
-    __renderTexture.clear(sf::Color::Black);
-    __blurTexture  .clear(sf::Color(0, 0, 0));
-    renderGround();
+    _drawCalls = 0;
+
+    for (std::vector<sf::VertexArray>& v : _vertices)
+    {
+        for (sf::VertexArray& va : v) va.clear();
+    }
+
+    _renderTexture.clear(sf::Color::Black);
+    _blurTexture.clear(sf::Color::Black);
 }
 
-void GameRender::render(GraphicEntity entity)
+/// Adds a quad to be rendered in the current frame
+void GameRender::addQuad(size_t textureID, const sf::VertexArray& quad, RenderLayer layer)
 {
-    double baseOffsetX = __renderSize.x/2;
-    double baseOffsetY = __renderSize.y/2;
-
-    if (__focus)
-    {
-        baseOffsetX -= __focus->getCoord().x;
-        baseOffsetY -= __focus->getCoord().y;
-    }
-
-    sf::Transform tf;
-    tf.translate(baseOffsetX, baseOffsetY);
-    tf *= entity.getTransform();
-
-    sf::RenderStates states;
-    states.texture   = entity._texture;
-    states.transform = tf;
-
-    if (entity._target == RENDER)
-    {
-        __renderTexture.draw(*entity._vertexArray, states);
-    }
-    else if (entity._target == GROUND)
-    {
-        states.transform = sf::Transform::Identity;
-        __groundTexture.draw(*entity._vertexArray, states);
-    }
-    else if (entity._target == BLOOM)
-    {
-        __renderTexture.draw(*entity._vertexArray, states);
-        states.blendMode = sf::BlendAdd;
-        __blurTexture.draw(*entity._vertexArray, states);
-    }
+    sf::VertexArray* va(&_vertices[layer][textureID]);
+    va->append(quad[0]);
+    va->append(quad[1]);
+    va->append(quad[2]);
+    va->append(quad[3]);
 }
 
-void GameRender::render(std::list<GraphicEntity>& entities)
+/// Loads and adds a new texture in the render engine
+size_t GameRender::registerTexture(std::string filename, bool isRepeated)
 {
-    double baseOffsetX = __renderSize.x/2;
-    double baseOffsetY = __renderSize.y/2;
+    _textures.push_back(sf::Texture());
 
-    if (__focus)
+    if (_textures.back().loadFromFile(filename))
     {
-        baseOffsetX -= __focus->getCoord().x;
-        baseOffsetY -= __focus->getCoord().y;
+        _textures.back().setRepeated(isRepeated);
+
+        _vertices[RenderLayer::RENDER].push_back(sf::VertexArray(sf::Quads, 0));
+        _vertices[RenderLayer::GROUND].push_back(sf::VertexArray(sf::Quads, 0));
+        _vertices[RenderLayer::BLOOM ].push_back(sf::VertexArray(sf::Quads, 0));
+
+        std::cout << "Add new texture : " << filename << " with ID " << _vertices[RenderLayer::RENDER].size() << std::endl;
+    }
+    else
+    {
+        std::cout << "Error : cannot load'" << filename << "'" << std::endl;
     }
 
-    for (GraphicEntity entity : entities)
+    return _textures.size()-1;
+}
+
+/// Draws a vertexArray in the texture
+void GameRender::_renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states)
+{
+    size_t size(vertices.size());
+    for (size_t i(0); i<size; ++i)
     {
-        sf::Transform tf;
-        tf.translate(baseOffsetX, baseOffsetY);
-        tf *= entity.getTransform();
-
-        sf::RenderStates states;
-        states.texture   = entity._texture;
-        states.transform = tf;
-
-        if (entity._target == RENDER)
-        {
-            __renderTexture.draw(*entity._vertexArray, states);
-        }
-        else if (entity._target == GROUND)
-        {
-            states.transform = sf::Transform::Identity;
-            __groundTexture.draw(*entity._vertexArray, states);
-        }
-        else if (entity._target == BLOOM)
-        {
-            __renderTexture.draw(*entity._vertexArray, states);
-            states.blendMode = sf::BlendAdd;
-            __blurTexture.draw(*entity._vertexArray, states);
-        }
+        states.texture = &_textures[i];
+        target.draw(vertices[i], states);
+        ++_drawCalls;
     }
 }
 
+/// Finalizes the textures
 void GameRender::display(sf::RenderTarget* target)
 {
-    __renderBloom();
-    __renderTexture.display();
+    //std::cout << "Add new texture : " << _vertices[RenderLayer::RENDER][0].getVertexCount() << std::endl;
+    float baseOffsetX = _renderSize.x*0.5f;
+    float baseOffsetY = _renderSize.y*0.5f;
 
-    sf::Sprite renderSprite(__renderTexture.getTexture());
-    float ratio = 1/__quality;
+    baseOffsetX -= _focus.x;
+    baseOffsetY -= _focus.y;
+    sf::Transform tf;
+    tf.translate(baseOffsetX, baseOffsetY);
+    sf::RenderStates states;
+    states.transform = tf;
+
+    renderGround();
+
+    _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
+    _renderVertices(_vertices[RenderLayer::BLOOM ], _blurTexture  , states);
+
+    /// Commented because very costly for modest configurations
+    //_renderBloom();
+    _renderTexture.display();
+
+    sf::Sprite renderSprite(_renderTexture.getTexture());
+    float ratio = 1.0f/_quality;
     renderSprite.setScale(ratio, ratio);
     target->draw(renderSprite);
 }
 
+/// Determines if something is in the render view
 bool GameRender::isVisible(WorldEntity* entity)
 {
-    U_2DCoord coord(entity->getCoord());
+    Vec2 coord(entity->getCoord());
 
-    double baseOffsetX = __renderSize.x/2;
-    double baseOffsetY = __renderSize.y/2;
+    float baseOffsetX = _renderSize.x*0.5f;
+    float baseOffsetY = _renderSize.y*0.5f;
 
-    double screenPosX = coord.x-__focus->getCoord().x;
-    double screenPosY = coord.y-__focus->getCoord().y;
+    float screenPosX = coord.x-_focus.x;
+    float screenPosY = coord.y-_focus.y;
 
     return (std::abs(screenPosX) < baseOffsetX+2*CELL_SIZE && std::abs(screenPosY) < baseOffsetY+2*CELL_SIZE);
 }
 
-void GameRender::__renderBloom()
+/// Computes the bloom
+void GameRender::_renderBloom()
 {
-    __blurTexture.display();
-    const sf::Texture& bluredTexture = __blur(__blurTexture.getTexture());
+    _blurTexture.display();
+    const sf::Texture& bluredTexture = _blur(_blurTexture.getTexture());
     sf::Sprite blurSprite(bluredTexture);
-    __renderTexture.draw(blurSprite, sf::BlendAdd);
+    _renderTexture.draw(blurSprite, sf::BlendAdd);
 }
 
+void GameRender::initGround(size_t textureID, sf::VertexArray& quad)
+{
+    sf::RenderStates states;
+    states.texture = &_textures[textureID];
+    _groundTexture.draw(quad, states);
+}
+
+
+/// Draw the ground
 void GameRender::renderGround()
 {
-    double baseOffsetX = __renderSize.x/2;
-    double baseOffsetY = __renderSize.y/2;
+    sf::RenderStates states;
+    _renderVertices(_vertices[RenderLayer::GROUND], _groundTexture, states);
 
-    if (__focus)
-    {
-        baseOffsetX -= __focus->getCoord().x;
-        baseOffsetY -= __focus->getCoord().y;
-    }
+    float baseOffsetX = _renderSize.x*0.5f;
+    float baseOffsetY = _renderSize.y*0.5f;
 
-    __groundTexture.display();
-    sf::Sprite groundSprite(__groundTexture.getTexture());
+    baseOffsetX -= _focus.x;
+    baseOffsetY -= _focus.y;
+
+    _groundTexture.display();
+    sf::Sprite groundSprite(_groundTexture.getTexture());
     groundSprite.setPosition(baseOffsetX, baseOffsetY);
-    groundSprite.setColor(sf::Color(255, 255, 255, 225));
-    __renderTexture.draw(groundSprite);
+    groundSprite.setColor(sf::Color(255, 255, 255, 255 ));
+    _renderTexture.draw(groundSprite);
 }
+

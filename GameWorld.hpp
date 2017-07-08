@@ -10,9 +10,10 @@
 #include "EventManager.hpp"
 #include "Config.hpp"
 #include "GameRender.hpp"
-#include "Bullet.hpp"
-#include "Explosion.hpp"
-#include "Smoke.hpp"
+#include "Weapons/Bullet.hpp"
+#include "Props/ExplosionProvider.hpp"
+#include "Props/Smoke.hpp"
+#include "SoundPlayer.hpp"
 
 class GameWorld
 {
@@ -20,36 +21,28 @@ public:
     GameWorld();
     void initEventHandler(sf::RenderWindow& window);
 
-    void addHunter(U_2DCoord position);
-    void addZombie(U_2DCoord position);
-    void addBullet(Bullet bullet);
-    void addSmoke (Smoke smoke);
-
-    void addExplosion(Explosion explosion, bool isTrace=false);
+    U_2DConstraint* addConstraint(U_2DBody* body1, U_2DBody* body2, float length=0.0);
+    void addEntity(WorldEntity* entity);
+    void addBody(U_2DBody* body);
+    void removeBody(U_2DBody* body);
+    void removeConstraint(U_2DConstraint* constraint);
     void update();
     void render();
 
-    const Level&  getLevel()  const {return __level;}
-    Hunter& getHunter() {return __hunters.back();}
-    Zombie& getZombie() {return __zombies.back();}
+    const Level& getLevel()  const {return _level;}
+    bool  isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
+    const EventManager& getEvents() const {return _eventManager;}
 
-    const std::list<Hunter>& getHunters() const {return __hunters;}
-    const std::list<Zombie>& getZombies() const {return __zombies;}
-
-    GridCell* getBodiesAt(U_2DCoord coord);
+    GridCell* getBodiesAt(Vec2 coord);
 
 private:
-    double __dt;
-    Level  __level;
+    float _dt;
+    Level  _level;
 
-    std::list<Zombie> __zombies;
-    std::list<Hunter> __hunters;
-    std::list<Bullet> __bullets;
-    std::list<Smoke>  __smokes;
-    std::list<Explosion> __explosions;
+    std::list<WorldEntity*> _entities;
 
-    U_2DCollisionManager __phyManager;
-    EventManager         __eventManager;
+    U_2DCollisionManager _phyManager;
+    EventManager         _eventManager;
 };
 
 #endif // GAMEWORLD_HPP_INCLUDED

@@ -2,152 +2,93 @@
 
 #include <iostream>
 #include "GraphicsUtils.hpp"
-#include "ExplosionProvider.hpp"
-#include "Fire.hpp"
+
+#include "Props/Fire.hpp"
+#include "Props/Guts.hpp"
 
 GameWorld::GameWorld() :
-    __dt(0.016),
-    __level(MAP_SIZE, MAP_SIZE),
-    __phyManager(__dt, CELL_SIZE, U_2DCoord(MAP_SIZE, MAP_SIZE))
+    _dt(0.016),
+    _level(MAP_SIZE, MAP_SIZE),
+    _phyManager(_dt, CELL_SIZE, Vec2(MAP_SIZE, MAP_SIZE))
 {
-    __phyManager.setGravity(U_2DCoord(0.0f, 0.0f));
-    __phyManager.setPrecision(2);
+    _phyManager.setGravity(Vec2(0.0f, 0.0f));
+    _phyManager.setPrecision(2);
 
-    Bullet::loadTexture();
-    Explosion::loadTexture();
+    Guts::init();
+    Hunter::init();
+    Bullet::init();
+    BulletShell::init();
+    AK::init();
+    Shotgun::init();
+    Pistol::init();
     Smoke::init();
     Fire::init();
-    AK::loadTextures();
-    Shotgun::loadTextures();
-    Pistol::loadTextures();
+    Zombie::init();
+    Explosion::init();
 
-    GameRender::render(__level.render());
+    _level.render();
 }
 
 void GameWorld::initEventHandler(sf::RenderWindow& window)
 {
-    __eventManager.init(&window);
+    _eventManager.init(&window);
 }
 
-void GameWorld::addHunter(U_2DCoord position)
+void GameWorld::addEntity(WorldEntity* entity)
 {
-    __hunters.push_back(Hunter(position.x, position.y));
-    __hunters.back().getBody().setEntity(&__hunters.back());
-    __phyManager.addBody(&__hunters.back().getBody());
-}
+    _entities.push_back(entity);
 
-void GameWorld::addZombie(U_2DCoord position)
-{
-    __zombies.push_back(Zombie(position.x, position.y));
-    __zombies.back().getBody().setEntity(&__zombies.back());
-    __phyManager.addBody(&__zombies.back().getBody());
-}
-
-void GameWorld::addBullet(Bullet bullet)
-{
-    __bullets.push_back(bullet);
-}
-
-void GameWorld::addExplosion(Explosion explosion, bool isTrace)
-{
-    if (isTrace)
-        explosion.setTrace();
-    __explosions.push_back(explosion);
-}
-
-void GameWorld::addSmoke(Smoke smoke)
-{
-    __smokes.push_back(smoke);
+    entity->initPhysics(this);
 }
 
 void GameWorld::update()
 {
-    __hunters.back().updateControls(__eventManager);
+    _entities.remove_if([=](const WorldEntity* e){return e->isDone();});
 
-    for (auto& hunter : __hunters)
+    sf::Clock clock;
+    _phyManager.update();
+    float time = clock.restart().asMilliseconds();
+
+    for (WorldEntity* entity : _entities)
     {
-        hunter.update(*this);
+        entity->update(*this);
     }
 
-    for (auto& zombie : __zombies)
-    {
-        zombie.update(*this);
-        if (!zombie.isAlive())
-        {
-            __phyManager.killBody(&zombie.getBody());
-            addExplosion(ExplosionProvider::getBig(zombie.getCoord()), true);
-            addExplosion(ExplosionProvider::getBigFast(zombie.getCoord()));
-            addExplosion(ExplosionProvider::getBase(zombie.getCoord()));
-        }
-    }
-    __zombies.remove_if([=](const Zombie& z){return !z.isAlive();});
-
-    for (auto& bullet : __bullets)
-    {
-        bullet.update(*this);
-    }
-    __bullets.remove_if([=](const Bullet& b){return b.isDone();});
-
-    for (Explosion& expl : __explosions)
-    {
-        expl.update(*this);
-    }
-    __explosions.remove_if([=](const Explosion& e){return e.isDone();});
-
-    for (Smoke& smoke : __smokes)
-    {
-        smoke.update(*this);
-    }
-    __smokes.remove_if([=](const Smoke& s){return s.isDone();});
-
-    __phyManager.update();
+    std::cout << "Physic time : " << time << "ms" << std::endl;
 }
 
-GridCell* GameWorld::getBodiesAt(U_2DCoord coord)
+GridCell* GameWorld::getBodiesAt(Vec2 coord)
 {
-    return __phyManager.getBodyAt(coord);
+    return _phyManager.getBodyAt(coord);
 }
-
 
 void GameWorld::render()
 {
-    Bullet::resetVertexArray();
-    for (auto& bullet : __bullets)
+    for (WorldEntity* entity : _entities)
     {
-        bullet.render();
+        entity->render();
     }
-    GameRender::render(Bullet::getGraphicEntity());
-
-    for (auto& hunter : __hunters)
-    {
-        GameRender::render(GraphicUtils::createEntityShadow(&hunter));
-        hunter.render();
-        GameRender::render(hunter.getGraphicEntity());
-    }
-
-    Zombie::resetVertexArray();
-    for (auto& zombie : __zombies)
-    {
-        if (GameRender::isVisible(&zombie))
-        {
-            GameRender::render(GraphicUtils::createEntityShadow(&zombie));
-            zombie.render();
-        }
-    }
-    GameRender::render(Zombie::getGraphicEntity());
-
-    Explosion::resetVertexArray();
-    for (auto& expl : __explosions)
-    {
-        expl.render();
-    }
-    GameRender::render(Explosion::getGraphicEntity());
-    GameRender::render(Explosion::getGraphicEntityTrace());
-
-    Smoke::resetVertexArray();
-    for (auto& smoke : __smokes)
-    {
-        smoke.render();
-    }
-    GameRender::render(Smoke::getGraphicEntity());
 }
+
+void GameWorld::removeBody(U_2DBody* body)
+{
+    _phyManager.killBody(body);
+}
+
+U_2DConstraint* GameWorld::addConstraint(U_2DBody* body1, U_2DBody* body2, float length)
+{
+    return _phyManager.addConstraint(body1, body2, length);
+}
+
+void GameWorld::addBody(U_2DBody* body)
+{
+    _phyManager.addBody(body);
+}
+
+void GameWorld::removeConstraint(U_2DConstraint* constraint)
+{
+    _phyManager.killConstraint(constraint);
+}
+
+
+

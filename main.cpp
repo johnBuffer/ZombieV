@@ -11,22 +11,28 @@ int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Fullscreen, settings);
+    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
     world.initEventHandler(window);
 
-    world.addHunter(U_2DCoord(500, 500));
-
-    Zombie::loadTexture();
-
-    GameRender::setFocus(&world.getHunter());
+    Hunter hunter(1000, 1000);
+    world.addEntity(&hunter);
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     int waveCount = 1;
+
+    for (int i(1); i--;)
+    {
+        Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
+        newZombie->setTarget(&hunter);
+        world.addEntity(newZombie);
+    }
+    waveCount++;
+
 
     while (window.isOpen())
     {
@@ -42,25 +48,24 @@ int main()
 			}
         }
 
+        sf::Clock clock;
         world.update();
+        float upTime = clock.restart().asMilliseconds();
+        //std::cout << "Update time : " << upTime << "ms" << std::endl;
 
-        if (world.getZombies().size() == 0)
-        {
-            for (int i(waveCount*10); i--;)
-            {
-                world.addZombie(U_2DCoord(rand()%2000, rand()%2000));
-                world.getZombie().setTarget(&world.getHunter());
-                world.getZombie().setLife(waveCount*waveCount);
-            }
-            waveCount++;
-        }
+        Vec2 p = hunter.getShakyPos();
+        sf::Vector2f playerPosition(p.x, p.y);
+        GameRender::setFocus(playerPosition);
 
         GameRender::clear();
+
+        clock.restart();
         world.render();
         GameRender::display(&window);
+        float time = clock.restart().asMilliseconds();
+        //std::cout << "Render time : " << time << "ms" << std::endl;
 
         window.display();
-
     }
 
     return 0;

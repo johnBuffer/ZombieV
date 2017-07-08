@@ -2,48 +2,47 @@
 
 #include <iostream>
 
-size_t WorldEntity::__entityCount = 0;
+size_t WorldEntity::_entityCount = 0;
 
 WorldEntity::WorldEntity():
-    __id(WorldEntity::__entityCount++),
-    __body(U_2DCoord(0.0, 0.0), 1.0, false),
-    __angle(0.0)
+    _id(WorldEntity::_entityCount++),
+    _body(Vec2(0.0, 0.0), 1.0, false),
+    _angle(0.0)
 {
+    _body.setEntity(this);
+    _needsPhysics = true;
 }
 
-WorldEntity::WorldEntity(double x, double y, double angle):
-    __id(WorldEntity::__entityCount++),
-    __body(U_2DCoord(x, y), 1.0, false),
-    __angle(0.0)
+WorldEntity::WorldEntity(float x, float y, float angle):
+    _id(WorldEntity::_entityCount++),
+    _body(Vec2(x, y), 1.0, false),
+    _angle(0.0)
 {
+    _body.setEntity(this);
+    _needsPhysics = true;
 }
 
 U_2DBody& WorldEntity::getBody()
 {
-    return __body;
+    return _body;
 }
 
-const U_2DCoord& WorldEntity::getCoord() const
+const Vec2& WorldEntity::getCoord() const
 {
-    return __body.getPosition();
+    return _body.getPosition();
 }
 
 const size_t& WorldEntity::getID() const
 {
-    return __id;
+    return _id;
 }
 
-bool WorldEntity::isEnemy() const
+float WorldEntity::getAngle() const
 {
-    return __isEnnemy;
+    return _angle;
 }
 
-double WorldEntity::getAngle() const
+EntityTypes WorldEntity::getType() const
 {
-    return __angle;
-}
-
-void WorldEntity::setEnemy()
-{
-    __isEnnemy = true;
+    return _type;
 }

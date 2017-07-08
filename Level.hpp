@@ -2,22 +2,25 @@
 #define LEVEL_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "GraphicEntity.hpp"
+#include "UnitedEngine/Vec2.h"
 
 class Level
 {
 public:
     Level();
-    Level(double width, double height);
+    Level(float width, float height);
 
-    const sf::Texture&  getTexture() const {return __groundTexture;}
-    const sf::Vector2f& getDimension() const {return __dimension;}
-    GraphicEntity       render();
+    bool isInBounds(const Vec2& coord) const;
+
+    size_t              getTexture() const {return _groundTextureID;}
+    const sf::Vector2f& getDimension() const {return _dimension;}
+
+    void render();
 
 private:
-    sf::Vector2f    __dimension;
-    sf::Texture     __groundTexture;
-    sf::VertexArray __vertexArray;
+    sf::Vector2f    _dimension;
+    size_t          _groundTextureID;
+    sf::VertexArray _vertexArray;
 
 };
 

@@ -1,31 +1,87 @@
 #include "GraphicsUtils.hpp"
+#include "GameRender.hpp"
 
-sf::VertexArray GraphicUtils::__shadow;
+sf::VertexArray GraphicUtils::_shadow;
+size_t GraphicUtils::_shadowTexID;
 
 void GraphicUtils::init()
 {
-    __shadow = sf::VertexArray(sf::TriangleFan, 15);
-    float x = 0.0f;
-    float y = 0.0f;
-    __shadow[0].position = sf::Vector2f(x, y);
-    __shadow[0].color    = sf::Color(10, 10, 10, 255);
-    for (int i(1); i<15; ++i)
-    {
-        float a = i*2*PI/13.0f;
-        __shadow[i].position = sf::Vector2f(x+1.5*CELL_SIZE*cos(a), y+1.5*CELL_SIZE*sin(a));
-        __shadow[i].color    = sf::Color(10, 10, 10, 0);
-    }
+    _shadow = sf::VertexArray(sf::Quads, 4);
+    _shadow[0].texCoords = sf::Vector2f(0  , 0);
+    _shadow[1].texCoords = sf::Vector2f(100, 0);
+    _shadow[2].texCoords = sf::Vector2f(100, 100);
+    _shadow[3].texCoords = sf::Vector2f(0  , 100);
+    _shadowTexID = GameRender::registerTexture("data/textures/shadow.png");
 }
 
-sf::VertexArray GraphicUtils::createEntityShadow(WorldEntity* entity)
+void GraphicUtils::createEntityShadow(WorldEntity* entity)
 {
-    sf::VertexArray newShadow = __shadow;
-    U_2DCoord pos = entity->getCoord();
-    for (int i(0); i<15; ++i)
-    {
-        sf::Vector2f coord = __shadow[i].position;
-        newShadow[i].position = sf::Vector2f(coord.x+pos.x, coord.y+pos.y);
-    }
+    Vec2 pos = entity->getCoord();
 
-    return newShadow;
+    _shadow[0].position = sf::Vector2f(pos.x-50, pos.y-50);
+    _shadow[1].position = sf::Vector2f(pos.x+50, pos.y-50);
+    _shadow[2].position = sf::Vector2f(pos.x+50, pos.y+50);
+    _shadow[3].position = sf::Vector2f(pos.x-50, pos.y+50);
+
+    GameRender::addQuad(_shadowTexID, _shadow, RenderLayer::RENDER);
 }
+
+sf::VertexArray GraphicUtils::createQuad(sf::Vector2f size, sf::Vector2f center)
+{
+    sf::VertexArray vertices(sf::Quads, 4);
+
+    float offsetX = center.x;
+    float offsetY = center.y;
+
+    float hx = size.x*0.5;
+    float hy = size.y*0.5;
+
+    vertices[0].position = sf::Vector2f(-hx-offsetX, -hy-offsetY);
+    vertices[1].position = sf::Vector2f(hx-offsetX , -hy-offsetY);
+    vertices[2].position = sf::Vector2f(hx-offsetX , hy-offsetY);
+    vertices[3].position = sf::Vector2f(-hx-offsetX, hy-offsetY);
+
+    return vertices;
+}
+
+void GraphicUtils::initQuad(sf::VertexArray& vertices, sf::Vector2f size, sf::Vector2f center, float scale)
+{
+    float offsetX = center.x*scale;
+    float offsetY = center.y*scale;
+
+    float hx = size.x*scale;
+    float hy = size.y*scale;
+
+    vertices[0].position = sf::Vector2f(-offsetX, -offsetY);
+    vertices[1].position = sf::Vector2f(hx-offsetX , -offsetY);
+    vertices[2].position = sf::Vector2f(hx-offsetX , hy-offsetY);
+    vertices[3].position = sf::Vector2f(-offsetX, hy-offsetY);
+}
+
+void GraphicUtils::transform(sf::VertexArray& vertices, sf::Vector2f t, float r)
+{
+    float cosa = cos(r);
+    float sina = sin(r);
+
+    size_t nVertices = vertices.getVertexCount();
+    for (size_t i(nVertices); i--;)
+    {
+        sf::Vertex& v = vertices[i];
+        float x = v.position.x;
+        float y = v.position.y;
+
+        v.position.x = x*cosa-y*sina + t.x;
+        v.position.y = x*sina+y*cosa + t.y;
+    }
+}
+
+void GraphicUtils::move(sf::VertexArray& vertices, const sf::Vector2f& t)
+{
+    size_t nVertices = vertices.getVertexCount();
+    for (size_t i(nVertices); i--;)
+    {
+        vertices[i].position.x += t.x;
+        vertices[i].position.y += t.y;
+    }
+}
+

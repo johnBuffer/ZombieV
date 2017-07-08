@@ -2,40 +2,51 @@
 #include "Config.hpp"
 #include "GameWorld.hpp"
 
-#include <cmath>
+#include "Utils.hpp"
+
 #include <iostream>
 
-float sign(float f)
+size_t Hunter::_feetTextureID;
+Animation Hunter::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
+
+Hunter::Hunter(float x, float y)
 {
-    return f<0.0f?-1.f:1.0f;
+    _body.setX(x);
+    _body.setY(y);
+    _body.stop();
+
+    _speed = 150;
+
+    _state     = HunterState::IDLE;
+    _lastState = HunterState::IDLE;
+
+    _time = 0.0f;
+
+    _vertexArray = sf::VertexArray(sf::Quads, 4);
+
+    _weapons.push_back(new AK);
+    _weapons.push_back(new Shotgun);
+    _weapons.push_back(new Pistol);
+
+    _currentWeapon = _weapons.back();
+    _weaponRank    = _weapons.size()-1;
+    _currentAnimation = _currentWeapon->getMoveAnimation();
+
+    _angleTarget = 90.0;
+
+    _feetTime = 0.0f;
+
+    _type = EntityTypes::HUNTER;
 }
 
-Hunter::Hunter(double x, double y)
+void Hunter::init()
 {
-    __body.setX(x);
-    __body.setY(y);
-
-    __speed = 150;
-
-    __state     = HunterState::IDLE;
-    __lastState = HunterState::IDLE;
-
-    __time = 0.0f;
-
-    __vertexArray = sf::VertexArray(sf::Quads, 0);
-
-    __weapons.push_back(new AK);
-    __weapons.push_back(new Shotgun);
-    __weapons.push_back(new Pistol);
-
-    __currentWeapon = __weapons.back();
-    __weaponRank    = __weapons.size()-1;
-    __currentAnimation = __currentWeapon->getMoveAnimation();
-
-    __angleTarget = 90.0;
+    _feetTextureID = GameRender::registerTexture("data/textures/hunter/hunter_walk.png");
+    _feetAnimation.setTextureID(_feetTextureID);
+    _feetAnimation.setCenter(sf::Vector2f(76, 62));
 }
 
-void Hunter::updateControls(EventManager& em)
+void Hunter::updateControls(const EventManager& em)
 {
     float COS45 = 0.707106f;
 
@@ -56,149 +67,107 @@ void Hunter::updateControls(EventManager& em)
 
     if (em.isKeyPressed(sf::Keyboard::A))
     {
-        if (__releasedWeaponSwap)
+        if (_releasedWeaponSwap)
         {
-            __weaponRank++;
-            __weaponRank%=__weapons.size();
-            __currentWeapon = __weapons[__weaponRank];
-            __releasedWeaponSwap = false;
-            __currentAnimation.setDone();
+            _weaponRank++;
+            _weaponRank%=_weapons.size();
+            _currentWeapon = _weapons[_weaponRank];
+            _releasedWeaponSwap = false;
+            _currentAnimation.setDone();
         }
     }
     else
-        __releasedWeaponSwap = true;
+        _releasedWeaponSwap = true;
 
-    __lastState = __state;
+    _lastState = _state;
     if (vx || vy)
-        __state = HunterState::MOVING;
+        _state = HunterState::MOVING;
     else
-        __state = HunterState::IDLE;
+        _state = HunterState::IDLE;
 
-    __body.stop();
-    __body.accelerate2D(U_2DCoord(vx*norm*__speed, vy*norm*__speed));
+    _body.stop();
+    _body.accelerate2D(Vec2(vx*norm*_speed, vy*norm*_speed));
 
     sf::Vector2i mousePos = em.getMousePosition();
-    float ax = mousePos.x;
-    float ay = mousePos.y;
-    float anorm = sqrt(ax*ax+ay*ay);
-    __angleTarget = acos(ax/anorm);
-    __angleTarget = ay < 0 ? -__angleTarget : __angleTarget;
+    _angleTarget = getAngleFromVec(mousePos);
 
-    __clicking = em.isLeftMousePressed();
-    if (!__clicking)
-        __currentWeapon->releaseTrigger();
+    _clicking = em.isLeftMousePressed();
+    if (!_clicking)
+        _currentWeapon->releaseTrigger();
 }
 
 void Hunter::update(GameWorld& world)
 {
-    __time += 0.016;
+    updateControls(world.getEvents());
+    _currentWeapon->update();
 
-    U_2DCoord pos(getCoord());
+    Vec2 pos(getCoord());
+    _time += DT;
 
-    float delta = __angleTarget-__angle;
-    if (__angleTarget*__angle<0 && std::abs(delta) > PI)
-        delta += 2*PI*sign(__angle);
-    if (std::abs(delta) < 0.1) __angle = __angleTarget;
-    __angle += delta/2.0;
+    if (_state == MOVING)
+        _feetTime += DT;
 
-    if (__clicking)
+    if (_clicking)
     {
-        std::list<Bullet> bullets(__currentWeapon->fire());
-        if (bullets.size())
-        {
-            int recoilAngle = __currentWeapon->getRecoil()*5+1;
-            __angle += DEGRAD*(rand()%recoilAngle-recoilAngle/2);
-
-            for (Bullet& bullet : bullets)
-            {
-                bullet.init(pos, __angle);
-                world.addBullet(bullet);
-
-                U_2DCoord smokePos = bullet.getCoord()+bullet.getV()*1.45f;
-
-                float v(rand()%50/1000.0f+0.1);
-
-                world.addSmoke(Smoke(smokePos, bullet.getV()*v, 0.05, 75));
-            }
-
-            double fireDist = __currentWeapon->getFireDist();
-            U_2DCoord firePos(bullets.back().getCoord()+bullets.back().getV()*fireDist);
-            __fire = Fire(firePos, __angle+PI/2);
-
-            __state = SHOOTING;
-        }
+        if (_currentWeapon->fire(&world, this))
+            _state = SHOOTING;
         else
-            __state = IDLE;
+            _state = IDLE;
     }
 
-    if (__state == SHOOTING)
+    if (_state == SHOOTING)
     {
-        bool wait = __lastState==SHOOTING;
-        __changeAnimation(__currentWeapon->getShootAnimation(), wait);
+        bool wait = _lastState==SHOOTING;
+        _changeAnimation(_currentWeapon->getShootAnimation(), wait);
+
+        //int shakeIntensity = 3;
+        //_shootingShake = Vec2(rand()%shakeIntensity-shakeIntensity/2, rand()%shakeIntensity-shakeIntensity/2);
     }
-    else if (__state == MOVING)
+    else if (_state == MOVING)
     {
-        bool wait = !__lastState==IDLE;
-        __changeAnimation(__currentWeapon->getMoveAnimation(), wait);
+        bool wait = !_lastState==IDLE;
+        _changeAnimation(_currentWeapon->getMoveAnimation(), wait);
     }
     else
     {
-        __changeAnimation(__currentWeapon->getIdleAnimation());
+        _changeAnimation(_currentWeapon->getIdleAnimation());
     }
 
-    __currentWeapon->update();
+    _angle = _angleTarget;
 }
 
 void Hunter::render()
 {
-    __vertexArray.clear();
+    sf::Vector2f spriteSize(_currentAnimation.getSpriteSize());
+    sf::Vector2f feetSpriteSize(_feetAnimation.getSpriteSize());
 
-    sf::Vector2i spriteSize(__currentAnimation.getSpriteSize());
+    float x = _body.getPosition().x;
+    float y = _body.getPosition().y;
 
-    sf::Vector2f corner1(0           , 0);
-    sf::Vector2f corner2(spriteSize.x, 0);
-    sf::Vector2f corner3(spriteSize.x, spriteSize.y);
-    sf::Vector2f corner4(0           , spriteSize.y);
+    GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), 0.75*0.26f);
+    GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
+    _currentAnimation.applyOnQuad(_vertexArray, _time);
+    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
 
-    sf::IntRect texCoords = __currentAnimation.getTexCoord(__time);
-    float textureX = texCoords.left;
-    float textureY = texCoords.top;
+    GraphicUtils::initQuad(_vertexArray, feetSpriteSize, _feetAnimation.getSpriteCenter(), 0.75*0.3f);
+    GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
+    _feetAnimation.applyOnQuad(_vertexArray, _feetTime);
+    GameRender::addQuad(_feetAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
 
-    sf::Vertex vertex1(corner1, sf::Vector2f(textureX                , textureY));
-    sf::Vertex vertex2(corner2, sf::Vector2f(textureX+texCoords.width, textureY));
-    sf::Vertex vertex3(corner3, sf::Vector2f(textureX+texCoords.width, textureY+texCoords.height));
-    sf::Vertex vertex4(corner4, sf::Vector2f(textureX                , textureY+texCoords.height));
-
-    __vertexArray.append(vertex1);
-    __vertexArray.append(vertex2);
-    __vertexArray.append(vertex3);
-    __vertexArray.append(vertex4);
+    GraphicUtils::createEntityShadow(this);
 }
 
-std::list<GraphicEntity>& Hunter::getGraphicEntity()
+void Hunter::_changeAnimation(Animation& anim, bool wait)
 {
-    __gas.clear();
-
-    U_2DCoord position = __body.getPosition();
-    GraphicEntity ga(__vertexArray, __currentAnimation.getTexture());
-    ga.setOrigin(__currentAnimation.getSpriteCenter());
-    ga.setPosition(position.x, position.y);
-    ga.setRotation(__angle*RADDEG);
-    ga.setScale(0.28f, 0.28f);
-
-    __gas.push_back(ga);
-
-    if (__state == SHOOTING)
-        __gas.push_back(__fire.getGraphicEntity());
-
-    return __gas;
-}
-
-void Hunter::__changeAnimation(Animation& anim, bool wait)
-{
-    if (__currentAnimation.isDone() || !wait)
+    if (_currentAnimation.isDone() || !wait)
     {
-        __currentAnimation = anim;
-        __time = 0.0f;
+        _currentAnimation = anim;
+        _time = 0.0f;
     }
 }
+
+void Hunter::initPhysics(GameWorld* world)
+{
+    world->addBody(&_body);
+}
+

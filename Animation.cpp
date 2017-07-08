@@ -1,44 +1,62 @@
 #include "Animation.hpp"
+#include <iostream>
 
 Animation::Animation()
 {
-    __done = true;
+    _done = true;
 }
 
 Animation::Animation(size_t sheetW, size_t sheetH, size_t spriteW, size_t spriteH, size_t frameCount, float speed):
-    __sheetW(sheetW),
-    __sheetH(sheetH),
-    __spriteW(spriteW),
-    __spriteH(spriteH),
-    __frameCount(frameCount),
-    __animationSpeed(speed)
+    _sheetW(sheetW),
+    _sheetH(sheetH),
+    _spriteW(spriteW),
+    _spriteH(spriteH),
+    _frameCount(frameCount),
+    _animationSpeed(speed)
 {
-    __done = false;
+    _done = false;
 }
 
-void Animation::setTexture(sf::Texture& texture)
+void Animation::setTextureID(size_t textureID)
 {
-    __texture = &texture;
+    _textureID = textureID;
 }
 
 /// Returns the texture area corresponding to the
 /// current time
-sf::IntRect Animation::getTexCoord(double time)
+sf::IntRect Animation::getTexCoord(float time)
 {
-    size_t currentSprite = size_t(__animationSpeed*time);
-    if (currentSprite >= __frameCount)
-        __done = true;
+    size_t currentSprite = size_t(_animationSpeed*time);
+    if (currentSprite >= _frameCount)
+        _done = true;
 
-    currentSprite %= __frameCount;
+    currentSprite %= _frameCount;
 
-    float textureX = currentSprite%__sheetW;
-    float textureY = currentSprite/__sheetW;
+    float textureX = currentSprite%_sheetW;
+    float textureY = currentSprite/_sheetW;
 
-    return sf::IntRect(__spriteW*textureX, __spriteH*textureY,
-                       __spriteW         , __spriteH);
+    return sf::IntRect(_spriteW*textureX, _spriteH*textureY,
+                       _spriteW         , _spriteH);
+}
+
+void Animation::applyOnQuad(sf::VertexArray& quad, float time)
+{
+    size_t currentSprite = size_t(_animationSpeed*time);
+    if (currentSprite >= _frameCount)
+        _done = true;
+
+    currentSprite %= _frameCount;
+
+    float textureX = (currentSprite%_sheetW)*_spriteW;
+    float textureY = (currentSprite/_sheetW)*_spriteH;
+
+    quad[0].texCoords = sf::Vector2f(textureX          , textureY);
+    quad[1].texCoords = sf::Vector2f(textureX+_spriteW, textureY);
+    quad[2].texCoords = sf::Vector2f(textureX+_spriteW, textureY+_spriteH);
+    quad[3].texCoords = sf::Vector2f(textureX          , textureY+_spriteH);
 }
 
 bool Animation::isDone() const
 {
-    return __done;
+    return _done;
 }

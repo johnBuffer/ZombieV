@@ -3,16 +3,13 @@
 
 #include <map>
 
+#include "DrawableEntity.hpp"
 #include "LifeForm.hpp"
 #include "WorldEntity.hpp"
-#include "Weapon.hpp"
 #include "EventManager.hpp"
-#include "GraphicEntity.hpp"
 #include "Animation.hpp"
-#include "AK.hpp"
-#include "Shotgun.hpp"
-#include "Pistol.hpp"
-#include "Fire.hpp"
+
+#include "Weapons/Weapons.hpp"
 
 enum HunterState
 {
@@ -21,38 +18,43 @@ enum HunterState
     SHOOTING
 };
 
-class Hunter : public LifeForm
+class Hunter : public LifeForm, public DrawableEntity<Hunter>
 {
 public:
-    Hunter(double x, double y);
+    Hunter(float x, float y);
 
-    void updateControls(EventManager& em);
-
+    void initPhysics(GameWorld* world);
+    void updateControls(const EventManager& em);
     void update(GameWorld& world);
     void render();
 
-    std::list<GraphicEntity>& getGraphicEntity();
-    HunterState getCurrentState()  const {return __state;}
+    HunterState getCurrentState() const {return _state;}
+    bool isDone() const {return false;}
+    Vec2 getShakyPos() const {return getCoord()+_shootingShake;}
+
+    static void init();
 
 private:
-    std::vector<Weapon*> __weapons;
+    std::vector<Weapon*> _weapons;
 
-    Weapon*     __currentWeapon;
-    int         __weaponRank;
-    bool        __releasedWeaponSwap;
+    Weapon*     _currentWeapon;
+    int         _weaponRank;
+    bool        _releasedWeaponSwap;
+    bool        _clicking;
+    float       _stamina;
+    float       _angleTarget;
+    HunterState _state;
+    HunterState _lastState;
 
-    double      __stamina;
-    double      __angleTarget;
-    bool        __clicking;
-    HunterState __state;
-    HunterState __lastState;
-    Fire        __fire;
+    Vec2        _shootingShake;
 
-    sf::VertexArray    __vertexArray;
+    sf::VertexArray _vertexArray;
 
-    std::list<GraphicEntity> __gas;
+    float            _feetTime;
+    static Animation _feetAnimation;
+    static size_t    _feetTextureID;
 
-    void __changeAnimation(Animation& anim, bool wait=true);
+    void _changeAnimation(Animation& anim, bool wait=true);
 };
 
 #endif // HUNTER_HPP_INCLUDED

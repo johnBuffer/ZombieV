@@ -2,33 +2,38 @@
 #define ZOMBIE_HPP_INCLUDED
 
 #include "LifeForm.hpp"
-#include "GraphicEntity.hpp"
-#include "MassiveDrawableEntity.hpp"
+#include "DrawableEntity.hpp"
 #include <memory>
 
-class Zombie : public LifeForm, public MassiveDrawableEntity<Zombie>
+class Zombie : public DrawableEntity<Zombie>, public WorldEntity
 {
 public:
-    Zombie(double x, double y);
+    Zombie(float x, float y);
 
+    void initPhysics(GameWorld* world);
     void setTarget(WorldEntity* target);
+    void hit(WorldEntity* entity, GameWorld* gameWorld);
     void update(GameWorld& world);
     void render();
 
-    static void loadTexture();
+    bool isDone() const {return _done;}
 
-    static void subResetVertexArray()          {__vertexArray.clear();}
-    static GraphicEntity subGetGraphicEntity() {return GraphicEntity(__vertexArray, __moveAnimation.getTexture());}
+    static void init();
 
 private:
-    double __pv;
-    double __speed;
-    double __dmg;
-    sf::Color    __color;
-    WorldEntity* __target;
+    float _pv;
+    float _speed;
+    float _dmg;
 
-    static sf::Texture __moveTexture;
-    static Animation   __moveAnimation;
+    bool   _done;
+
+    sf::Color    _color;
+    WorldEntity* _target;
+    Animation    _currentAnimation;
+
+    sf::VertexArray    _vertexArray;
+    static size_t      _moveTextureID;
+    static Animation   _moveAnimation;
 };
 
 #endif // ZOMBIE_HPP_INCLUDED

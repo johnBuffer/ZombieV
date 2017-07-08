@@ -1,37 +1,52 @@
 #ifndef GAMERENDER_HPP_INCLUDED
 #define GAMERENDER_HPP_INCLUDED
 
-#include "GameWorld.hpp"
-#include "GraphicEntity.hpp"
 #include "GraphicsUtils.hpp"
 #include "Blur/DynamicBlur.h"
+
+#include <list>
+
+enum RenderLayer
+{
+    RENDER = 0,
+    GROUND = 1,
+    BLOOM  = 2
+
+};
 
 class GameRender
 {
 public:
     static void initialize(size_t width, size_t height);
-    static void setFocus(const WorldEntity* entity);
+    static void setFocus(const sf::Vector2f& focus);
     static void clear();
-
-    static void render(GraphicEntity entity);
-    static void render(std::list<GraphicEntity>& entities);
-
+    static void addQuad  (size_t textureID, const sf::VertexArray& quad, RenderLayer layer);
     static void display(sf::RenderTarget* target);
-    static bool isVisible(WorldEntity* entity);
+    static void initGround(size_t textureID, sf::VertexArray& quad);
     static void renderGround();
 
+    static bool   isVisible(WorldEntity* entity);
+    static size_t registerTexture(std::string filename, bool isRepeated=false);
 
 private:
-    static float              __quality;
-    static sf::Vector2u       __renderSize;
-    static sf::RenderTexture  __renderTexture;
-    static sf::RenderTexture  __blurTexture;
-    static sf::RenderTexture  __groundTexture;
+    static void _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
 
-    static const WorldEntity* __focus;
+private:
+    static float              _quality;
+    static sf::Vector2u       _renderSize;
+    static sf::Vector2f       _focus;
+    static sf::RenderTexture  _renderTexture;
+    static sf::RenderTexture  _blurTexture;
+    static sf::RenderTexture  _groundTexture;
 
-    static DynamicBlur __blur;
-    static void        __renderBloom();
+    static DynamicBlur  _blur;
+    static void         _renderBloom();
+
+    static std::vector<sf::Texture>     _textures;
+    static std::vector<std::vector<sf::VertexArray>> _vertices;
+
+    ///Profiling
+    static size_t _drawCalls;
 };
 
 #endif // GAMERENDER_HPP_INCLUDED

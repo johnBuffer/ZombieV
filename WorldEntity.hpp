@@ -2,6 +2,7 @@
 #define WORLDENTITY_HPP_INCLUDED
 
 #include "UnitedEngine/U_2DBody.h"
+#include "EntityTypes.hpp"
 #include <cstdlib>
 
 class GameWorld;
@@ -11,38 +12,42 @@ class WorldEntity
 {
 public:
     WorldEntity();
+    WorldEntity(float x, float y, float angle);
 
-    WorldEntity(double x, double y, double angle);
-    U_2DBody&  getBody();
-
-    const U_2DCoord& getCoord() const;
-    const size_t&    getID()    const;
-    bool             isEnemy()  const;
-    double           getAngle() const;
-    bool             isAlive()  const {return __life>0;}
+    bool          needsPhysics() const {return _needsPhysics;}
+    U_2DBody&     getBody();
+    const Vec2&   getCoord() const;
+    const size_t& getID()    const;
+    float         getAngle() const;
+    virtual bool  isDone()   const=0;
+    EntityTypes   getType()  const;
 
     void setEnemy();
-    void addLife(double life) {__life += life;}
-    void setLife(double life) {__life =  life;}
-    void resetTime() {__time = rand()%1000;}
+    void addLife(float life) {_life += life;}
+    void setLife(float life) {_life =  life;}
+    void resetTime() {_time = rand()%1000;}
 
+    virtual void initPhysics(GameWorld* world)=0;
+
+    virtual void hit(WorldEntity* entity, GameWorld* gameWorld) {};
     virtual void update(GameWorld& world)=0;
     virtual void render()=0;
 
 protected:
     /// Engine data
-    size_t    __id;
+    size_t    _id;
 
     /// Physical data
-    U_2DBody  __body;
-    double    __angle;
-    double    __time;
-    double    __life;
+    U_2DBody  _body;
+    float    _angle;
+    float    _time;
+    float    _life;
+    bool      _needsPhysics;
 
-    bool      __isEnnemy;
+    EntityTypes _type;
 
 private:
-    static size_t __entityCount;
+    static size_t _entityCount;
 
 };
 

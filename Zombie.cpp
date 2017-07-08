@@ -4,82 +4,107 @@
 
 #include <iostream>
 
-sf::Texture Zombie::__moveTexture;
-Animation   Zombie::__moveAnimation(3, 6, 288, 311, 17, 20);
+size_t      Zombie::_moveTextureID;
+Animation   Zombie::_moveAnimation(3, 6, 288, 311, 17, 20);
 
-Zombie::Zombie(double x, double y)
+Zombie::Zombie(float x, float y):
+    WorldEntity(x, y, 0.0f),
+    _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
-    __body.setX(x);
-    __body.setY(y);
-    __body.stop();
+    _speed = 150;
+    _life  = 1000;
+    _done  = false;
 
-    __speed = 150;
-    __life  = 100;
-
-    std::cout << "Zombie at " << x << " " << y << std::endl;
-
-    __currentAnimation = __moveAnimation;
+    _currentAnimation = _moveAnimation;
 
     int c=rand()%50+200;
-    __color=sf::Color(c, c, c);
+    _color=sf::Color(c, c, c);
 
-    __time = rand()%100;
-    __isEnnemy = true;
+    _time = rand()%100;
+    _type = EntityTypes::ZOMBIE;
 }
 
 void Zombie::setTarget(WorldEntity* target)
 {
-    __target = target;
+    _target = target;
 }
 
 void Zombie::update(GameWorld& world)
 {
-    __time += 0.016;
+    _time += DT;
 
-    double vx = __target->getCoord().x - __body.getPosition().x;
-    double vy = __target->getCoord().y - __body.getPosition().y;
-    double dist = sqrt(vx*vx+vy*vy);
-    __angle = acos(vx/dist)+PI;
-    __angle = vy < 0 ? -__angle : __angle;
+    if (_target)
+    {
+        float vx = _target->getCoord().x - _body.getPosition().x;
+        float vy = _target->getCoord().y - _body.getPosition().y;
+        float dist = sqrt(vx*vx+vy*vy);
+        _angle = acos(vx/dist)+PI;
+        _angle = vy < 0 ? -_angle : _angle;
 
-    vx /= dist;
-    vy /= dist;
+        vx /= dist;
+        vy /= dist;
 
-    double speed = 10;
+        float speed = 10;
 
-    getBody().accelerate2D(U_2DCoord(speed*vx, speed*vy));
+        getBody().accelerate2D(Vec2(speed*vx, speed*vy));
+    }
+
+    if (_life<0)
+    {
+        const Vec2 coord = getCoord();
+        world.addEntity(ExplosionProvider::getBig(coord, true));
+        world.addEntity(ExplosionProvider::getBigFast(coord));
+        world.addEntity(ExplosionProvider::getBase(coord));
+        world.removeBody(&_body);
+        _done = true;
+    }
 }
 
 void Zombie::render()
 {
-    double x = __body.getPosition().x;
-    double y = __body.getPosition().y;
+    if (GameRender::isVisible(this))
+    {
+        float x = _body.getPosition().x;
+        float y = _body.getPosition().y;
 
-    double radius = CELL_SIZE*2.2;
+        GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), 0.75*0.25);
+        sf::VertexArray& vertices(_vertexArray);
+        GraphicUtils::transform(vertices, sf::Vector2f(x, y), _angle+PI);
 
-    sf::Vector2f corner1(x+radius*cos(__angle+  PI/4.0f), y+radius*sin(__angle+  PI/4.0f));
-    sf::Vector2f corner2(x+radius*cos(__angle+3*PI/4.0f), y+radius*sin(__angle+3*PI/4.0f));
-    sf::Vector2f corner3(x+radius*cos(__angle-3*PI/4.0f), y+radius*sin(__angle-3*PI/4.0f));
-    sf::Vector2f corner4(x+radius*cos(__angle-  PI/4.0f), y+radius*sin(__angle-  PI/4.0f));
+        _currentAnimation.applyOnQuad(vertices, _time);
 
-    sf::IntRect texCoords = __currentAnimation.getTexCoord(__time);
-    float textureX = texCoords.left;
-    float textureY = texCoords.top;
-
-    sf::Vertex vertex1(corner1, __color, sf::Vector2f(textureX                , textureY));
-    sf::Vertex vertex2(corner2, __color, sf::Vector2f(textureX+texCoords.width, textureY));
-    sf::Vertex vertex3(corner3, __color, sf::Vector2f(textureX+texCoords.width, textureY+texCoords.height));
-    sf::Vertex vertex4(corner4, __color, sf::Vector2f(textureX                , textureY+texCoords.height));
-
-    __vertexArray.append(vertex1);
-    __vertexArray.append(vertex2);
-    __vertexArray.append(vertex3);
-    __vertexArray.append(vertex4);
+        GameRender::addQuad(_moveTextureID, vertices, RenderLayer::RENDER);
+        GraphicUtils::createEntityShadow(this);
+    }
 }
 
-void Zombie::loadTexture()
+void Zombie::init()
 {
-    __moveTexture.loadFromFile("data/textures/zombie/zombie_move.png");
-    __moveAnimation.setTexture(__moveTexture);
+    _moveAnimation.setCenter(sf::Vector2f(90, 168));
+    _moveTextureID = GameRender::registerTexture("data/textures/zombie/zombie_move.png");
+
 }
 
+void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
+{
+    switch(entity->getType())
+    {
+        case(EntityTypes::BULLET):
+        {
+            Bullet* bullet = static_cast<Bullet*>(entity);
+            getBody().accelerate2D(bullet->getImpactForce());
+            addLife(-bullet->getDamage());
+            resetTime();
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+void Zombie::initPhysics(GameWorld* world)
+{
+    world->addBody(&_body);
+}

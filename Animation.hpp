@@ -8,28 +8,31 @@ class Animation
 public:
     Animation();
     Animation(size_t sheetW, size_t sheetH, size_t spriteW, size_t spriteH, size_t frameCount, float speed);
-    void setTexture(sf::Texture& texture);
-    void setDone() {__done=true;}
-    void setCenter(sf::Vector2f center) {__spriteCenter=center;}
+    void setTextureID(size_t textureID);
+    void setDone() {_done=true;}
+    void setCenter(sf::Vector2f center) {_spriteCenter=center;}
 
-    sf::IntRect getTexCoord(double time);
-    const sf::Texture& getTexture() const {return *__texture;}
-    sf::Vector2i getSpriteSize()    const {return sf::Vector2i(__spriteW, __spriteH);}
-    sf::Vector2f getSpriteCenter()  const {return __spriteCenter;}
+    sf::IntRect  getTexCoord(float time);
+    sf::Vector2f getSpriteSize()   const {return sf::Vector2f(_spriteW, _spriteH);}
+    sf::Vector2f getSpriteCenter() const {return _spriteCenter;}
+    size_t       getTexture()      const {return _textureID;}
+
+    void applyOnQuad(sf::VertexArray& quad, float time);
+
     bool isDone() const;
 
 private:
-    size_t __sheetW;
-    size_t __sheetH;
-    size_t __spriteW;
-    size_t __spriteH;
+    size_t _sheetW;
+    size_t _sheetH;
+    size_t _spriteW;
+    size_t _spriteH;
 
-    size_t __frameCount;
-    float  __animationSpeed;
-    bool   __done;
+    size_t _frameCount;
+    float  _animationSpeed;
+    bool   _done;
 
-    sf::Vector2f __spriteCenter;
-    sf::Texture* __texture;
+    sf::Vector2f _spriteCenter;
+    size_t       _textureID;
 
 };
 

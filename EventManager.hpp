@@ -8,13 +8,13 @@ class EventManager
 public:
     EventManager();
     void init(sf::Window* window);
-    sf::Vector2i getMousePosition();
+    sf::Vector2i getMousePosition() const;
 
     bool isKeyPressed(sf::Keyboard::Key key) const;
     bool isLeftMousePressed() const;
 
 private:
-    sf::Window* __window;
+    sf::Window* _window;
 };
 
 #endif // EVENTMANAGER_HPP_INCLUDED
