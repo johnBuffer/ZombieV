@@ -11,11 +11,13 @@ public:
     void setTextureID(size_t textureID);
     void setDone() {_done=true;}
     void setCenter(sf::Vector2f center) {_spriteCenter=center;}
+    void resetTime(float time);
 
     sf::IntRect  getTexCoord(float time);
     sf::Vector2f getSpriteSize()   const {return sf::Vector2f(_spriteW, _spriteH);}
     sf::Vector2f getSpriteCenter() const {return _spriteCenter;}
     size_t       getTexture()      const {return _textureID;}
+    size_t       getCurrentIndex(float time) const {return _animationSpeed*(time-_startTime);}
 
     void applyOnQuad(sf::VertexArray& quad, float time);
 
@@ -26,6 +28,8 @@ private:
     size_t _sheetH;
     size_t _spriteW;
     size_t _spriteH;
+
+    float  _startTime;
 
     size_t _frameCount;
     float  _animationSpeed;

@@ -9,7 +9,7 @@
 GameWorld::GameWorld() :
     _dt(0.016),
     _level(MAP_SIZE, MAP_SIZE),
-    _phyManager(_dt, CELL_SIZE, Vec2(MAP_SIZE, MAP_SIZE))
+    _phyManager(_dt, CELL_SIZE, Vec2(MAP_SIZE, MAP_SIZE), this)
 {
     _phyManager.setGravity(Vec2(0.0f, 0.0f));
     _phyManager.setPrecision(2);
@@ -53,8 +53,6 @@ void GameWorld::update()
     {
         entity->update(*this);
     }
-
-    std::cout << "Physic time : " << time << "ms" << std::endl;
 }
 
 GridCell* GameWorld::getBodiesAt(Vec2 coord)

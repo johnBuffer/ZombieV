@@ -4,6 +4,8 @@
 #include "GameWorld.hpp"
 #include "GameRender.hpp"
 
+#include "Container.hpp"
+
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
 
@@ -25,7 +27,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(1); i--;)
+    for (int i(100); i--;)
     {
         Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
         newZombie->setTarget(&hunter);
@@ -48,10 +50,7 @@ int main()
 			}
         }
 
-        sf::Clock clock;
         world.update();
-        float upTime = clock.restart().asMilliseconds();
-        //std::cout << "Update time : " << upTime << "ms" << std::endl;
 
         Vec2 p = hunter.getShakyPos();
         sf::Vector2f playerPosition(p.x, p.y);
@@ -59,11 +58,8 @@ int main()
 
         GameRender::clear();
 
-        clock.restart();
         world.render();
         GameRender::display(&window);
-        float time = clock.restart().asMilliseconds();
-        //std::cout << "Render time : " << time << "ms" << std::endl;
 
         window.display();
     }

@@ -10,6 +10,7 @@ Guts::Guts(U_2DBody* anchor, Vec2 pos, Vec2 v) :
     _initialVelocity(v),
     _anchor(anchor)
 {
+    _type = PROPS;
 }
 
 bool Guts::isDone() const

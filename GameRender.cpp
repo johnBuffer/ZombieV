@@ -98,7 +98,6 @@ void GameRender::_renderVertices(std::vector<sf::VertexArray>& vertices, sf::Ren
 /// Finalizes the textures
 void GameRender::display(sf::RenderTarget* target)
 {
-    //std::cout << "Add new texture : " << _vertices[RenderLayer::RENDER][0].getVertexCount() << std::endl;
     float baseOffsetX = _renderSize.x*0.5f;
     float baseOffsetY = _renderSize.y*0.5f;
 

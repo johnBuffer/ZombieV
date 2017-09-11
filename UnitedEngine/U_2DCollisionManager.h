@@ -11,7 +11,10 @@
 #include <array>
 #include <memory>
 
+
 typedef U_2DBody* U2DBody_ptr;
+
+class GameWorld;
 
 struct GridCell
 {
@@ -28,7 +31,7 @@ class U_2DCollisionManager
 {
 public:
     U_2DCollisionManager();
-    U_2DCollisionManager(float timeStep, float bodyRadius, Vec2 mapSize);
+    U_2DCollisionManager(float timeStep, float bodyRadius, Vec2 mapSize, GameWorld* world);
 
     GridCell* getBodyAt(Vec2 coord);
 
@@ -65,6 +68,8 @@ private:
     void solveGridCollisions(GridCell& cell);
     void solveCollisions();
     void solveBoundCollisions(U2DBody_ptr body);
+
+    GameWorld* _world;
 };
 
 

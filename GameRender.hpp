@@ -38,11 +38,10 @@ private:
     static sf::RenderTexture  _renderTexture;
     static sf::RenderTexture  _blurTexture;
     static sf::RenderTexture  _groundTexture;
+    static DynamicBlur        _blur;
+    static void               _renderBloom();
 
-    static DynamicBlur  _blur;
-    static void         _renderBloom();
-
-    static std::vector<sf::Texture>     _textures;
+    static std::vector<sf::Texture>                  _textures;
     static std::vector<std::vector<sf::VertexArray>> _vertices;
 
     ///Profiling

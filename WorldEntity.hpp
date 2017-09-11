@@ -7,42 +7,48 @@
 
 class GameWorld;
 
-/// Represents every physical object in the GameWorld
+/// Represents every object in the GameWorld
 class WorldEntity
 {
 public:
     WorldEntity();
     WorldEntity(float x, float y, float angle);
 
-    bool          needsPhysics() const {return _needsPhysics;}
+    bool          needsPhysics() const;
+    float         getAngle()     const;
     U_2DBody&     getBody();
-    const Vec2&   getCoord() const;
-    const size_t& getID()    const;
-    float         getAngle() const;
-    virtual bool  isDone()   const=0;
-    EntityTypes   getType()  const;
+    const Vec2&   getCoord()     const;
+    EntityTypes   getType()      const;
+    virtual bool  isDone()       const=0;
+    const size_t& getID()        const;
 
     void setEnemy();
-    void addLife(float life) {_life += life;}
-    void setLife(float life) {_life =  life;}
-    void resetTime() {_time = rand()%1000;}
+    void resetTime();
+    void addLife(float life);
+    void setLife(float life);
+    void setNext(WorldEntity* entity);
+    void setPrev(WorldEntity* entity);
+
+    WorldEntity* getNext() {return _next;}
+    WorldEntity* getPrev() {return _prev;}
 
     virtual void initPhysics(GameWorld* world)=0;
-
     virtual void hit(WorldEntity* entity, GameWorld* gameWorld) {};
     virtual void update(GameWorld& world)=0;
     virtual void render()=0;
 
 protected:
     /// Engine data
-    size_t    _id;
+    size_t       _id;
+    WorldEntity* _next;
+    WorldEntity* _prev;
 
     /// Physical data
-    U_2DBody  _body;
+    U_2DBody _body;
     float    _angle;
     float    _time;
     float    _life;
-    bool      _needsPhysics;
+    bool     _needsPhysics;
 
     EntityTypes _type;
 

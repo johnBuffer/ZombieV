@@ -2,7 +2,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "../WorldEntity.hpp"
+#include <WorldEntity.hpp>
+#include <GameWorld.hpp>
 
 GridCell::GridCell()
 {
@@ -32,7 +33,8 @@ U_2DCollisionManager::U_2DCollisionManager()
     m_gravity = Vec2();
 }
 
-U_2DCollisionManager::U_2DCollisionManager(float timeStep, float bodyRadius, Vec2 mapSize)
+U_2DCollisionManager::U_2DCollisionManager(float timeStep, float bodyRadius, Vec2 mapSize, GameWorld* world) :
+    _world(world)
 {
     m_timeStep = timeStep;
     m_bodySize = bodyRadius*2;
@@ -152,6 +154,8 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
         float currentX = currentBody->getPosition().x;
         float currentY = currentBody->getPosition().y;
 
+        WorldEntity* currentEntity = currentBody->getEntity();
+
         for (int k(i+1); k<n_bodies; k++)
         {
             U2DBody_ptr collider  = bodies[k];
@@ -169,7 +173,6 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
             {
                 float dist = sqrt(dist2);
                 float deltaDist = minDist-dist;
-
                 float responseVelocity = 0.5f*coeff*deltaDist/(dist);
 
                 vx *= responseVelocity;
@@ -177,12 +180,14 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
 
                 float colliderMass = collider->getMass();
                 float totalMassCoeff = 1.0f/(currentMass+colliderMass);
-
                 float massCoef1 = colliderMass*totalMassCoeff;
                 float massCoef2 = currentMass*totalMassCoeff;
 
                 currentBody->move2D(Vec2( vx*massCoef1,  vy*massCoef1));
                 collider   ->move2D(Vec2(-vx*massCoef2, -vy*massCoef2));
+
+                currentEntity->hit(collider->getEntity(), _world);
+                collider->getEntity()->hit(currentEntity, _world);
             }
         }
     }
@@ -190,8 +195,8 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
 
 void U_2DCollisionManager::solveCollisions()
 {
-    for(auto &elem : m_grid) solveGridCollisions(elem.second);
-    for (auto &body : m_bodies) solveBoundCollisions(body);
+    for(auto &elem : m_grid)   solveGridCollisions(elem.second);
+    for(auto &body : m_bodies) solveBoundCollisions(body);
 }
 
 void U_2DCollisionManager::update()
@@ -210,17 +215,12 @@ void U_2DCollisionManager::update()
     {
         addBodyToGrid(body);
     }
-    //std::cout << "parse time " << c2.getElapsedTime().asMilliseconds() << " ";// << "ms for " << int(100*m_newHash/float(m_bodies.size())) << "%" << std::endl;
 
     c2.restart();
     for (int i(0); i<m_iterationCount; ++i)
     {
         solveCollisions();
 
-        solveConstraints();
-        solveConstraints();
-        solveConstraints();
-        solveConstraints();
         solveConstraints();
         solveConstraints();
     }

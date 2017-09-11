@@ -11,6 +11,7 @@ Animation::Animation(size_t sheetW, size_t sheetH, size_t spriteW, size_t sprite
     _sheetH(sheetH),
     _spriteW(spriteW),
     _spriteH(spriteH),
+    _startTime(0),
     _frameCount(frameCount),
     _animationSpeed(speed)
 {
@@ -22,11 +23,17 @@ void Animation::setTextureID(size_t textureID)
     _textureID = textureID;
 }
 
+void Animation::resetTime(float time)
+{
+    _startTime = time;
+}
+
+
 /// Returns the texture area corresponding to the
 /// current time
 sf::IntRect Animation::getTexCoord(float time)
 {
-    size_t currentSprite = size_t(_animationSpeed*time);
+    size_t currentSprite = size_t(_animationSpeed*(time-_startTime));
     if (currentSprite >= _frameCount)
         _done = true;
 
@@ -41,7 +48,7 @@ sf::IntRect Animation::getTexCoord(float time)
 
 void Animation::applyOnQuad(sf::VertexArray& quad, float time)
 {
-    size_t currentSprite = size_t(_animationSpeed*time);
+    size_t currentSprite = size_t(_animationSpeed*(time-_startTime));
     if (currentSprite >= _frameCount)
         _done = true;
 

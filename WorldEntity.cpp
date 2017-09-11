@@ -46,3 +46,33 @@ EntityTypes WorldEntity::getType() const
 {
     return _type;
 }
+
+bool WorldEntity::needsPhysics() const
+{
+    return _needsPhysics;
+}
+
+void WorldEntity::addLife(float life)
+{
+    _life += life;
+}
+
+void WorldEntity::setLife(float life)
+{
+    _life = life;
+}
+
+void WorldEntity::setNext(WorldEntity* entity)
+{
+    _next = entity;
+}
+
+void WorldEntity::setPrev(WorldEntity* entity)
+{
+    _prev = entity;
+}
+
+void WorldEntity::resetTime()
+{
+    _time = 0;
+}

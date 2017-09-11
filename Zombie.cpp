@@ -5,7 +5,9 @@
 #include <iostream>
 
 size_t      Zombie::_moveTextureID;
+size_t      Zombie::_attackTextureID;
 Animation   Zombie::_moveAnimation(3, 6, 288, 311, 17, 20);
+Animation   Zombie::_attackAnimation(3, 3, 954/3, 882/3, 9, 20);
 
 Zombie::Zombie(float x, float y):
     WorldEntity(x, y, 0.0f),
@@ -17,11 +19,17 @@ Zombie::Zombie(float x, float y):
 
     _currentAnimation = _moveAnimation;
 
-    int c=rand()%50+200;
-    _color=sf::Color(c, c, c);
-
     _time = rand()%100;
     _type = EntityTypes::ZOMBIE;
+
+    _currentState = IDLE;
+
+    Zombie::add(this);
+}
+
+Zombie::~Zombie()
+{
+    Zombie::remove(this);
 }
 
 void Zombie::setTarget(WorldEntity* target)
@@ -35,18 +43,33 @@ void Zombie::update(GameWorld& world)
 
     if (_target)
     {
-        float vx = _target->getCoord().x - _body.getPosition().x;
-        float vy = _target->getCoord().y - _body.getPosition().y;
-        float dist = sqrt(vx*vx+vy*vy);
-        _angle = acos(vx/dist)+PI;
-        _angle = vy < 0 ? -_angle : _angle;
+        Vec2 _targetPos = _target->getCoord();
+        float vx = _targetPos.x - _body.getPosition().x;
+        float vy = _targetPos.y - _body.getPosition().y;
 
-        vx /= dist;
-        vy /= dist;
+        Vec2 direction(cos(_angle), sin(_angle));
+        Vec2 directionNormal(-direction.y, direction.x);
 
-        float speed = 10;
+        float dot2 = vx*directionNormal.x + vy*directionNormal.y;
+        float coeff = 0.025f;
 
-        getBody().accelerate2D(Vec2(speed*vx, speed*vy));
+        if (dot2 > 0)
+        {
+            _angle += coeff;
+        }
+        else
+        {
+            _angle -= coeff;
+        }
+
+        //vx /= dist;
+        //vy /= dist;
+
+        if (_currentState == MOVING)
+        {
+            float speed = 10;
+            getBody().accelerate2D(Vec2(speed*direction.x, speed*direction.y));
+        }
     }
 
     if (_life<0)
@@ -56,7 +79,14 @@ void Zombie::update(GameWorld& world)
         world.addEntity(ExplosionProvider::getBigFast(coord));
         world.addEntity(ExplosionProvider::getBase(coord));
         world.removeBody(&_body);
+
         _done = true;
+    }
+
+    if (_currentAnimation.isDone())
+    {
+        _currentAnimation = _moveAnimation;
+        _currentState = MOVING;
     }
 }
 
@@ -69,11 +99,11 @@ void Zombie::render()
 
         GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), 0.75*0.25);
         sf::VertexArray& vertices(_vertexArray);
-        GraphicUtils::transform(vertices, sf::Vector2f(x, y), _angle+PI);
+        GraphicUtils::transform(vertices, sf::Vector2f(x, y), _angle);
 
         _currentAnimation.applyOnQuad(vertices, _time);
 
-        GameRender::addQuad(_moveTextureID, vertices, RenderLayer::RENDER);
+        GameRender::addQuad(_currentAnimation.getTexture(), vertices, RenderLayer::RENDER);
         GraphicUtils::createEntityShadow(this);
     }
 }
@@ -82,19 +112,34 @@ void Zombie::init()
 {
     _moveAnimation.setCenter(sf::Vector2f(90, 168));
     _moveTextureID = GameRender::registerTexture("data/textures/zombie/zombie_move.png");
+    _attackTextureID = GameRender::registerTexture("data/textures/zombie/zombie_attack.png");
 
+    _moveAnimation.setTextureID(_moveTextureID);
+    _attackAnimation.setTextureID(_attackTextureID);
+
+    _head = nullptr;
 }
 
 void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
 {
     switch(entity->getType())
     {
-        case(EntityTypes::BULLET):
+        case(EntityTypes::BULLET) :
         {
             Bullet* bullet = static_cast<Bullet*>(entity);
             getBody().accelerate2D(bullet->getImpactForce());
             addLife(-bullet->getDamage());
             resetTime();
+            break;
+        }
+        case(EntityTypes::HUNTER) :
+        {
+            if (_currentState != ATTACKING)
+            {
+                _currentState     = ATTACKING;
+                _currentAnimation = _attackAnimation;
+                _currentAnimation.resetTime(_time);
+            }
             break;
         }
         default:

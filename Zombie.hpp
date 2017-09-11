@@ -3,12 +3,21 @@
 
 #include "LifeForm.hpp"
 #include "DrawableEntity.hpp"
+#include "ChainedObject.hpp"
 #include <memory>
 
-class Zombie : public DrawableEntity<Zombie>, public WorldEntity
+class Zombie : public DrawableEntity<Zombie>, public WorldEntity, public ChainedObject<Zombie>
 {
+    enum ZombieState
+    {
+        IDLE,
+        MOVING,
+        ATTACKING
+    };
+
 public:
     Zombie(float x, float y);
+    ~Zombie();
 
     void initPhysics(GameWorld* world);
     void setTarget(WorldEntity* target);
@@ -27,13 +36,18 @@ private:
 
     bool   _done;
 
+    ZombieState _currentState;
+
     sf::Color    _color;
     WorldEntity* _target;
     Animation    _currentAnimation;
 
-    sf::VertexArray    _vertexArray;
-    static size_t      _moveTextureID;
-    static Animation   _moveAnimation;
+    sf::VertexArray  _vertexArray;
+    static size_t    _moveTextureID;
+    static size_t    _attackTextureID;
+
+    static Animation _moveAnimation;
+    static Animation _attackAnimation;
 };
 
 #endif // ZOMBIE_HPP_INCLUDED
