@@ -26,8 +26,8 @@ AK::AK()
     _idleAnimation.setCenter(sf::Vector2f(96, 120));
 
     /// Distance after which fire blast is drawn
-    _bulletOut = Vec2(20, 6);
-    _fireOut   = Vec2(37, 6);
+    _bulletOut = Vec2(0, 8);
+    _fireOut   = Vec2(50, 8);
     _shellsOut = Vec2(15, 6);
 }
 

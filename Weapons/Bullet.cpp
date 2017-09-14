@@ -36,7 +36,7 @@ void Bullet::init(Vec2 pos, float angle)
     _vx     = _speed*cos(_angle);
     _vy     = _speed*sin(_angle);
 
-    float length = 30;
+    float length = 40;
     float rectA  = PI/40.0;
 
     /// Can be optimized : half of these vectors are just opposites of other half
@@ -89,7 +89,7 @@ void Bullet::update(GameWorld& world)
                     pos.move2D(v);
 
                     world.addEntity(ExplosionProvider::getBase(pos));
-                    if (_distance < 50)
+                    if (_distance < 500)
                     {
                         world.addEntity(ExplosionProvider::getClose(pos, _angle));
                         world.addEntity(new Guts(&entity->getBody(), pos, v*40.f));

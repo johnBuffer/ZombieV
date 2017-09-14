@@ -5,6 +5,8 @@
 #include "EntityTypes.hpp"
 #include <cstdlib>
 
+#define SCALE 1.0f
+
 class GameWorld;
 
 /// Represents every object in the GameWorld

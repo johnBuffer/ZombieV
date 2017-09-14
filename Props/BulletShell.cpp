@@ -47,7 +47,7 @@ void BulletShell::render()
 {
     sf::Vector2f pos(getCoord().x, getCoord().y);
 
-    GraphicUtils::initQuad(_vertexArray, sf::Vector2f(75, 351), sf::Vector2f(37, 175), 0.015f);
+    GraphicUtils::initQuad(_vertexArray, sf::Vector2f(75, 351), sf::Vector2f(37, 175), 0.02f);
     GraphicUtils::transform(_vertexArray, pos, _b2->getAngle(&_body)+PIS2);
 
     _vertexArray[0].texCoords = sf::Vector2f(0 , 0);

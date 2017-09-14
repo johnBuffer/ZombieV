@@ -144,12 +144,12 @@ void Hunter::render()
     float x = _body.getPosition().x;
     float y = _body.getPosition().y;
 
-    GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), 0.75*0.26f);
+    GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), SCALE*0.26f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
     _currentAnimation.applyOnQuad(_vertexArray, _time);
     GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
 
-    GraphicUtils::initQuad(_vertexArray, feetSpriteSize, _feetAnimation.getSpriteCenter(), 0.75*0.3f);
+    GraphicUtils::initQuad(_vertexArray, feetSpriteSize, _feetAnimation.getSpriteCenter(), SCALE*0.3f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
     _feetAnimation.applyOnQuad(_vertexArray, _feetTime);
     GameRender::addQuad(_feetAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);

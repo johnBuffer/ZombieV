@@ -19,7 +19,7 @@ DynamicBlur        GameRender::_blur;
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    _quality = 0.375;
+    _quality = 0.5;
     _focus = sf::Vector2f(0.0, 0.0);
     _renderSize = sf::Vector2u(width*_quality, height*_quality);
     _renderTexture.create(_renderSize.x, _renderSize.y);

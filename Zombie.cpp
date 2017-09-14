@@ -14,7 +14,7 @@ Zombie::Zombie(float x, float y):
     _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
     _speed = 150;
-    _life  = 1000;
+    _life  = 100;
     _done  = false;
 
     _currentAnimation = _moveAnimation;
@@ -97,7 +97,7 @@ void Zombie::render()
         float x = _body.getPosition().x;
         float y = _body.getPosition().y;
 
-        GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), 0.75*0.25);
+        GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), SCALE*0.25);
         sf::VertexArray& vertices(_vertexArray);
         GraphicUtils::transform(vertices, sf::Vector2f(x, y), _angle);
 

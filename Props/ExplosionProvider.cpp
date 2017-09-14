@@ -4,7 +4,7 @@
 /// A simple Explosion builder to avoid code repetition
 Explosion* ExplosionProvider::getBase(Vec2 pos, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 3.0f, 0.75*50.0f, 15);
+    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 3.0f, SCALE*50.0f, 15);
     e->setDecrease(0.1);
     e->setTrace(isTrace);
 
@@ -13,7 +13,7 @@ Explosion* ExplosionProvider::getBase(Vec2 pos, bool isTrace)
 
 Explosion* ExplosionProvider::getHit(Vec2 pos, float angle, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 170, angle, 10.0f, 0.75*5.0f, 15);
+    Explosion* e = new Explosion(pos.x, pos.y, 170, angle, 10.0f, SCALE*5.0f, 15);
     e->setDecrease(0.05);
     e->setTrace(isTrace);
 
@@ -22,7 +22,7 @@ Explosion* ExplosionProvider::getHit(Vec2 pos, float angle, bool isTrace)
 
 Explosion* ExplosionProvider::getThrough(Vec2 pos, float angle, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 1, angle, 15.0f, 0.75*3.0f, 50);
+    Explosion* e = new Explosion(pos.x, pos.y, 1, angle, 15.0f, SCALE*3.0f, 50);
     e->setDecrease(0.035);
     e->setTrace(isTrace);
 
@@ -31,8 +31,8 @@ Explosion* ExplosionProvider::getThrough(Vec2 pos, float angle, bool isTrace)
 
 Explosion* ExplosionProvider::getBigThrough(Vec2 pos, float angle, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 1, angle, 20.0f, 0.75*30.0f, 10);
-    e->setDecrease(0.1);
+    Explosion* e = new Explosion(pos.x, pos.y, 1, angle, 10.0f, SCALE*30.0f, 10);
+    e->setDecrease(0.05);
     e->setTrace(isTrace);
 
     return e;
@@ -40,7 +40,7 @@ Explosion* ExplosionProvider::getBigThrough(Vec2 pos, float angle, bool isTrace)
 
 Explosion* ExplosionProvider::getBig(Vec2 pos, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 10.0f, 0.75*75.0f, 7);
+    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 10.0f, SCALE*75.0f, 7);
     e->setDecrease(0.1);
     e->setTrace(isTrace);
 
@@ -49,7 +49,7 @@ Explosion* ExplosionProvider::getBig(Vec2 pos, bool isTrace)
 
 Explosion* ExplosionProvider::getBigFast(Vec2 pos, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 10.0f, 0.75*35.0f, 80);
+    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 10.0f, SCALE*35.0f, 80);
     e->setDecrease(0.07);
     e->setTrace(isTrace);
 
@@ -58,7 +58,7 @@ Explosion* ExplosionProvider::getBigFast(Vec2 pos, bool isTrace)
 
 Explosion* ExplosionProvider::getBigSlow(Vec2 pos, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 2.0f, 0.75*70.0f, 15);
+    Explosion* e = new Explosion(pos.x, pos.y, 360, 0.0f, 2.0f, SCALE*70.0f, 15);
     e->setDecrease(0.025);
     e->setTrace(isTrace);
 
@@ -67,7 +67,7 @@ Explosion* ExplosionProvider::getBigSlow(Vec2 pos, bool isTrace)
 
 Explosion* ExplosionProvider::getClose(Vec2 pos, float angle, bool isTrace)
 {
-    Explosion* e = new Explosion(pos.x, pos.y, 170, angle+PI, 20.0f, 0.75*10.0f, 50);
+    Explosion* e = new Explosion(pos.x, pos.y, 170, angle+PI, 20.0f, SCALE*10.0f, 50);
     e->setDecrease(0.1);
     e->setTrace(isTrace);
 

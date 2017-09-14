@@ -28,7 +28,7 @@ void Guts::initPhysics(GameWorld* world)
 
     world->addBody(&_body);
 
-    size_t count=rand()%10+5;
+    size_t count=rand()%10+1;
     for (size_t i(0); i<count; ++i)
     {
         U_2DBody* newBody = new U_2DBody(pos+Vec2(rand()%5-2, rand()%5-2), 0.005);
@@ -36,7 +36,7 @@ void Guts::initPhysics(GameWorld* world)
         newBody->setRadius(radius);
         world->addBody(newBody);
 
-        _bodies.back()->accelerate2D(_initialVelocity*float(1.0/float(i+1)));
+        _bodies.back()->accelerate2D(_initialVelocity*float(1.0));
         _constraints.push_back(world->addConstraint(newBody, _bodies.back(), 2.0f));
         _bodies.push_back(newBody);
     }
