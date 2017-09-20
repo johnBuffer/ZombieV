@@ -45,9 +45,9 @@ void GameWorld::update()
 {
     _entities.remove_if([=](const WorldEntity* e){return e->isDone();});
 
-    sf::Clock clock;
+    //sf::Clock clock;
     _phyManager.update();
-    float time = clock.restart().asMilliseconds();
+    //float time = clock.restart().asMilliseconds();
 
     for (WorldEntity* entity : _entities)
     {

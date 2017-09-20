@@ -37,6 +37,20 @@ Hunter::Hunter(float x, float y)
     _feetTime = 0.0f;
 
     _type = EntityTypes::HUNTER;
+
+    Light light;
+    light.color = sf::Color::Green;
+    light.intensity = 1.0f;
+    light.position = this;
+    light.radius  = 300;
+
+    //GameRender::getLightEngine().addDurableLight(light);
+
+    light.color = sf::Color(255, 127, 0);
+    light.intensity = 1.0f;
+    light.position = this;
+    light.radius  = 0;
+    _shootLight = GameRender::getLightEngine().addDurableLight(light);
 }
 
 void Hunter::init()
@@ -115,10 +129,13 @@ void Hunter::update(GameWorld& world)
             _state = IDLE;
     }
 
+    _shootLight->radius = 0;
     if (_state == SHOOTING)
     {
         bool wait = _lastState==SHOOTING;
         _changeAnimation(_currentWeapon->getShootAnimation(), wait);
+
+        _shootLight->radius = 200;
 
         //int shakeIntensity = 3;
         //_shootingShake = Vec2(rand()%shakeIntensity-shakeIntensity/2, rand()%shakeIntensity-shakeIntensity/2);
@@ -147,7 +164,7 @@ void Hunter::render()
     GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), SCALE*0.26f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
     _currentAnimation.applyOnQuad(_vertexArray, _time);
-    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
+    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER, true);
 
     GraphicUtils::initQuad(_vertexArray, feetSpriteSize, _feetAnimation.getSpriteCenter(), SCALE*0.3f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);

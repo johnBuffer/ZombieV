@@ -103,7 +103,7 @@ void Zombie::render()
 
         _currentAnimation.applyOnQuad(vertices, _time);
 
-        GameRender::addQuad(_currentAnimation.getTexture(), vertices, RenderLayer::RENDER);
+        GameRender::addQuad(_currentAnimation.getTexture(), vertices, RenderLayer::RENDER, true);
         GraphicUtils::createEntityShadow(this);
     }
 }

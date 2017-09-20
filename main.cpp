@@ -36,6 +36,16 @@ int main()
     waveCount++;
 
 
+
+    for (int i(0); i<10; ++i)
+    {
+        Light light;
+        light.position = new Hunter(rand()%2000, rand()%2000);//new Hunter(1000+200*cos(2*PI/10.0*i), 1000+200*sin(2*PI/10.0*i));
+        light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
+        light.radius   = 300;
+        GameRender::getLightEngine().addDurableLight(light);
+    }
+
     while (window.isOpen())
     {
         sf::Event event;

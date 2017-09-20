@@ -92,7 +92,7 @@ void Bullet::update(GameWorld& world)
                     if (_distance < 500)
                     {
                         world.addEntity(ExplosionProvider::getClose(pos, _angle));
-                        world.addEntity(new Guts(&entity->getBody(), pos, v*40.f));
+                        //world.addEntity(new Guts(&entity->getBody(), pos, v*40.f));
                     }
 
                     if (_penetration>=0)

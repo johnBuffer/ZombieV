@@ -10,6 +10,7 @@
 #include "Animation.hpp"
 
 #include "Weapons/Weapons.hpp"
+#include "LightEngine.hpp"
 
 enum HunterState
 {
@@ -49,6 +50,8 @@ private:
     Vec2        _shootingShake;
 
     sf::VertexArray _vertexArray;
+
+    Light* _shootLight;
 
     float            _feetTime;
     static Animation _feetAnimation;

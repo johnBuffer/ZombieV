@@ -14,8 +14,10 @@ size_t             GameRender::_drawCalls;
 
 std::vector<sf::Texture> GameRender::_textures;
 std::vector<std::vector<sf::VertexArray>> GameRender::_vertices;
+std::list<Vec2>                           GameRender::_screenSpaceEntities;
 
-DynamicBlur        GameRender::_blur;
+DynamicBlur GameRender::_blur;
+LightEngine GameRender::_lightEngine;
 
 void GameRender::initialize(size_t width, size_t height)
 {
@@ -26,6 +28,8 @@ void GameRender::initialize(size_t width, size_t height)
     _blurTexture  .create(_renderSize.x, _renderSize.y);
     _groundTexture.create(MAP_SIZE, MAP_SIZE);
     _blur.init(_renderSize.x, _renderSize.y);
+    _blur.setDownSizeFactor(3);
+    _lightEngine.init(_renderSize.x, _renderSize.y);
 
     _vertices.resize(3);
 
@@ -48,16 +52,27 @@ void GameRender::clear()
 
     _renderTexture.clear(sf::Color::Black);
     _blurTexture.clear(sf::Color::Black);
+    _screenSpaceEntities.clear();
 }
 
 /// Adds a quad to be rendered in the current frame
-void GameRender::addQuad(size_t textureID, const sf::VertexArray& quad, RenderLayer layer)
+void GameRender::addQuad(size_t textureID, const sf::VertexArray& quad, RenderLayer layer, bool castShadow)
 {
     sf::VertexArray* va(&_vertices[layer][textureID]);
     va->append(quad[0]);
     va->append(quad[1]);
     va->append(quad[2]);
     va->append(quad[3]);
+
+    if (castShadow)
+    {
+        Vec2 coords;
+
+        coords.x = (quad[0].position.x+quad[2].position.x)*0.5f;
+        coords.y = (quad[0].position.y+quad[2].position.y)*0.5f;
+
+        _screenSpaceEntities.push_back(coords);
+    }
 }
 
 /// Loads and adds a new texture in the render engine
@@ -81,6 +96,36 @@ size_t GameRender::registerTexture(std::string filename, bool isRepeated)
     }
 
     return _textures.size()-1;
+}
+
+///
+void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target)
+{
+    float baseOffsetX = _renderSize.x*0.5f;
+    float baseOffsetY = _renderSize.y*0.5f;
+
+    baseOffsetX -= _focus.x;
+    baseOffsetY -= _focus.y;
+    sf::Transform tf;
+    tf.translate(baseOffsetX, baseOffsetY);
+    sf::RenderStates states;
+    states.transform = tf;
+
+    target.draw(va, states);
+}
+
+void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states)
+{
+    float baseOffsetX = _renderSize.x*0.5f;
+    float baseOffsetY = _renderSize.y*0.5f;
+
+    baseOffsetX -= _focus.x;
+    baseOffsetY -= _focus.y;
+    sf::Transform tf;
+    tf.translate(baseOffsetX, baseOffsetY);
+    states.transform = tf;
+
+    target.draw(va, states);
 }
 
 /// Draws a vertexArray in the texture
@@ -113,8 +158,13 @@ void GameRender::display(sf::RenderTarget* target)
     _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
     _renderVertices(_vertices[RenderLayer::BLOOM ], _blurTexture  , states);
 
+    /// Draw lights
+    sf::Sprite lightSprite(_lightEngine.render());
+    _renderTexture.draw(lightSprite, sf::BlendMultiply);
+
     /// Commented because very costly for modest configurations
-    //_renderBloom();
+    _renderBloom();
+
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());
@@ -135,6 +185,11 @@ bool GameRender::isVisible(WorldEntity* entity)
     float screenPosY = coord.y-_focus.y;
 
     return (std::abs(screenPosX) < baseOffsetX+2*CELL_SIZE && std::abs(screenPosY) < baseOffsetY+2*CELL_SIZE);
+}
+
+const sf::Texture& GameRender::getBlur(const sf::Texture& texture)
+{
+    return _blur(texture);
 }
 
 /// Computes the bloom
@@ -173,3 +228,12 @@ void GameRender::renderGround()
     _renderTexture.draw(groundSprite);
 }
 
+LightEngine& GameRender::getLightEngine()
+{
+    return _lightEngine;
+}
+
+std::list<Vec2>& GameRender::getScreenSpaceShadowCasters()
+{
+    return _screenSpaceEntities;
+}

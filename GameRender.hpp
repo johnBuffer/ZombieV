@@ -3,6 +3,7 @@
 
 #include "GraphicsUtils.hpp"
 #include "Blur/DynamicBlur.h"
+#include "LightEngine.hpp"
 
 #include <list>
 
@@ -20,18 +21,23 @@ public:
     static void initialize(size_t width, size_t height);
     static void setFocus(const sf::Vector2f& focus);
     static void clear();
-    static void addQuad  (size_t textureID, const sf::VertexArray& quad, RenderLayer layer);
+    static void addQuad  (size_t textureID, const sf::VertexArray& quad, RenderLayer layer, bool castShadow=false);
     static void display(sf::RenderTarget* target);
     static void initGround(size_t textureID, sf::VertexArray& quad);
     static void renderGround();
 
+    static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target);
+    static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states);
+
     static bool   isVisible(WorldEntity* entity);
     static size_t registerTexture(std::string filename, bool isRepeated=false);
+    static std::list<Vec2>& getScreenSpaceShadowCasters();
+
+    static LightEngine& getLightEngine();
+    static const sf::Texture& getBlur(const sf::Texture& texture);
 
 private:
-    static void _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
-
-private:
+    static void               _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
     static float              _quality;
     static sf::Vector2u       _renderSize;
     static sf::Vector2f       _focus;
@@ -43,6 +49,9 @@ private:
 
     static std::vector<sf::Texture>                  _textures;
     static std::vector<std::vector<sf::VertexArray>> _vertices;
+    static std::list<Vec2>                           _screenSpaceEntities;
+
+    static LightEngine _lightEngine;
 
     ///Profiling
     static size_t _drawCalls;

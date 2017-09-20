@@ -64,6 +64,8 @@ const sf::Texture& DynamicBlur::operator()(const sf::Texture& inputTexture)
             applyBlur(_blurTexture, _blur);
         }
 
+        //applyBlur(_blurTexture, _blur);
+
         if (i-1)
         {
             sf::Sprite upscale(_blurTexture.getTexture());
