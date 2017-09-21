@@ -9,7 +9,8 @@ Vec2::Vec2(const Vec2& coord1, const Vec2& coord2)
     y = coord2.y-coord1.y;
 }
 
-Vec2::Vec2(float cx, float cy) : x(cx), y(cy) {}
+Vec2::Vec2(float cx, float cy) : x(cx), y(cy)
+{}
 
 void Vec2::move2D(Vec2& vec)
 {

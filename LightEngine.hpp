@@ -7,6 +7,12 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 
+struct ShadoCaster
+{
+    Vec2 position;
+    float radius;
+};
+
 struct Light
 {
     WorldEntity* position;

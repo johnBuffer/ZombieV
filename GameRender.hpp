@@ -30,6 +30,7 @@ public:
     static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states);
 
     static bool   isVisible(WorldEntity* entity);
+    static bool   isVisible(const Vec2& position, float radius);
     static size_t registerTexture(std::string filename, bool isRepeated=false);
     static std::list<Vec2>& getScreenSpaceShadowCasters();
 

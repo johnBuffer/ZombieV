@@ -9,10 +9,9 @@ sf::Vector2f       GameRender::_focus;
 sf::RenderTexture  GameRender::_renderTexture;
 sf::RenderTexture  GameRender::_blurTexture;
 sf::RenderTexture  GameRender::_groundTexture;
-
 size_t             GameRender::_drawCalls;
 
-std::vector<sf::Texture> GameRender::_textures;
+std::vector<sf::Texture>                  GameRender::_textures;
 std::vector<std::vector<sf::VertexArray>> GameRender::_vertices;
 std::list<Vec2>                           GameRender::_screenSpaceEntities;
 
@@ -25,12 +24,11 @@ void GameRender::initialize(size_t width, size_t height)
     _focus = sf::Vector2f(0.0, 0.0);
     _renderSize = sf::Vector2u(width*_quality, height*_quality);
     _renderTexture.create(_renderSize.x, _renderSize.y);
-    _blurTexture  .create(_renderSize.x, _renderSize.y);
+    _blurTexture.create(_renderSize.x, _renderSize.y);
     _groundTexture.create(MAP_SIZE, MAP_SIZE);
     _blur.init(_renderSize.x, _renderSize.y);
     _blur.setDownSizeFactor(3);
     _lightEngine.init(_renderSize.x, _renderSize.y);
-
     _vertices.resize(3);
 
     GraphicUtils::init();
@@ -163,7 +161,7 @@ void GameRender::display(sf::RenderTarget* target)
     _renderTexture.draw(lightSprite, sf::BlendMultiply);
 
     /// Commented because very costly for modest configurations
-    _renderBloom();
+    //_renderBloom();
 
     _renderTexture.display();
 
@@ -186,6 +184,18 @@ bool GameRender::isVisible(WorldEntity* entity)
 
     return (std::abs(screenPosX) < baseOffsetX+2*CELL_SIZE && std::abs(screenPosY) < baseOffsetY+2*CELL_SIZE);
 }
+
+bool GameRender::isVisible(const Vec2& position, float radius)
+{
+    float baseOffsetX = _renderSize.x*0.5f;
+    float baseOffsetY = _renderSize.y*0.5f;
+
+    float screenPosX = position.x-_focus.x;
+    float screenPosY = position.y-_focus.y;
+
+    return (std::abs(screenPosX) < baseOffsetX+radius && std::abs(screenPosY) < baseOffsetY+radius);
+}
+
 
 const sf::Texture& GameRender::getBlur(const sf::Texture& texture)
 {
