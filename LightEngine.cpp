@@ -45,7 +45,7 @@ sf::Sprite LightEngine::render()
             for (const Vec2& v : casters)
             {
                 Vec2 lightToCaster = v-light.position->getCoord();
-                float dist = lightToCaster.getNorm();
+                float dist         = lightToCaster.getNorm();
                 float shadowLength = light.radius-dist;
 
                 if (dist < CELL_SIZE*0.5f)
@@ -70,7 +70,6 @@ sf::Sprite LightEngine::render()
                     Vec2 pt2 = midPoint+normal*normalFactor;
                     Vec2 pt3 = midPoint-normal*normalFactor;
                     Vec2 pt4 = v-normal;
-
 
                     sf::VertexArray shadow(sf::Quads, 4);
                     shadow[0].position = sf::Vector2f(pt1.x, pt1.y);
