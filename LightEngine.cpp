@@ -32,7 +32,8 @@ sf::Sprite LightEngine::render()
     sf::Color ambientLight(20, 20, 40);
     _texture.clear(ambientLight);
 
-    std::list<Vec2> casters = GameRender::getScreenSpaceShadowCasters();
+    const std::list<Vec2>& casters(GameRender::getScreenSpaceShadowCasters());
+    size_t nCasters = casters.size();
 
     // Draw durables lights
     for (const Light& light : _durableLights)
@@ -41,7 +42,8 @@ sf::Sprite LightEngine::render()
         {
             _interTexture.clear(sf::Color::Black);
             drawLight(light, _interTexture);
-            sf::VertexArray shadows(sf::Quads, 0);
+            sf::VertexArray shadows(sf::Quads, nCasters*4);
+            size_t currentCasterRank = 0;
 
             for (const Vec2& v : casters)
             {
@@ -72,7 +74,7 @@ sf::Sprite LightEngine::render()
                     Vec2 pt3 = midPoint-normal*normalFactor;
                     Vec2 pt4 = v-normal;
 
-                    sf::Vertex v1(sf::Vector2f(pt1.x, pt1.y), sf::Color::Black);
+                    /*sf::Vertex v1(sf::Vector2f(pt1.x, pt1.y), sf::Color::Black);
                     sf::Vertex v2(sf::Vector2f(pt2.x, pt2.y), sf::Color::Black);
                     sf::Vertex v3(sf::Vector2f(pt3.x, pt3.y), sf::Color::Black);
                     sf::Vertex v4(sf::Vector2f(pt4.x, pt4.y), sf::Color::Black);
@@ -80,8 +82,20 @@ sf::Sprite LightEngine::render()
                     shadows.append(v1);
                     shadows.append(v2);
                     shadows.append(v3);
-                    shadows.append(v4);
+                    shadows.append(v4);*/
+
+                    shadows[4*currentCasterRank+0].position = sf::Vector2f(pt1.x, pt1.y);
+                    shadows[4*currentCasterRank+1].position = sf::Vector2f(pt2.x, pt2.y);
+                    shadows[4*currentCasterRank+2].position = sf::Vector2f(pt3.x, pt3.y);
+                    shadows[4*currentCasterRank+3].position = sf::Vector2f(pt4.x, pt4.y);
+
+                    shadows[4*currentCasterRank+0].color = sf::Color::Black;
+                    shadows[4*currentCasterRank+1].color = sf::Color::Black;
+                    shadows[4*currentCasterRank+2].color = sf::Color::Black;
+                    shadows[4*currentCasterRank+3].color = sf::Color::Black;
                 }
+
+                ++currentCasterRank;
             }
 
             GameRender::renderVertexArray(shadows, _interTexture);
