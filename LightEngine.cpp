@@ -24,7 +24,7 @@ Light* LightEngine::addDurableLight(const Light& light)
 
 void LightEngine::remove(Light* light)
 {
-
+    _durableLights.remove_if([=](const Light& l){return &l == light;});
 }
 
 sf::Sprite LightEngine::render()
@@ -41,6 +41,7 @@ sf::Sprite LightEngine::render()
         {
             _interTexture.clear(sf::Color::Black);
             drawLight(light, _interTexture);
+            sf::VertexArray shadows(sf::Quads, 0);
 
             for (const Vec2& v : casters)
             {
@@ -56,11 +57,11 @@ sf::Sprite LightEngine::render()
                 else if (shadowLength > 0)
                 {
                     float shadowScale = 1.0f;
-                    Vec2 nrmLightToCaster(lightToCaster.x/dist, lightToCaster.y/dist);
+                    float invDist     = 1.0f/dist;
+                    Vec2 nrmLightToCaster(lightToCaster.x*invDist, lightToCaster.y*invDist);
                     Vec2 normal(-shadowScale*CELL_SIZE*nrmLightToCaster.y, shadowScale*CELL_SIZE*nrmLightToCaster.x);
 
-                    float normalFactor = 0.5*light.radius/dist;
-
+                    float normalFactor = 0.5*light.radius*invDist;
                     float midPointX = v.x + nrmLightToCaster.x*shadowLength;
                     float midPointY = v.y + nrmLightToCaster.y*shadowLength;
 
@@ -71,20 +72,19 @@ sf::Sprite LightEngine::render()
                     Vec2 pt3 = midPoint-normal*normalFactor;
                     Vec2 pt4 = v-normal;
 
-                    sf::VertexArray shadow(sf::Quads, 4);
-                    shadow[0].position = sf::Vector2f(pt1.x, pt1.y);
-                    shadow[1].position = sf::Vector2f(pt2.x, pt2.y);
-                    shadow[2].position = sf::Vector2f(pt3.x, pt3.y);
-                    shadow[3].position = sf::Vector2f(pt4.x, pt4.y);
+                    sf::Vertex v1(sf::Vector2f(pt1.x, pt1.y), sf::Color::Black);
+                    sf::Vertex v2(sf::Vector2f(pt2.x, pt2.y), sf::Color::Black);
+                    sf::Vertex v3(sf::Vector2f(pt3.x, pt3.y), sf::Color::Black);
+                    sf::Vertex v4(sf::Vector2f(pt4.x, pt4.y), sf::Color::Black);
 
-                    shadow[0].color = sf::Color::Black;
-                    shadow[1].color = sf::Color::Black;
-                    shadow[2].color = sf::Color::Black;
-                    shadow[3].color = sf::Color::Black;
-
-                    GameRender::renderVertexArray(shadow, _interTexture);
+                    shadows.append(v1);
+                    shadows.append(v2);
+                    shadows.append(v3);
+                    shadows.append(v4);
                 }
             }
+
+            GameRender::renderVertexArray(shadows, _interTexture);
 
             _interTexture.display();
             _texture.draw(sf::Sprite(_interTexture.getTexture()), sf::BlendAdd);
