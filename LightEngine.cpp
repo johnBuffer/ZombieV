@@ -5,7 +5,7 @@
 #include <iostream>
 
 LightEngine::LightEngine() :
-    _quality(32)
+    _quality(8)
 {
 
 }
@@ -44,10 +44,11 @@ sf::Sprite LightEngine::render()
             drawLight(light, _interTexture);
             sf::VertexArray shadows(sf::Quads, nCasters*4);
             size_t currentCasterRank = 0;
+            const Vec2& lightCoord(light.position->getCoord());
 
             for (const Vec2& v : casters)
             {
-                Vec2 lightToCaster = v-light.position->getCoord();
+                Vec2 lightToCaster = v-lightCoord;
                 float dist         = lightToCaster.getNorm();
                 float shadowLength = light.radius-dist;
 
@@ -68,21 +69,10 @@ sf::Sprite LightEngine::render()
                     float midPointY = v.y + nrmLightToCaster.y*shadowLength;
 
                     Vec2 midPoint(midPointX, midPointY);
-
-                    Vec2 pt1 = v+normal;
-                    Vec2 pt2 = midPoint+normal*normalFactor;
-                    Vec2 pt3 = midPoint-normal*normalFactor;
-                    Vec2 pt4 = v-normal;
-
-                    /*sf::Vertex v1(sf::Vector2f(pt1.x, pt1.y), sf::Color::Black);
-                    sf::Vertex v2(sf::Vector2f(pt2.x, pt2.y), sf::Color::Black);
-                    sf::Vertex v3(sf::Vector2f(pt3.x, pt3.y), sf::Color::Black);
-                    sf::Vertex v4(sf::Vector2f(pt4.x, pt4.y), sf::Color::Black);
-
-                    shadows.append(v1);
-                    shadows.append(v2);
-                    shadows.append(v3);
-                    shadows.append(v4);*/
+                    Vec2 pt1(v.x+normal.x, v.y+normal.y);
+                    Vec2 pt2(midPoint.x+normal.x*normalFactor, midPoint.y+normal.y*normalFactor);
+                    Vec2 pt3(midPoint.x-normal.x*normalFactor, midPoint.y-normal.y*normalFactor);
+                    Vec2 pt4(v.x-normal.x, v.y-normal.y);
 
                     shadows[4*currentCasterRank+0].position = sf::Vector2f(pt1.x, pt1.y);
                     shadows[4*currentCasterRank+1].position = sf::Vector2f(pt2.x, pt2.y);

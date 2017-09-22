@@ -136,9 +136,6 @@ void Hunter::update(GameWorld& world)
         _changeAnimation(_currentWeapon->getShootAnimation(), wait);
 
         _shootLight->radius = 200;
-
-        //int shakeIntensity = 3;
-        //_shootingShake = Vec2(rand()%shakeIntensity-shakeIntensity/2, rand()%shakeIntensity-shakeIntensity/2);
     }
     else if (_state == MOVING)
     {
