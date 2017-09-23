@@ -18,7 +18,7 @@ void LightEngine::init(size_t width, size_t height)
 
 void LightEngine::clear()
 {
-    sf::Color ambientLight(200, 200, 240);
+    sf::Color ambientLight(20, 20, 40);
     _texture.clear(ambientLight);
 }
 
