@@ -38,7 +38,7 @@ void Smoke::update(GameWorld& world)
     _angle += _angularVelocity*(1.0f-_ratio);
     _body.move2D(_velocity);
 
-    _isDone = _ratio>1.0f;
+    _isDone = _ratio==1.0f;
 }
 
 void Smoke::render()

@@ -27,7 +27,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(1); i--;)
+    for (int i(0); i--;)
     {
         Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
         newZombie->setTarget(&hunter);
