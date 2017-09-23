@@ -56,7 +56,9 @@ void BulletShell::render()
     _vertexArray[3].texCoords = sf::Vector2f(0 , 350);
 
     if (!_isDone)
+    {
         GameRender::addQuad(_textureID, _vertexArray, RenderLayer::RENDER);
+    }
     else
     {
         GameRender::addQuad(_textureID, _vertexArray, RenderLayer::GROUND);

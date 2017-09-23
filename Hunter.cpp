@@ -39,18 +39,22 @@ Hunter::Hunter(float x, float y)
     _type = EntityTypes::HUNTER;
 
     Light light;
-    light.color = sf::Color::Green;
-    light.intensity = 1.0f;
-    light.position = this;
-    light.radius  = 300;
-
-    //GameRender::getLightEngine().addDurableLight(light);
-
     light.color = sf::Color(255, 127, 0);
     light.intensity = 1.0f;
-    light.position = this;
     light.radius  = 0;
     _shootLight = GameRender::getLightEngine().addDurableLight(light);
+
+    light.color = sf::Color(220, 200, 150);
+    light.intensity = 1.0f;
+    light.radius  = 300;
+    light.width = 45;
+    _flashlight = GameRender::getLightEngine().addDurableLight(light);
+
+    light.color = sf::Color(100, 100, 100);
+    light.intensity = 1.0f;
+    light.radius  = 50;
+    light.width = 360;
+    _littleLight = GameRender::getLightEngine().addDurableLight(light);
 }
 
 void Hunter::init()
@@ -134,8 +138,7 @@ void Hunter::update(GameWorld& world)
     {
         bool wait = _lastState==SHOOTING;
         _changeAnimation(_currentWeapon->getShootAnimation(), wait);
-
-        _shootLight->radius = 200;
+        _shootLight->radius = 350;
     }
     else if (_state == MOVING)
     {
@@ -148,6 +151,11 @@ void Hunter::update(GameWorld& world)
     }
 
     _angle = _angleTarget;
+
+    _shootLight->position = _currentWeapon->getFireOutPosition(this);
+    _flashlight->position = _shootLight->position;
+    _littleLight->position = _shootLight->position;
+    _flashlight->angle = getAngle()+PI;
 }
 
 void Hunter::render()
@@ -161,7 +169,8 @@ void Hunter::render()
     GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), SCALE*0.26f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
     _currentAnimation.applyOnQuad(_vertexArray, _time);
-    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER, true);
+    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
+    GameRender::addShadowCaster(getCoord(), CELL_SIZE);
 
     GraphicUtils::initQuad(_vertexArray, feetSpriteSize, _feetAnimation.getSpriteCenter(), SCALE*0.3f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);

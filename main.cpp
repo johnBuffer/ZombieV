@@ -14,7 +14,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(false);
+    window.setVerticalSyncEnabled(true);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -27,7 +27,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(1000); i--;)
+    for (int i(1); i--;)
     {
         Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
         newZombie->setTarget(&hunter);
@@ -40,7 +40,7 @@ int main()
     for (int i(0); i<20; ++i)
     {
         Light light;
-        light.position = new Hunter(rand()%2000, rand()%2000);//new Hunter(1000+200*cos(2*PI/10.0*i), 1000+200*sin(2*PI/10.0*i));
+        light.position = Vec2(rand()%2000, rand()%2000);
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
         light.radius   = 150+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);

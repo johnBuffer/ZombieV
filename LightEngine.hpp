@@ -7,19 +7,25 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 
-struct ShadoCaster
+struct ShadowCaster
 {
+    ShadowCaster(const Vec2& pos, float r) :
+        position(pos),
+        radius(r) {}
+
     Vec2 position;
     float radius;
 };
 
 struct Light
 {
-    WorldEntity* position;
-    Vec2         staticPos;
-    sf::Color    color;
-    float        radius;
-    float        intensity;
+    Light() : width(360), angle(0) {}
+    Vec2      position;
+    sf::Color color;
+    float     radius;
+    float     intensity;
+    float     width;
+    float     angle;
 };
 
 class LightEngine
@@ -28,11 +34,12 @@ public:
     LightEngine();
 
     void init(size_t width, size_t height);
+    void clear();
+    void addTempLight(const Light& light);
+    void remove(Light* light);
 
     Light* addDurableLight(const Light& light);
-    void   addTempLight(const Light& light);
-
-    void remove(Light* light);
+    sf::RenderTexture& getTexture();
 
     sf::Sprite render();
 

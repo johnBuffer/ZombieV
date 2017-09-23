@@ -94,6 +94,11 @@ void AK::update()
         _currentFireCooldown = 0.0;
 }
 
+Vec2 AK::getFireOutPosition(const WorldEntity* entity) const
+{
+    return transformVec(_fireOut, entity->getAngle(), entity->getCoord());
+}
+
 /// Static texture loading
 void AK::init()
 {

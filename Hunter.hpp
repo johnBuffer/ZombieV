@@ -52,6 +52,8 @@ private:
     sf::VertexArray _vertexArray;
 
     Light* _shootLight;
+    Light* _flashlight;
+    Light* _littleLight;
 
     float            _feetTime;
     static Animation _feetAnimation;

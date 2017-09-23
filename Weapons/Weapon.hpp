@@ -3,9 +3,9 @@
 
 #include <string>
 #include <list>
-#include "../Animation.hpp"
+#include "Animation.hpp"
 #include "Bullet.hpp"
-#include "../Props/BulletShell.hpp"
+#include "Props/BulletShell.hpp"
 
 class GameWorld;
 
@@ -16,10 +16,12 @@ public:
 
     float getRecoil()   const {return _recoil;}
     float getFireDist() const {return _fireDist;}
+
     Animation& getShootAnimation() {return _shootAnimation;}
     Animation& getMoveAnimation()  {return _moveAnimation;}
     Animation& getIdleAnimation()  {return _idleAnimation;}
 
+    virtual Vec2 getFireOutPosition(const WorldEntity* entity) const {return Vec2(0, 0);};
     virtual bool fire(GameWorld* world, WorldEntity* entity)=0;
     virtual void reload()=0;
     virtual void update()=0;

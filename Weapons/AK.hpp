@@ -8,6 +8,7 @@ class AK : public WeaponStatics<AK>
 public:
     AK();
 
+    Vec2 getFireOutPosition(const WorldEntity* entity) const;
     bool fire(GameWorld* world, WorldEntity* entity);
     void reload();
     void update();

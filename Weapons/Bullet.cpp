@@ -124,6 +124,13 @@ void Bullet::render()
     {
         GameRender::addQuad(_textureID, _ownVertexArray, RenderLayer::RENDER);
         GameRender::addQuad(_textureID, _ownVertexArray, RenderLayer::BLOOM);
+
+        Light light;
+        light.position = getCoord();
+        light.color    = sf::Color(255, 127, 0);
+        light.radius   = 20;
+
+        GameRender::getLightEngine().addTempLight(light);
     }
 }
 

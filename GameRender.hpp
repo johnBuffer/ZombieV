@@ -21,18 +21,19 @@ public:
     static void initialize(size_t width, size_t height);
     static void setFocus(const sf::Vector2f& focus);
     static void clear();
-    static void addQuad  (size_t textureID, const sf::VertexArray& quad, RenderLayer layer, bool castShadow=false);
+    static void addQuad  (size_t textureID, const sf::VertexArray& quad, RenderLayer layer);
     static void display(sf::RenderTarget* target);
     static void initGround(size_t textureID, sf::VertexArray& quad);
     static void renderGround();
 
     static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target);
     static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states);
+    static void addShadowCaster(const Vec2& position, float radius);
 
     static bool   isVisible(WorldEntity* entity);
     static bool   isVisible(const Vec2& position, float radius);
     static size_t registerTexture(std::string filename, bool isRepeated=false);
-    static std::list<Vec2>& getScreenSpaceShadowCasters();
+    const static  std::list<ShadowCaster>& getScreenSpaceShadowCasters();
 
     static LightEngine& getLightEngine();
     static const sf::Texture& getBlur(const sf::Texture& texture);
@@ -50,7 +51,7 @@ private:
 
     static std::vector<sf::Texture>                  _textures;
     static std::vector<std::vector<sf::VertexArray>> _vertices;
-    static std::list<Vec2>                           _screenSpaceEntities;
+    static std::list<ShadowCaster>                   _screenSpaceEntities;
 
     static LightEngine _lightEngine;
 
