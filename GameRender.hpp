@@ -3,7 +3,7 @@
 
 #include "GraphicsUtils.hpp"
 #include "Blur/DynamicBlur.h"
-#include "LightEngine.hpp"
+#include "LightEngine/LightEngine.hpp"
 
 #include <list>
 

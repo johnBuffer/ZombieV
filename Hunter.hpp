@@ -10,7 +10,7 @@
 #include "Animation.hpp"
 
 #include "Weapons/Weapons.hpp"
-#include "LightEngine.hpp"
+#include "LightEngine/LightEngine.hpp"
 
 enum HunterState
 {

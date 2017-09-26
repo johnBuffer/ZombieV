@@ -14,7 +14,7 @@
 #include "Props/ExplosionProvider.hpp"
 #include "Props/Smoke.hpp"
 #include "SoundPlayer.hpp"
-#include "LightEngine.hpp"
+#include "LightEngine/LightEngine.hpp"
 
 class GameWorld
 {
