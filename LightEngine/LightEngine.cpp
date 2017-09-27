@@ -64,32 +64,33 @@ sf::Sprite LightEngine::render()
             drawLight(light, _interTexture);
 
             size_t currentCasterRank = 0;
+            bool mustDrawShadows = true;
             for (const ShadowCaster& sc : casters)
             {
                 bool occultLight = sc.drawShadow(light, shadows, currentCasterRank);
                 if (occultLight)
                 {
-                    nLights--;
+                    mustDrawShadows = false;
                     _interTexture.clear(sf::Color::Black);
                     break;
                 }
                 ++currentCasterRank;
             }
 
-            sf::RenderStates states;
-            states.transform.scale(0.5f, 0.5f);
-            GameRender::renderVertexArray(shadows, _interTexture, states);
+            if (mustDrawShadows)
+            {
+                sf::RenderStates states;
+                states.transform.scale(0.5f, 0.5f);
+                GameRender::renderVertexArray(shadows, _interTexture, states);
+            }
 
             _interTexture.display();
             _texture.draw(sf::Sprite(_interTexture.getTexture()), sf::BlendAdd);
         }
     }
 
-    std::cout << nLights << std::endl;
-
     _texture.display();
     sf::Sprite sprite(GameRender::getBlur(_texture.getTexture()));
-    //sf::Sprite sprite(_texture.getTexture());
     sprite.setScale(2.0f, 2.0f);
 
     return sprite;
