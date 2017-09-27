@@ -7,16 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 
-struct ShadowCaster
-{
-    ShadowCaster(const Vec2& pos, float r) :
-        position(pos),
-        radius(r) {}
-
-    Vec2 position;
-    float radius;
-};
-
 struct Light
 {
     Light() : width(360), angle(0) {}

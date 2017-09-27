@@ -10,7 +10,6 @@ int log2(int i)
 DynamicBlur::DynamicBlur() :
     _downSizeFactor(2.0)
 {
-    _blur.loadFromFile("blur.frag", sf::Shader::Fragment);
     _blurH.loadFromFile("blurH.frag", sf::Shader::Fragment);
     _blurV.loadFromFile("blurV.frag", sf::Shader::Fragment);
 }
@@ -20,13 +19,10 @@ void DynamicBlur::init(unsigned int textureWidth, unsigned int textureHeight)
     _WIDTH  = textureWidth;
     _HEIGHT = textureHeight;
 
-    _blur.setParameter("WIDTH", _WIDTH);
-    _blur.setParameter("HEIGHT", _HEIGHT);
-
-    _blurH.setParameter("WIDTH", _WIDTH);
-    _blurH.setParameter("HEIGHT", _HEIGHT);
-    _blurV.setParameter("WIDTH", _WIDTH);
-    _blurV.setParameter("HEIGHT", _HEIGHT);
+    _blurH.setUniform("WIDTH",  (float)  _WIDTH);
+    _blurH.setUniform("HEIGHT", (float) _HEIGHT);
+    _blurV.setUniform("WIDTH",  (float) _WIDTH);
+    _blurV.setUniform("HEIGHT", (float) _HEIGHT);
 
     _blurTexture.create(_WIDTH, _HEIGHT);
     _lowBlurTexture.create(_WIDTH, _HEIGHT);
@@ -52,12 +48,6 @@ const sf::Texture& DynamicBlur::operator()(const sf::Texture& inputTexture)
     _lowBlurTexture.draw(downscaledSprite1);
     _lowBlurTexture.display();
     _blurTexture.draw(sf::Sprite(_lowBlurTexture.getTexture()));
-
-    /*sf::Sprite borderSprite(_lowBlurTexture.getTexture());
-    borderSprite.setPosition(_WIDTH/_downSizeFactor, 0);
-    _blurTexture.draw(borderSprite);
-    borderSprite.setPosition(0, _HEIGHT/_downSizeFactor);
-    _blurTexture.draw(borderSprite);*/
 
     int i = 2*_downSizeFactor;
     while (i >>= 1 > 0.5)

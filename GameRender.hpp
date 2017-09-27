@@ -4,6 +4,7 @@
 #include "GraphicsUtils.hpp"
 #include "Blur/DynamicBlur.h"
 #include "LightEngine/LightEngine.hpp"
+#include "LightEngine/ShadowCaster.hpp"
 
 #include <list>
 

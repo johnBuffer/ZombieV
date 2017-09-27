@@ -59,47 +59,14 @@ sf::Sprite LightEngine::render()
             drawLight(light, _interTexture);
             sf::VertexArray shadows(sf::Quads, nCasters*4);
             size_t currentCasterRank = 0;
-            const Vec2& lightCoord(light.position);
 
             for (const ShadowCaster& sc : casters)
             {
-                const Vec2& v(sc.position);
-
-                Vec2 lightToCaster = v-lightCoord;
-                float dist         = lightToCaster.getNorm();
-                float shadowLength = light.radius-dist;
-
-                if (dist < sc.radius*0.5f)
+                bool occultLight = sc.drawShadow(light, shadows, currentCasterRank);
+                if (occultLight)
                 {
                     _interTexture.clear(sf::Color::Black);
                     break;
-                }
-                else if (shadowLength > 0)
-                {
-                    float shadowScale = 1.0f;
-                    float invDist     = 1.0f/dist;
-                    Vec2 nrmLightToCaster(lightToCaster.x*invDist, lightToCaster.y*invDist);
-                    Vec2 normal(-shadowScale*sc.radius*nrmLightToCaster.y, shadowScale*sc.radius*nrmLightToCaster.x);
-
-                    float normalFactor = 0.5*light.radius*invDist;
-                    float midPointX = v.x + nrmLightToCaster.x*shadowLength;
-                    float midPointY = v.y + nrmLightToCaster.y*shadowLength;
-
-                    Vec2 midPoint(midPointX                  , midPointY);
-                    Vec2 pt1(v.x+normal.x                    , v.y+normal.y);
-                    Vec2 pt2(midPoint.x+normal.x*normalFactor, midPoint.y+normal.y*normalFactor);
-                    Vec2 pt3(midPoint.x-normal.x*normalFactor, midPoint.y-normal.y*normalFactor);
-                    Vec2 pt4(v.x-normal.x                    , v.y-normal.y);
-
-                    shadows[4*currentCasterRank+0].position = sf::Vector2f(pt1.x, pt1.y);
-                    shadows[4*currentCasterRank+1].position = sf::Vector2f(pt2.x, pt2.y);
-                    shadows[4*currentCasterRank+2].position = sf::Vector2f(pt3.x, pt3.y);
-                    shadows[4*currentCasterRank+3].position = sf::Vector2f(pt4.x, pt4.y);
-
-                    shadows[4*currentCasterRank+0].color = sf::Color::Black;
-                    shadows[4*currentCasterRank+1].color = sf::Color::Black;
-                    shadows[4*currentCasterRank+2].color = sf::Color::Black;
-                    shadows[4*currentCasterRank+3].color = sf::Color::Black;
                 }
 
                 ++currentCasterRank;
