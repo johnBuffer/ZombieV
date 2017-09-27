@@ -28,5 +28,6 @@ void drawLight(const Light& light, sf::RenderTexture& texture)
 
     sf::RenderStates states;
     states.blendMode = sf::BlendAdd;
+    states.transform.scale(0.5f, 0.5f);
     GameRender::renderVertexArray(va, texture, states);
 }

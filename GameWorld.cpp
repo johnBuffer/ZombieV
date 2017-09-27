@@ -54,7 +54,7 @@ void GameWorld::update()
         entity->update(*this);
     }
 
-    std::cout << "Entities : " << _entities.size() << std::endl;
+    //std::cout << "Entities : " << _entities.size() << std::endl;
 }
 
 GridCell* GameWorld::getBodiesAt(Vec2 coord)

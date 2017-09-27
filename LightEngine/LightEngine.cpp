@@ -12,8 +12,9 @@ LightEngine::LightEngine() :
 
 void LightEngine::init(size_t width, size_t height)
 {
-    _texture.create(width, height);
-    _interTexture.create(width, height);
+    float factor = 0.50f;
+    _texture.create(width*factor, height*factor);
+    _interTexture.create(width*factor, height*factor);
 }
 
 void LightEngine::clear()
@@ -51,35 +52,45 @@ sf::Sprite LightEngine::render()
     size_t nCasters = casters.size();
 
     // Draw durables lights
+
+    int nLights = 0;
     for (const Light& light : _durableLights)
     {
         if (GameRender::isVisible(light.position, light.radius))
         {
+            nLights++;
+            sf::VertexArray shadows(sf::Quads, nCasters*4);
             _interTexture.clear(sf::Color::Black);
             drawLight(light, _interTexture);
-            sf::VertexArray shadows(sf::Quads, nCasters*4);
-            size_t currentCasterRank = 0;
 
+            size_t currentCasterRank = 0;
             for (const ShadowCaster& sc : casters)
             {
                 bool occultLight = sc.drawShadow(light, shadows, currentCasterRank);
                 if (occultLight)
                 {
+                    nLights--;
                     _interTexture.clear(sf::Color::Black);
                     break;
                 }
-
                 ++currentCasterRank;
             }
 
-            GameRender::renderVertexArray(shadows, _interTexture);
+            sf::RenderStates states;
+            states.transform.scale(0.5f, 0.5f);
+            GameRender::renderVertexArray(shadows, _interTexture, states);
 
             _interTexture.display();
             _texture.draw(sf::Sprite(_interTexture.getTexture()), sf::BlendAdd);
         }
     }
 
-    _texture.display();
+    std::cout << nLights << std::endl;
 
-    return sf::Sprite(GameRender::getBlur(_texture.getTexture()));
+    _texture.display();
+    sf::Sprite sprite(GameRender::getBlur(_texture.getTexture()));
+    //sf::Sprite sprite(_texture.getTexture());
+    sprite.setScale(2.0f, 2.0f);
+
+    return sprite;
 }

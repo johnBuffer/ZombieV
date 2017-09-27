@@ -26,8 +26,8 @@ void GameRender::initialize(size_t width, size_t height)
     _renderTexture.create(_renderSize.x, _renderSize.y);
     _blurTexture.create(_renderSize.x, _renderSize.y);
     _groundTexture.create(MAP_SIZE, MAP_SIZE);
-    _blur.init(_renderSize.x, _renderSize.y);
-    _blur.setDownSizeFactor(3);
+    _blur.init(_renderSize.x*0.5f, _renderSize.y*0.5f);
+    _blur.setDownSizeFactor(2);
     _lightEngine.init(_renderSize.x, _renderSize.y);
     _vertices.resize(3);
 
@@ -114,9 +114,8 @@ void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture&
 
     baseOffsetX -= _focus.x;
     baseOffsetY -= _focus.y;
-    sf::Transform tf;
-    tf.translate(baseOffsetX, baseOffsetY);
-    states.transform = tf;
+
+    states.transform.translate(baseOffsetX, baseOffsetY);
 
     target.draw(va, states);
 }
@@ -148,16 +147,11 @@ void GameRender::display(sf::RenderTarget* target)
 
     renderGround();
 
-    _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture           , states);
-    //_renderVertices(_vertices[RenderLayer::BLOOM ], _lightEngine.getTexture(), states);
+    _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
 
     /// Draw lights
     sf::Sprite lightSprite(_lightEngine.render());
     _renderTexture.draw(lightSprite, sf::BlendMultiply);
-
-    /// Commented because very costly for modest configurations
-    //_renderBloom();
-
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());
