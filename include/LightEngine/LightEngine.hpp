@@ -39,7 +39,8 @@ private:
     sf::RenderTexture _texture;
     sf::RenderTexture _interTexture;
 
-    size_t _quality;
+    float m_quality;
+    float m_upscaleFactor;
 };
 
 #endif // LIGHTENGINE_HPP_INCLUDED

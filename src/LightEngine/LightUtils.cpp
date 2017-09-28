@@ -1,22 +1,23 @@
 #include "LightEngine/LightEngine.hpp"
 #include "GameRender.hpp"
 
-void drawLight(const Light& light, sf::RenderTexture& texture)
+void drawLight(const Light& light, float quality, sf::RenderTexture& texture)
 {
-    size_t _quality = 12;
+    size_t nPoints = 12;
     Vec2 position = light.position;
 
-    sf::VertexArray va(sf::TriangleFan, _quality+1);
+    sf::VertexArray va(sf::TriangleFan, nPoints+1);
     va[0].position = sf::Vector2f(position.x, position.y);
     va[0].color    = light.color;
 
     sf::Color edgeColor = light.color;
     edgeColor.a = 0.0f;
 
-    float start = light.angle-light.width*0.5f;
-    float delta = light.width/float(_quality-1)*DEGRAD;
+    float radWidth = light.width*DEGRAD;
+    float start = light.angle-radWidth*0.5f+PI;
+    float delta = radWidth/float(nPoints-2);
 
-    for (size_t i(0); i<_quality; ++i)
+    for (size_t i(0); i<nPoints; ++i)
     {
         float a = start+i*delta;
         float x = position.x+light.radius*cos(a);
@@ -28,6 +29,6 @@ void drawLight(const Light& light, sf::RenderTexture& texture)
 
     sf::RenderStates states;
     states.blendMode = sf::BlendAdd;
-    states.transform.scale(0.5f, 0.5f);
+    states.transform.scale(quality, quality);
     GameRender::renderVertexArray(va, texture, states);
 }

@@ -5,16 +5,15 @@
 #include <iostream>
 
 LightEngine::LightEngine() :
-    _quality(8)
+    m_quality(0.5f)
 {
-
+    m_upscaleFactor = 1.0f/m_quality;
 }
 
 void LightEngine::init(size_t width, size_t height)
 {
-    float factor = 0.50f;
-    _texture.create(width*factor, height*factor);
-    _interTexture.create(width*factor, height*factor);
+    _texture.create(width*m_quality, height*m_quality);
+    _interTexture.create(width*m_quality, height*m_quality);
 }
 
 void LightEngine::clear()
@@ -31,7 +30,7 @@ Light* LightEngine::addDurableLight(const Light& light)
 
 void LightEngine::addTempLight(const Light& light)
 {
-    drawLight(light, _texture);
+    drawLight(light, m_quality, _texture);
 }
 
 void LightEngine::remove(Light* light)
@@ -52,7 +51,6 @@ sf::Sprite LightEngine::render()
     size_t nCasters = casters.size();
 
     // Draw durables lights
-
     int nLights = 0;
     for (const Light& light : _durableLights)
     {
@@ -61,7 +59,7 @@ sf::Sprite LightEngine::render()
             nLights++;
             sf::VertexArray shadows(sf::Quads, nCasters*4);
             _interTexture.clear(sf::Color::Black);
-            drawLight(light, _interTexture);
+            drawLight(light, m_quality, _interTexture);
 
             size_t currentCasterRank = 0;
             bool mustDrawShadows = true;
@@ -80,7 +78,7 @@ sf::Sprite LightEngine::render()
             if (mustDrawShadows)
             {
                 sf::RenderStates states;
-                states.transform.scale(0.5f, 0.5f);
+                states.transform.scale(m_quality, m_quality);
                 GameRender::renderVertexArray(shadows, _interTexture, states);
             }
 
@@ -91,7 +89,7 @@ sf::Sprite LightEngine::render()
 
     _texture.display();
     sf::Sprite sprite(GameRender::getBlur(_texture.getTexture()));
-    sprite.setScale(2.0f, 2.0f);
+    sprite.setScale(m_upscaleFactor, m_upscaleFactor);
 
     return sprite;
 }

@@ -86,7 +86,7 @@ void Bullet::update(GameWorld& world)
                     _recoilForce = (_penetration--==0)?10.0f:5.0f;
                     entity->hit(this, &world);
 
-                    pos.move2D(v);
+                    /*pos.move2D(v);
 
                     world.addEntity(ExplosionProvider::getBase(pos));
                     if (_distance < 500)
@@ -104,7 +104,7 @@ void Bullet::update(GameWorld& world)
                     else
                     {
                         world.addEntity(ExplosionProvider::getHit(pos, _angle+PI, true));
-                    }
+                    }*/
 
                     _new = false;
                 }
