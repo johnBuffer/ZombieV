@@ -1,4 +1,4 @@
-#include "DynamicBlur.h"
+#include "Blur/DynamicBlur.h"
 
 int log2(int i)
 {
@@ -10,8 +10,8 @@ int log2(int i)
 DynamicBlur::DynamicBlur() :
     _downSizeFactor(2.0)
 {
-    _blurH.loadFromFile("blurH.frag", sf::Shader::Fragment);
-    _blurV.loadFromFile("blurV.frag", sf::Shader::Fragment);
+    _blurH.loadFromFile("data/shaders/blurH.frag", sf::Shader::Fragment);
+    _blurV.loadFromFile("data/shaders/blurV.frag", sf::Shader::Fragment);
 }
 
 void DynamicBlur::init(unsigned int textureWidth, unsigned int textureHeight)

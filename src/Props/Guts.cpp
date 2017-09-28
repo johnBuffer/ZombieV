@@ -1,5 +1,5 @@
-#include "Guts.hpp"
-#include "../GameWorld.hpp"
+#include "Props/Guts.hpp"
+#include "GameWorld.hpp"
 
 #include <iostream>
 

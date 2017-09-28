@@ -1,4 +1,4 @@
-#include "LightEngine.hpp"
+#include "LightEngine/LightEngine.hpp"
 #include "GameRender.hpp"
 
 void drawLight(const Light& light, sf::RenderTexture& texture)

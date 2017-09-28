@@ -1,7 +1,7 @@
-#include "AK.hpp"
-#include "../GameRender.hpp"
-#include "../GameWorld.hpp"
-#include "../Utils.hpp"
+#include "Weapons/AK.hpp"
+#include "GameRender.hpp"
+#include "GameWorld.hpp"
+#include "Utils.hpp"
 #include <cmath>
 #include <iostream>
 #include <SoundPlayer.hpp>

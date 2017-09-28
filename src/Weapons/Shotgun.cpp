@@ -1,4 +1,4 @@
-#include "Shotgun.hpp"
+#include "Weapons/Shotgun.hpp"
 #include <GameRender.hpp>
 #include <GameWorld.hpp>
 

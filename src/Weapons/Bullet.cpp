@@ -1,11 +1,11 @@
-#include "Bullet.hpp"
+#include "Weapons/Bullet.hpp"
 
-#include "../GameWorld.hpp"
-#include "../Props/ExplosionProvider.hpp"
+#include "GameWorld.hpp"
+#include "Props/ExplosionProvider.hpp"
 #include <cmath>
 #include <iostream>
-#include "../GameRender.hpp"
-#include "../Props/Guts.hpp"
+#include "GameRender.hpp"
+#include "Props/Guts.hpp"
 
 size_t Bullet::_textureID;
 

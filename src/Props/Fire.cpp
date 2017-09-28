@@ -1,6 +1,6 @@
-#include "Fire.hpp"
-#include "../Config.hpp"
-#include "../GameRender.hpp"
+#include "Props/Fire.hpp"
+#include "Config.hpp"
+#include "GameRender.hpp"
 
 #include "iostream"
 

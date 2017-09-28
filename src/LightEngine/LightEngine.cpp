@@ -1,6 +1,6 @@
-#include "LightEngine.hpp"
+#include "LightEngine/LightEngine.hpp"
+#include "LightEngine/LightUtils.hpp"
 #include "GameRender.hpp"
-#include "LightUtils.hpp"
 
 #include <iostream>
 

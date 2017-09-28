@@ -1,6 +1,6 @@
-#include "Pistol.hpp"
-#include "../GameRender.hpp"
-#include "../GameWorld.hpp"
+#include "Weapons/Pistol.hpp"
+#include "GameRender.hpp"
+#include "GameWorld.hpp"
 
 Pistol::Pistol()
 {
