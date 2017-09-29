@@ -15,7 +15,7 @@ void drawLight(const Light& light, float quality, sf::RenderTexture& texture)
 
     float radWidth = light.width*DEGRAD;
     float start = light.angle-radWidth*0.5f+PI;
-    float delta = radWidth/float(nPoints-2);
+    float delta = radWidth/float(nPoints-1);
 
     for (size_t i(0); i<nPoints; ++i)
     {

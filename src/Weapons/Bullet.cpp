@@ -85,27 +85,7 @@ void Bullet::update(GameWorld& world)
                 {
                     _recoilForce = (_penetration--==0)?10.0f:5.0f;
                     entity->hit(this, &world);
-
-                    /*pos.move2D(v);
-
-                    world.addEntity(ExplosionProvider::getBase(pos));
-                    if (_distance < 500)
-                    {
-                        world.addEntity(ExplosionProvider::getClose(pos, _angle));
-                        //world.addEntity(new Guts(&entity->getBody(), pos, v*40.f));
-                    }
-
-                    if (_penetration>=0)
-                    {
-                        world.addEntity(ExplosionProvider::getThrough(pos, _angle, true));
-                        world.addEntity(ExplosionProvider::getBigThrough(pos, _angle));
-                        world.addEntity(ExplosionProvider::getHit(pos, _angle, true));
-                    }
-                    else
-                    {
-                        world.addEntity(ExplosionProvider::getHit(pos, _angle+PI, true));
-                    }*/
-
+                    pos.move2D(v);
                     _new = false;
                 }
             }

@@ -2,9 +2,9 @@
 #define BULLET_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "../WorldEntity.hpp"
-#include "../DrawableEntity.hpp"
-#include "../Config.hpp"
+#include "WorldEntity.hpp"
+#include "DrawableEntity.hpp"
+#include "Config.hpp"
 
 class Bullet : public WorldEntity, public DrawableEntity<Bullet>
 {
@@ -22,10 +22,12 @@ public:
     Vec2 getImpactForce() const;
     bool isDone() const {return _done;}
     float getDamage() const {return _damage;}
-
-    static void init();
+    float getDistance() const {return _distance;}
+    int   getPenetration() const {return _penetration;}
 
     bool collidesWith(WorldEntity* entity) const;
+
+    static void init();
 
 private:
     float _damage;

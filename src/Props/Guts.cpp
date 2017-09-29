@@ -10,12 +10,14 @@ Guts::Guts(U_2DBody* anchor, Vec2 pos, Vec2 v) :
     _initialVelocity(v),
     _anchor(anchor)
 {
-    _type = PROPS;
+    _type   = PROPS;
+    _isDone = false;
+    _duration = 5;
 }
 
 bool Guts::isDone() const
 {
-    return false;
+    return _isDone;
 }
 
 void Guts::initPhysics(GameWorld* world)
@@ -28,7 +30,7 @@ void Guts::initPhysics(GameWorld* world)
 
     world->addBody(&_body);
 
-    size_t count=rand()%10+1;
+    size_t count=rand()%10+5;
     for (size_t i(0); i<count; ++i)
     {
         U_2DBody* newBody = new U_2DBody(pos+Vec2(rand()%5-2, rand()%5-2), 0.005);
@@ -44,7 +46,18 @@ void Guts::initPhysics(GameWorld* world)
 
 void Guts::update(GameWorld& world)
 {
+    _duration -= DT;
+    _isDone = _duration<0;
 
+    if (_isDone)
+    {
+        world.removeBody(&_body);
+        for (U_2DBody* b : _bodies)
+            world.removeBody(b);
+
+        for (U_2DConstraint* c : _constraints)
+            world.removeConstraint(c);
+    }
 }
 
 void Guts::render()
@@ -66,7 +79,14 @@ void Guts::render()
         va[2].texCoords = sf::Vector2f(70, 76);
         va[3].texCoords = sf::Vector2f(0 , 76);
 
-        GameRender::addQuad(_textureID, va, RENDER);
+        if (!_isDone)
+        {
+            GameRender::addQuad(_textureID, va, RenderLayer::RENDER);
+        }
+        else
+        {
+            GameRender::addQuad(_textureID, va, RenderLayer::GROUND);
+        }
     }
 }
 

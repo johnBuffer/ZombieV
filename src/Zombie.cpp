@@ -1,6 +1,7 @@
 #include "Zombie.hpp"
 #include "GameWorld.hpp"
 #include "GameRender.hpp"
+#include "Props/Guts.hpp"
 
 #include <iostream>
 
@@ -128,9 +129,31 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
         case(EntityTypes::BULLET) :
         {
             Bullet* bullet = static_cast<Bullet*>(entity);
+            const Vec2& pos(bullet->getCoord());
+            float bulletAngle = bullet->getAngle();
+
             getBody().accelerate2D(bullet->getImpactForce());
             addLife(-bullet->getDamage());
             resetTime();
+
+            gameWorld->addEntity(ExplosionProvider::getBase(pos));
+            if (bullet->getDistance() < 50)
+            {
+                gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
+                gameWorld->addEntity(new Guts(&entity->getBody(), pos, bullet->getV()*40.f));
+            }
+
+            if (bullet->getPenetration()>-1)
+            {
+                gameWorld->addEntity(ExplosionProvider::getThrough(pos, bulletAngle, true));
+                gameWorld->addEntity(ExplosionProvider::getBigThrough(pos, bulletAngle));
+                gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle, true));
+            }
+            else
+            {
+                gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
+            }
+
             break;
         }
         case(EntityTypes::HUNTER) :

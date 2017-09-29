@@ -16,8 +16,10 @@ public:
     static void init();
 
 private:
-    Vec2 _initialVelocity;
+    Vec2      _initialVelocity;
     U_2DBody* _anchor;
+    bool      _isDone;
+    float     _duration;
 
     std::vector<U_2DBody*> _bodies;
     std::vector<U_2DConstraint*> _constraints;

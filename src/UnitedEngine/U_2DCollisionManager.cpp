@@ -117,7 +117,7 @@ void U_2DCollisionManager::solveBoundCollisions(U2DBody_ptr body)
     int bodyX = body->getPosition().x;
     int bodyY = body->getPosition().y;
 
-    int radius = m_bodySize/2;
+    int radius = m_bodySize*0.5f;
 
     if (bodyY+radius+1 > maxY)
     {
@@ -232,6 +232,8 @@ void U_2DCollisionManager::update()
     }
 
     for (auto& body : m_bodies) body->updatePosition(m_timeStep);
+
+    //std::cout << "Constraints : " << m_constraints.size() << " Bodies : " << m_bodies.size() << std::endl;
 }
 
 void U_2DCollisionManager::solveConstraints()
