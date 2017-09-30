@@ -22,6 +22,11 @@ WorldEntity::WorldEntity(float x, float y, float angle):
     _needsPhysics = true;
 }
 
+WorldEntity::~WorldEntity()
+{
+
+}
+
 U_2DBody& WorldEntity::getBody()
 {
     return _body;

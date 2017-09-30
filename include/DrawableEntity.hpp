@@ -2,7 +2,6 @@
 #define ENTITY_HPP_INCLUDED
 
 #include "SFML/Graphics.hpp"
-#include "WorldEntity.hpp"
 
 template <class T>
 class DrawableEntity

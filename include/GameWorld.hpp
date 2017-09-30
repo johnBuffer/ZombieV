@@ -15,6 +15,7 @@
 #include "Props/Smoke.hpp"
 #include "SoundPlayer.hpp"
 #include "LightEngine/LightEngine.hpp"
+#include "Turret.hpp"
 
 class GameWorld
 {

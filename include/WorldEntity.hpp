@@ -15,6 +15,7 @@ class WorldEntity
 public:
     WorldEntity();
     WorldEntity(float x, float y, float angle);
+    virtual ~WorldEntity()=0;
 
     bool          needsPhysics() const;
     float         getAngle()     const;

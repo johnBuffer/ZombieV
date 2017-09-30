@@ -1,6 +1,8 @@
 #ifndef CHAINEDOBJECT_HPP_INCLUDED
 #define CHAINEDOBJECT_HPP_INCLUDED
 
+#include <iostream>
+
 template<class T>
 class ChainedObject
 {
@@ -15,7 +17,7 @@ protected:
     static void remove(T*);
 };
 
-template<class T> T* ChainedObject<T>::_head;
+template<class T> T* ChainedObject<T>::_head = nullptr;
 
 template<class T>
 void ChainedObject<T>::add(T* obj)

@@ -24,13 +24,15 @@ Zombie::Zombie(float x, float y):
     _type = EntityTypes::ZOMBIE;
 
     _currentState = IDLE;
+    _marked = false;
 
     Zombie::add(this);
 }
 
 Zombie::~Zombie()
 {
-    Zombie::remove(this);
+    std::cout << "DIIIIIIIIIIIE" << std::endl;
+    //Zombie::remove(this);
 }
 
 void Zombie::setTarget(WorldEntity* target)
@@ -81,6 +83,7 @@ void Zombie::update(GameWorld& world)
         world.addEntity(ExplosionProvider::getBase(coord));
         world.removeBody(&_body);
 
+        Zombie::remove(this);
         _done = true;
     }
 

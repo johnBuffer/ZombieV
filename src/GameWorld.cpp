@@ -21,10 +21,12 @@ GameWorld::GameWorld() :
     AK::init();
     Shotgun::init();
     Pistol::init();
+    Turret::init();
     Smoke::init();
     Fire::init();
     Zombie::init();
     Explosion::init();
+
 
     _level.render();
 }

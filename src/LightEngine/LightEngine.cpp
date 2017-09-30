@@ -50,7 +50,7 @@ sf::Sprite LightEngine::render()
     const std::list<ShadowCaster>& casters(GameRender::getScreenSpaceShadowCasters());
     size_t nCasters = casters.size();
 
-    std::cout << "Casters : " << nCasters << std::endl;
+    //std::cout << "Casters : " << nCasters << std::endl;
 
     // Draw durables lights
     int nLights = 0;

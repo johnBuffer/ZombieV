@@ -24,8 +24,10 @@ public:
     void hit(WorldEntity* entity, GameWorld* gameWorld);
     void update(GameWorld& world);
     void render();
+    void setMarked(bool b) {_marked = b;}
 
     bool isDone() const {return _done;}
+    bool isMarked() const {return _marked;}
 
     static void init();
 
@@ -33,8 +35,8 @@ private:
     float _pv;
     float _speed;
     float _dmg;
-
-    bool   _done;
+    bool  _marked;
+    bool  _done;
 
     ZombieState _currentState;
 

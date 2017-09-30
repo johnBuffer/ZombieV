@@ -32,8 +32,6 @@ Hunter::Hunter(float x, float y)
     _weaponRank    = _weapons.size()-1;
     _currentAnimation = _currentWeapon->getMoveAnimation();
 
-    _angleTarget = 90.0;
-
     _feetTime = 0.0f;
 
     _type = EntityTypes::HUNTER;
@@ -107,7 +105,7 @@ void Hunter::updateControls(const EventManager& em)
     _body.accelerate2D(Vec2(vx*norm*_speed, vy*norm*_speed));
 
     sf::Vector2i mousePos = em.getMousePosition();
-    _angleTarget = getAngleFromVec(mousePos);
+    _angle = getAngleFromVec(mousePos);
 
     _clicking = em.isLeftMousePressed();
     if (!_clicking)
@@ -149,8 +147,6 @@ void Hunter::update(GameWorld& world)
     {
         _changeAnimation(_currentWeapon->getIdleAnimation());
     }
-
-    _angle = _angleTarget;
 
     _shootLight->position = _currentWeapon->getFireOutPosition(this);
     _flashlight->position = _shootLight->position;
