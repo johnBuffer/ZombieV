@@ -40,7 +40,10 @@ private:
     WorldEntity* getTarget(GameWorld* world) const;
     void fire(GameWorld* world);
 
+    U_2DBody* m_body;
+
     static size_t s_textureID;
+    static size_t s_shootSoundID;
 };
 
 #endif // TURRET_HPP_INCLUDED

@@ -14,7 +14,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(false);
+    window.setVerticalSyncEnabled(true);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -30,12 +30,12 @@ int main()
     //Turret* turret = new Turret();
 
     world.addEntity(new Turret(1000, 1000));
-    world.addEntity(new Turret(1200, 1000));
-    world.addEntity(new Turret(1200, 1200));
-    world.addEntity(new Turret(1000, 1200));
+    world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
+    world.addEntity(new Turret(1000, 1100));
+    world.addEntity(new Turret(1050, 1050));
 
-    for (int i(1000); i--;)
+    for (int i(700); i--;)
     {
         Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
         newZombie->setTarget(&hunter);
@@ -43,7 +43,7 @@ int main()
     }
     waveCount++;
 
-    for (int i(0); i<50; ++i)
+    for (int i(0); i<0; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);

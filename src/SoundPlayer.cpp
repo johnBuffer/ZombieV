@@ -21,6 +21,12 @@ void SoundPlayer::playInstanceOf(size_t soundID)
     update();
 }
 
+sf::Sound SoundPlayer::getInstanceOf(size_t soundID)
+{
+    sf::Sound sound(_buffers[soundID]);
+    return sound;
+}
+
 void SoundPlayer::update()
 {
     _sounds.remove_if( [](sf::Sound& s){return s.getStatus() == sf::Sound::Stopped;} );

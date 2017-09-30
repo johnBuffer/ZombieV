@@ -20,7 +20,7 @@ LightEngine GameRender::_lightEngine;
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    _quality = 0.5;
+    _quality = 0.5f;
     _focus = sf::Vector2f(0.0, 0.0);
     _renderSize = sf::Vector2u(width*_quality, height*_quality);
     _renderTexture.create(_renderSize.x, _renderSize.y);
@@ -151,7 +151,7 @@ void GameRender::display(sf::RenderTarget* target)
 
     /// Draw lights
     sf::Sprite lightSprite(_lightEngine.render());
-    _renderTexture.draw(lightSprite, sf::BlendMultiply);
+    //_renderTexture.draw(lightSprite, sf::BlendMultiply);
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());

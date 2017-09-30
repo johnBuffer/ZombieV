@@ -6,6 +6,7 @@
 #include <iostream>
 
 size_t Turret::s_textureID;
+size_t Turret::s_shootSoundID;
 
 Turret::Turret()
 {
@@ -18,7 +19,7 @@ Turret::Turret(float x, float y) :
 {
     m_currentState = Turret::IDLE;
     m_accuracy     = 0.05f;
-    m_cooldown     = 0.1f;
+    m_cooldown     = 0.075f;
     m_currentCooldown = 0.0f;
 
     Light l;
@@ -26,12 +27,20 @@ Turret::Turret(float x, float y) :
     l.intensity = 1.0f;
     l.radius  = 0;
     light = GameRender::getLightEngine().addDurableLight(l);
+
+    _needsPhysics = true;
 }
 
 void Turret::initPhysics(GameWorld* world)
 {
     world->addBody(&_body);
     _body.setStatic(true);
+
+    m_body = new U_2DBody(Vec2(0, 0), 1);
+    m_body->setStatic(true);
+    m_body->setEntity(this);
+    m_body->setRadius(10);
+    world->addBody(m_body);
 }
 
 void Turret::update(GameWorld& world)
@@ -58,7 +67,7 @@ void Turret::update(GameWorld& world)
 
         if (absDot<0.25f)
         {
-            if (m_currentCooldown < 0)
+            if (m_currentCooldown <= 0)
             {
                 m_currentState = Turret::SHOOTING;
                 fire(&world);
@@ -82,7 +91,12 @@ void Turret::update(GameWorld& world)
         _angle += DT*0.2f;
     }
 
+    Vec2 smokeOut = transformVec(Vec2(-45, -2), _angle, getCoord());
+    m_body->setPosition(smokeOut);
+
     m_currentCooldown -= DT;
+    if (m_currentCooldown<0.0f)
+        m_currentCooldown = 0.0f;
 }
 
 void Turret::fire(GameWorld* world)
@@ -92,6 +106,7 @@ void Turret::fire(GameWorld* world)
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
     Bullet* newBullet = new Bullet(_angle, 1.5*CELL_SIZE, 20, 0);
     newBullet->init(getCoord(), PI+bulletAngle);
+    newBullet->setImpactForce(2.0f);
     world->addEntity(newBullet);
 
     Vec2 fireOut   = transformVec(Vec2(-130, -2), _angle, getCoord());
@@ -102,12 +117,11 @@ void Turret::fire(GameWorld* world)
     world->addEntity(new Smoke(smokeOut, bulletVel*v, 0.0125, 100));
 
     Vec2 firePos(fireOut);
-    world->addEntity(new Fire(firePos, _angle-PIS2, 2));
+    world->addEntity(new Fire(firePos, _angle-PIS2, 1.5f));
 
     light->position = smokeOut;
     light->radius   = 350;
-    //world->addEntity(new Fire(firePos, entityAngle, 0.5));
-    //world->addEntity(new Fire(firePos, _angle+PI, 0.5));
+
 }
 
 WorldEntity* Turret::getTarget(GameWorld* world) const
@@ -144,21 +158,28 @@ void Turret::render()
     float x = _body.getPosition().x;
     float y = _body.getPosition().y;
 
-    sf::VertexArray va(sf::Quads, 4);
-    va[0].texCoords = sf::Vector2f(0.0f, 0.0f);
-    va[1].texCoords = sf::Vector2f(353.0f, 0.0f);
-    va[2].texCoords = sf::Vector2f(353.0f, 103.0f);
-    va[3].texCoords = sf::Vector2f(0.0f, 103.0f);
+    float recoilDist  = 10.0f;
+    float recoilRatio = (1.0f-m_currentCooldown/m_cooldown)*recoilDist;
 
-    GraphicUtils::initQuad(va, sf::Vector2f(353, 103), sf::Vector2f(224, 57), SCALE*0.25f);
+    sf::VertexArray va(sf::Quads, 4);
+    va[0].texCoords = sf::Vector2f(recoilRatio, 0.0f);
+    va[1].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, 0.0f);
+    va[2].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, 103.0f);
+    va[3].texCoords = sf::Vector2f(recoilRatio+0.0f, 103.0f);
+
+    GraphicUtils::initQuad(va, sf::Vector2f(353, 103), sf::Vector2f(244, 57), SCALE*0.25f);
     GraphicUtils::transform(va, sf::Vector2f(x, y), _angle);
 
     GameRender::addQuad(s_textureID, va, RenderLayer::RENDER);
     GameRender::addShadowCaster(getCoord(), CELL_SIZE);
+
+    GraphicUtils::createEntityShadow(this);
 }
 
 void Turret::init()
 {
     s_textureID = GameRender::registerTexture("data/textures/turret_v1.png");
+
+    s_shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
 }
 

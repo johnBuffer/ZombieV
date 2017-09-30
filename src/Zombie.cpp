@@ -137,7 +137,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
 
             getBody().accelerate2D(bullet->getImpactForce());
             addLife(-bullet->getDamage());
-            resetTime();
+            _time = rand()%1000;
 
             gameWorld->addEntity(ExplosionProvider::getBase(pos));
             if (bullet->getDistance() < 50)

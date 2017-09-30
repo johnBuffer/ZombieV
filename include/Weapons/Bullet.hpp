@@ -17,6 +17,7 @@ public:
     void update(GameWorld& world);
     void setDone() {_done = true;}
     void render();
+    void setImpactForce(float f) {_impact = f;}
 
     Vec2 getV() const {return Vec2(_vx, _vy);}
     Vec2 getImpactForce() const;
@@ -33,6 +34,8 @@ private:
     float _damage;
     float _speed;
     float _recoilForce;
+    float _impact;
+
     int   _penetration;
     int   _drawCount;
     bool  _new;

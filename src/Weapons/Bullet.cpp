@@ -27,6 +27,7 @@ Bullet::Bullet(float angle, float speed, float damage, int penetration):
     _needsPhysics = false;
     _new = true;
     _drawCount = rand()%4;
+    _impact = 10.0f;
 }
 
 void Bullet::init(Vec2 pos, float angle)
@@ -83,7 +84,7 @@ void Bullet::update(GameWorld& world)
             {
                 if (collidesWith(entity) && _penetration>=0 && entity->getType() == EntityTypes::ZOMBIE)
                 {
-                    _recoilForce = (_penetration--==0)?10.0f:5.0f;
+                    _recoilForce = (!(_penetration--))?_impact:_impact*0.5f;
                     entity->hit(this, &world);
                     pos.move2D(v);
                     _new = false;
