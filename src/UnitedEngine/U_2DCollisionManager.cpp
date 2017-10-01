@@ -186,8 +186,13 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
                 currentBody->move2D(Vec2( vx*massCoef1,  vy*massCoef1));
                 collider   ->move2D(Vec2(-vx*massCoef2, -vy*massCoef2));
 
-                currentEntity->hit(collider->getEntity(), _world);
-                collider->getEntity()->hit(currentEntity, _world);
+
+                WorldEntity* colliderEntity = collider->getEntity();
+
+                if (currentEntity)
+                    currentEntity->hit(colliderEntity, _world);
+                if (colliderEntity)
+                    colliderEntity->hit(currentEntity, _world);
             }
         }
     }

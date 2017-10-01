@@ -39,7 +39,7 @@ void Turret::initPhysics(GameWorld* world)
     m_body = new U_2DBody(Vec2(0, 0), 1);
     m_body->setStatic(true);
     m_body->setEntity(this);
-    m_body->setRadius(10);
+    m_body->setRadius(15);
     world->addBody(m_body);
 }
 
@@ -73,6 +73,10 @@ void Turret::update(GameWorld& world)
                 fire(&world);
             }
         }
+        else
+        {
+            m_currentState = Turret::IDLE;
+        }
 
         if (dot2 < 0)
         {
@@ -87,6 +91,7 @@ void Turret::update(GameWorld& world)
     }
     else
     {
+        m_currentState = Turret::IDLE;
         setTarget(getTarget(&world));
         _angle += DT*0.2f;
     }
@@ -161,11 +166,13 @@ void Turret::render()
     float recoilDist  = 10.0f;
     float recoilRatio = (1.0f-m_currentCooldown/m_cooldown)*recoilDist;
 
+    float textureOffset = m_currentState==Turret::SHOOTING?103:0;
+
     sf::VertexArray va(sf::Quads, 4);
-    va[0].texCoords = sf::Vector2f(recoilRatio, 0.0f);
-    va[1].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, 0.0f);
-    va[2].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, 103.0f);
-    va[3].texCoords = sf::Vector2f(recoilRatio+0.0f, 103.0f);
+    va[0].texCoords = sf::Vector2f(recoilRatio, textureOffset);
+    va[1].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, textureOffset);
+    va[2].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, textureOffset+103.0f);
+    va[3].texCoords = sf::Vector2f(recoilRatio+0.0f, textureOffset+103.0f);
 
     GraphicUtils::initQuad(va, sf::Vector2f(353, 103), sf::Vector2f(244, 57), SCALE*0.25f);
     GraphicUtils::transform(va, sf::Vector2f(x, y), _angle);
