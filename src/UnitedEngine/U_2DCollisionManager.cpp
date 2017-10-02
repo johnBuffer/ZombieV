@@ -2,8 +2,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include <WorldEntity.hpp>
-#include <GameWorld.hpp>
+#include <System/WorldEntity.hpp>
+#include <System/GameWorld.hpp>
 
 GridCell::GridCell()
 {
@@ -238,7 +238,7 @@ void U_2DCollisionManager::update()
 
     for (auto& body : m_bodies) body->updatePosition(m_timeStep);
 
-    //std::cout << "Constraints : " << m_constraints.size() << " Bodies : " << m_bodies.size() << std::endl;
+    std::cout << "Constraints : " << m_constraints.size() << " Bodies : " << m_bodies.size() << std::endl;
 }
 
 void U_2DCollisionManager::solveConstraints()

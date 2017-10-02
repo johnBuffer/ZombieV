@@ -36,7 +36,7 @@ void GameWorld::initEventHandler(sf::RenderWindow& window)
     _eventManager.init(&window);
 }
 
-void GameWorld::addEntity(WorldEntity* entity)
+void GameWorld::addEntity(std::unique_ptr<WorldEntity> entity)
 {
     _entities.push_back(entity);
 
@@ -45,7 +45,7 @@ void GameWorld::addEntity(WorldEntity* entity)
 
 void GameWorld::update()
 {
-    _entities.remove_if([=](const WorldEntity* e){return e->isDone();});
+    _entities.remove_if([](const WorldEntity* e){return e->isDone();});
 
     //sf::Clock clock;
     _phyManager.update();

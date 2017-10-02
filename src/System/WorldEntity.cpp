@@ -11,6 +11,7 @@ WorldEntity::WorldEntity():
 {
     _body.setEntity(this);
     _needsPhysics = true;
+    _isDying = false;
 }
 
 WorldEntity::WorldEntity(float x, float y, float angle):
@@ -20,11 +21,22 @@ WorldEntity::WorldEntity(float x, float y, float angle):
 {
     _body.setEntity(this);
     _needsPhysics = true;
+    _isDying = false;
 }
 
 WorldEntity::~WorldEntity()
 {
+    std::cout << "DYING" << std::endl;
+}
 
+void WorldEntity::kill()
+{
+    _isDying = true;
+}
+
+bool WorldEntity::isDying() const
+{
+    return _isDying;
 }
 
 U_2DBody& WorldEntity::getBody()

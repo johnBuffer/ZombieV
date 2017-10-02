@@ -1,0 +1,13 @@
+#ifndef ENTITYTYPES_HPP_INCLUDED
+#define ENTITYTYPES_HPP_INCLUDED
+
+enum EntityTypes
+{
+    HUNTER,
+    ZOMBIE,
+    TURRET,
+    BULLET,
+    PROPS
+};
+
+#endif // ENTITYTYPES_HPP_INCLUDED

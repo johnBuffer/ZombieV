@@ -1,10 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "GameWorld.hpp"
-#include "GameRender.hpp"
-
-#include "Container.hpp"
+#include "System/GameWorld.hpp"
+#include "System/GameRender.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
@@ -21,8 +19,7 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
-    Hunter hunter(1000, 1000);
-    world.addEntity(&hunter);
+    world.addEntity(WorldEntityPtr(new Hunter(1000, 1000)));
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
@@ -32,11 +29,11 @@ int main()
     world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
     world.addEntity(new Turret(1000, 1100));*/
-    world.addEntity(new Turret(1050, 1050));
+    world.addEntity(WorldEntityPtr(new Turret(1050, 1050)));
 
     for (int i(100); i--;)
     {
-        Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
+        WorldEntityPtr newZombie(new Zombie(rand()%2000, rand()%2000));
         newZombie->setTarget(&hunter);
         world.addEntity(newZombie);
     }

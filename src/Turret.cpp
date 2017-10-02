@@ -106,10 +106,10 @@ void Turret::fire(GameWorld* world)
     m_currentCooldown = m_cooldown;
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet* newBullet = new Bullet(_angle, 1.5*CELL_SIZE, 20, 0);
+    std::unique_ptr<WorldEntity> newBullet(new Bullet(_angle, 1.5*CELL_SIZE, 20, 0));
     newBullet->init(getCoord(), PI+bulletAngle);
     newBullet->setImpactForce(2.0f);
-    world->addEntity(newBullet);
+    world->addEntity();
 
     Vec2 fireOut   = transformVec(Vec2(-130, -2), _angle, getCoord());
     Vec2 smokeOut  = transformVec(Vec2(-60, -2), _angle, getCoord());
