@@ -46,32 +46,41 @@ void Zombie::update(GameWorld& world)
 
     if (_target)
     {
-        Vec2 _targetPos = _target->getCoord();
-        float vx = _targetPos.x - _body.getPosition().x;
-        float vy = _targetPos.y - _body.getPosition().y;
-
+        Vec2 vTarget(_target->getCoord(), getCoord());
         Vec2 direction(cos(_angle), sin(_angle));
         Vec2 directionNormal(-direction.y, direction.x);
 
+        float dist = vTarget.getNorm();
+        float vx = vTarget.x/dist;
+        float vy = vTarget.y/dist;
+
         float dot2 = vx*directionNormal.x + vy*directionNormal.y;
-        float coeff = 0.025f;
+        float coeff = 0.04f;
+
+        float absDot = std::abs(dot2);
+        coeff *= absDot;
 
         if (dot2 > 0)
         {
-            _angle += coeff;
+            _angle -= coeff;
         }
         else
         {
-            _angle -= coeff;
+            _angle += coeff;
         }
-
-        //vx /= dist;
-        //vy /= dist;
 
         if (_currentState == MOVING)
         {
             float speed = 10;
             getBody().accelerate2D(Vec2(speed*direction.x, speed*direction.y));
+        }
+        else if (_currentAnimation.isDone())
+        {
+            if (dist < 2*CELL_SIZE)
+            {
+                // Need to create damage variable
+                _target->addLife(5);
+            }
         }
     }
 

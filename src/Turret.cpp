@@ -48,16 +48,13 @@ void Turret::update(GameWorld& world)
     light->radius = 0;
     if (m_target)
     {
-        Vec2 targetPos = m_target->getCoord();
-        float vx = targetPos.x - _body.getPosition().x;
-        float vy = targetPos.y - _body.getPosition().y;
-        float dist = sqrt(vx*vx+vy*vy);
-
-        vx/=dist;
-        vy/=dist;
-
+        Vec2 vTarget(m_target->getCoord(), getCoord());
         Vec2 direction(cos(_angle), sin(_angle));
         Vec2 directionNormal(-direction.y, direction.x);
+
+        float dist = vTarget.getNorm();
+        float vx = vTarget.x/dist;
+        float vy = vTarget.y/dist;
 
         float dot2 = vx*directionNormal.x + vy*directionNormal.y;
         float coeff = 0.05f;
