@@ -1,11 +1,10 @@
 #include "Weapons/Shotgun.hpp"
-#include <GameRender.hpp>
-#include <GameWorld.hpp>
+#include <System/GameRender.hpp>
+#include <System/GameWorld.hpp>
 
 Shotgun::Shotgun()
 {
-    _fireCooldown = 0.05f;
-    _currentFireCooldown = 0.0f;
+    m_fireCooldown = Cooldown(0.05f);
     _recoil = 0.0f;
 
     _shootAnimation = Animation(3, 1, 312, 206, 3, 10);
@@ -26,12 +25,12 @@ Shotgun::Shotgun()
 
 bool Shotgun::fire(GameWorld* world, WorldEntity* entity)
 {
-    if (!_currentFireCooldown)
+    if (m_fireCooldown.isReady())
     {
         _recoil += 0.15;
         _recoil = _recoil>1.0f?1.0f:_recoil;
 
-        _currentFireCooldown = _fireCooldown;
+        m_fireCooldown.reset();
 
         float entityAngle = entity->getAngle();
 
@@ -66,11 +65,10 @@ void Shotgun::reload()
 
 void Shotgun::update()
 {
-    _recoil -= 0.016;
+    _recoil -= DT;
     _recoil  = _recoil<0?0:_recoil;
 
-    _currentFireCooldown -= 0.016;
-    _currentFireCooldown  = _currentFireCooldown<0?0:_currentFireCooldown;
+    m_fireCooldown.update(DT);
 }
 
 void Shotgun::init()

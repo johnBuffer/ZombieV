@@ -1,6 +1,6 @@
 #include "Props/Explosion.hpp"
-#include "Config.hpp"
-#include "GameRender.hpp"
+#include "System/Config.hpp"
+#include "System/GameRender.hpp"
 
 size_t Explosion::_textureID;
 

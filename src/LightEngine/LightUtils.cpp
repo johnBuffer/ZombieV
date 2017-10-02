@@ -1,5 +1,5 @@
 #include "LightEngine/LightEngine.hpp"
-#include "GameRender.hpp"
+#include "System/GameRender.hpp"
 
 void drawLight(const Light& light, float quality, sf::RenderTexture& texture)
 {

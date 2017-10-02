@@ -3,9 +3,10 @@
 
 #include <string>
 #include <list>
-#include "Animation.hpp"
+#include "System/Animation.hpp"
 #include "Bullet.hpp"
 #include "Props/BulletShell.hpp"
+#include "System/Cooldown.hpp"
 
 class GameWorld;
 
@@ -39,9 +40,10 @@ public:
 protected:
     float _damage;
     float _reloadCooldown, _currentReloadCooldown;
-    float _fireCooldown  , _currentFireCooldown;
     float _recoil;
     float _fireDist;
+
+    Cooldown m_fireCooldown;
 
     size_t _magazineSize;
     size_t _currentAmmo;

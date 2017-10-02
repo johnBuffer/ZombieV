@@ -1,11 +1,10 @@
 #include "Weapons/Pistol.hpp"
-#include "GameRender.hpp"
-#include "GameWorld.hpp"
+#include "System/GameRender.hpp"
+#include "System/GameWorld.hpp"
 
 Pistol::Pistol()
 {
-    _fireCooldown = 0.2f;
-    _currentFireCooldown = 0.0f;
+    m_fireCooldown = Cooldown(0.2f);
     _recoil = 0.0f;
 
     _shootAnimation = Animation(3, 1, 255, 215, 3, 40);
@@ -26,12 +25,12 @@ Pistol::Pistol()
 
 bool Pistol::fire(GameWorld* world, WorldEntity* entity)
 {
-    if (!_currentFireCooldown && _releasedTrigger)
+    if (m_fireCooldown.isReady() && _releasedTrigger)
     {
         _recoil += 0.15;
         _recoil = _recoil>1.0f?1.0f:_recoil;
 
-        _currentFireCooldown = _fireCooldown;
+        m_fireCooldown.reset();
         _releasedTrigger = false;
 
         float entityAngle(entity->getAngle());
@@ -63,11 +62,10 @@ void Pistol::reload()
 
 void Pistol::update()
 {
-    _recoil -= 0.016;
+    _recoil -= DT;
     _recoil  = _recoil<0?0:_recoil;
 
-    _currentFireCooldown -= 0.016;
-    _currentFireCooldown  = _currentFireCooldown<0?0:_currentFireCooldown;
+    m_fireCooldown.update(DT);
 }
 
 void Pistol::init()

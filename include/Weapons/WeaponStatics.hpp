@@ -2,7 +2,7 @@
 #define WEAPONSTATICS_HPP_INCLUDED
 
 #include "Weapon.hpp"
-#include "../DrawableEntity.hpp"
+#include "System/DrawableEntity.hpp"
 
 template <class T>
 class WeaponStatics : public Weapon, public DrawableEntity<T>

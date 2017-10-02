@@ -1,9 +1,9 @@
 #ifndef ZOMBIE_HPP_INCLUDED
 #define ZOMBIE_HPP_INCLUDED
 
-#include "LifeForm.hpp"
-#include "DrawableEntity.hpp"
-#include "ChainedObject.hpp"
+#include "System/LifeForm.hpp"
+#include "System/DrawableEntity.hpp"
+#include "System/ChainedObject.hpp"
 #include <memory>
 
 class Zombie : public DrawableEntity<Zombie>, public WorldEntity, public ChainedObject<Zombie>

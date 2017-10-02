@@ -2,9 +2,9 @@
 #define BULLET_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "WorldEntity.hpp"
-#include "DrawableEntity.hpp"
-#include "Config.hpp"
+#include "System/WorldEntity.hpp"
+#include "System/DrawableEntity.hpp"
+#include "System/Config.hpp"
 
 class Bullet : public WorldEntity, public DrawableEntity<Bullet>
 {

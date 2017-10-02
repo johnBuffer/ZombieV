@@ -1,7 +1,7 @@
 #ifndef SMOKE_HPP_INCLUDED
 #define SMOKE_HPP_INCLUDED
 
-#include "../WorldEntity.hpp"
+#include "System/WorldEntity.hpp"
 
 #include <SFML/Graphics.hpp>
 

@@ -1,10 +1,10 @@
 #include "Weapons/AK.hpp"
-#include "GameRender.hpp"
-#include "GameWorld.hpp"
-#include "Utils.hpp"
+#include "System/GameRender.hpp"
+#include "System/GameWorld.hpp"
+#include "System/Utils.hpp"
 #include <cmath>
 #include <iostream>
-#include <SoundPlayer.hpp>
+#include <System/SoundPlayer.hpp>
 
 AK::AK()
 {
@@ -12,8 +12,8 @@ AK::AK()
     _currentAmmo         = 30;
     _totalAmmo           = 90;
     _recoil              = 0.0f;
-    _fireCooldown        = 0.075f;
-    _currentFireCooldown = 0.0f;
+
+    m_fireCooldown = Cooldown(0.075f);
 
     /// Init weapon animations, could be static
     _shootAnimation = Animation(3, 1, 312, 206, 3, 40);
@@ -46,7 +46,7 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
         --_currentAmmo;
         SoundPlayer::playInstanceOf(_shootSoundID);
 
-        _currentFireCooldown = _fireCooldown;
+        m_fireCooldown.reset();
         float accuracy = (tanh(4.0f*_recoil))*0.05f;
         float bulletAngle(getRandomAngle(-accuracy, accuracy));
 
@@ -98,12 +98,9 @@ void AK::update()
 {
     /// Update recoil and cool down
     _recoil -= DT;
-    _currentFireCooldown -= DT;
+    m_fireCooldown.update(DT);
 
     if (_recoil<0.0) _recoil = 0.0;
-
-    if (_currentFireCooldown<0.0)
-        _currentFireCooldown = 0.0;
 }
 
 Vec2 AK::getFireOutPosition(const WorldEntity* entity) const

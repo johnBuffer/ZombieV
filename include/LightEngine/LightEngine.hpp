@@ -1,8 +1,8 @@
 #ifndef LIGHTENGINE_HPP_INCLUDED
 #define LIGHTENGINE_HPP_INCLUDED
 
-#include "WorldEntity.hpp"
-#include "Config.hpp"
+#include "System/WorldEntity.hpp"
+#include "System/Config.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <list>

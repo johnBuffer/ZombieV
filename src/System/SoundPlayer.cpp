@@ -1,4 +1,4 @@
-#include "SoundPlayer.hpp"
+#include "System/SoundPlayer.hpp"
 
 std::list<sf::Sound>         SoundPlayer::_sounds;
 std::vector<sf::SoundBuffer> SoundPlayer::_buffers;

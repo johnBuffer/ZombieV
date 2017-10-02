@@ -1,5 +1,5 @@
-#include "GameRender.hpp"
-#include "Config.hpp"
+#include "System/GameRender.hpp"
+#include "System/Config.hpp"
 
 #include <iostream>
 

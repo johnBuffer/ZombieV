@@ -6,5 +6,5 @@ Weapon::Weapon()
 
 bool Weapon::isReady() const
 {
-    return _currentFireCooldown <= 0 && _currentAmmo;
+    return m_fireCooldown.isReady() && _currentAmmo;
 }

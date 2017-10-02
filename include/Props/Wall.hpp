@@ -1,8 +1,8 @@
 #ifndef WALL_HPP_INCLUDED
 #define WALL_HPP_INCLUDED
 
-#include "WorldEntity.hpp"
-#include "DrawableEntity.hpp"
+#include "System/WorldEntity.hpp"
+#include "System/DrawableEntity.hpp"
 
 class Wall : public WorldEntity, public DrawableEntity<Wall>
 {

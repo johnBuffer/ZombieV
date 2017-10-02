@@ -1,5 +1,5 @@
-#include "GraphicsUtils.hpp"
-#include "GameRender.hpp"
+#include "System/GraphicsUtils.hpp"
+#include "System/GameRender.hpp"
 
 sf::VertexArray GraphicUtils::_shadow;
 size_t GraphicUtils::_shadowTexID;

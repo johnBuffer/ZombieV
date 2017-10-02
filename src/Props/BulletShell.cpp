@@ -1,6 +1,6 @@
 #include "Props/BulletShell.hpp"
-#include "GameRender.hpp"
-#include "GameWorld.hpp"
+#include "System/GameRender.hpp"
+#include "System/GameWorld.hpp"
 
 #include <iostream>
 

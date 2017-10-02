@@ -3,11 +3,11 @@
 
 #include <map>
 
-#include "DrawableEntity.hpp"
-#include "LifeForm.hpp"
-#include "WorldEntity.hpp"
-#include "EventManager.hpp"
-#include "Animation.hpp"
+#include "System/DrawableEntity.hpp"
+#include "System/LifeForm.hpp"
+#include "System/WorldEntity.hpp"
+#include "System/EventManager.hpp"
+#include "System/Animation.hpp"
 
 #include "Weapons/Weapons.hpp"
 #include "LightEngine/LightEngine.hpp"

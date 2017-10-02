@@ -1,8 +1,8 @@
 #ifndef EXPLOSION_HPP_INCLUDED
 #define EXPLOSION_HPP_INCLUDED
 
-#include "../WorldEntity.hpp"
-#include "../DrawableEntity.hpp"
+#include "System/WorldEntity.hpp"
+#include "System/DrawableEntity.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 

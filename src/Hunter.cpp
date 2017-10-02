@@ -1,8 +1,8 @@
 #include "Hunter.hpp"
-#include "Config.hpp"
-#include "GameWorld.hpp"
+#include "System/Config.hpp"
+#include "System/GameWorld.hpp"
 
-#include "Utils.hpp"
+#include "System/Utils.hpp"
 
 #include <iostream>
 

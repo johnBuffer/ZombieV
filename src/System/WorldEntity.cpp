@@ -1,4 +1,4 @@
-#include "WorldEntity.hpp"
+#include "System/WorldEntity.hpp"
 
 #include <iostream>
 
@@ -65,16 +65,6 @@ void WorldEntity::addLife(float life)
 void WorldEntity::setLife(float life)
 {
     _life = life;
-}
-
-void WorldEntity::setNext(WorldEntity* entity)
-{
-    _next = entity;
-}
-
-void WorldEntity::setPrev(WorldEntity* entity)
-{
-    _prev = entity;
 }
 
 void WorldEntity::resetTime()

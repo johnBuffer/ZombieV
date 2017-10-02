@@ -1,9 +1,9 @@
 #ifndef BULLETSHELL_HPP_INCLUDED
 #define BULLETSHELL_HPP_INCLUDED
 
-#include "..\WorldEntity.hpp"
-#include "..\DrawableEntity.hpp"
-#include "..\UnitedEngine\U_2DConstraint.h"
+#include "System/WorldEntity.hpp"
+#include "System/DrawableEntity.hpp"
+#include "UnitedEngine\U_2DConstraint.h"
 
 class BulletShell : public WorldEntity, public DrawableEntity<BulletShell>
 {

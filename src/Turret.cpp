@@ -1,7 +1,7 @@
 #include "Turret.hpp"
-#include "GameRender.hpp"
-#include "GameWorld.hpp"
-#include "Utils.hpp"
+#include "System/GameRender.hpp"
+#include "System/GameWorld.hpp"
+#include "System/Utils.hpp"
 
 #include <iostream>
 
@@ -77,11 +77,11 @@ void Turret::update(GameWorld& world)
 
         if (dot2 < 0)
         {
-            _angle += coeff;
+            _angle -= coeff;
         }
         else
         {
-            _angle -= coeff;
+            _angle += coeff;
         }
 
         m_target = m_target->isDone()?nullptr:m_target;
@@ -143,7 +143,7 @@ WorldEntity* Turret::getTarget(GameWorld* world) const
             target = zombie;
         }
 
-        zombie = static_cast<Zombie*>(zombie->getPrev());
+        zombie = zombie->prev;
     }
 
     if (target)

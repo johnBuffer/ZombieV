@@ -1,5 +1,5 @@
-#include "Level.hpp"
-#include "GameRender.hpp"
+#include "System/Level.hpp"
+#include "System/GameRender.hpp"
 
 Level::Level() :
     _dimension(0.0, 0.0)

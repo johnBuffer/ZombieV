@@ -1,5 +1,5 @@
 #include "Props/ExplosionProvider.hpp"
-#include "Config.hpp"
+#include "System/Config.hpp"
 
 /// A simple Explosion builder to avoid code repetition
 Explosion* ExplosionProvider::getBase(Vec2 pos, bool isTrace)

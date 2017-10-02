@@ -28,13 +28,13 @@ int main()
 
     int waveCount = 1;
 
-    world.addEntity(new Turret(1000, 1000));
+    /*world.addEntity(new Turret(1000, 1000));
     world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
-    world.addEntity(new Turret(1000, 1100));
+    world.addEntity(new Turret(1000, 1100));*/
     world.addEntity(new Turret(1050, 1050));
 
-    for (int i(1000); i--;)
+    for (int i(100); i--;)
     {
         Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
         newZombie->setTarget(&hunter);

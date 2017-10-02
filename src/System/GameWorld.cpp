@@ -1,7 +1,7 @@
-#include "GameWorld.hpp"
+#include "System/GameWorld.hpp"
 
 #include <iostream>
-#include "GraphicsUtils.hpp"
+#include "System/GraphicsUtils.hpp"
 
 #include "Props/Fire.hpp"
 #include "Props/Guts.hpp"

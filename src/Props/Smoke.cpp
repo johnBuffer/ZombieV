@@ -1,6 +1,6 @@
 #include "Props/Smoke.hpp"
-#include "GameWorld.hpp"
-#include "GameRender.hpp"
+#include "System/GameWorld.hpp"
+#include "System/GameRender.hpp"
 
 size_t Smoke::_textureID;
 
