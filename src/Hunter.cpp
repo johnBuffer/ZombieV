@@ -95,11 +95,13 @@ void Hunter::updateControls(const EventManager& em)
     else
         _releasedWeaponSwap = true;
 
-    _lastState = _state;
     if (vx || vy)
-        _state = HunterState::MOVING;
+    {
+        _changeState(HunterState::MOVING);
+        _feetTime += DT;
+    }
     else
-        _state = HunterState::IDLE;
+        _changeState(HunterState::IDLE);
 
     _body.stop();
     _body.accelerate2D(Vec2(vx*norm*_speed, vy*norm*_speed));
@@ -110,6 +112,12 @@ void Hunter::updateControls(const EventManager& em)
     _clicking = em.isLeftMousePressed();
     if (!_clicking)
         _currentWeapon->releaseTrigger();
+
+    if (em.isKeyPressed(sf::Keyboard::R) && _currentWeapon->canReload())
+    {
+        _changeAnimation(_currentWeapon->getReloadAnimation(), false);
+        _changeState(HunterState::RELOADING);
+    }
 }
 
 void Hunter::update(GameWorld& world)
@@ -120,15 +128,21 @@ void Hunter::update(GameWorld& world)
     Vec2 pos(getCoord());
     _time += DT;
 
-    if (_state == MOVING)
-        _feetTime += DT;
-
-    if (_clicking)
+    if (_clicking && _state != RELOADING)
     {
         if (_currentWeapon->fire(&world, this))
-            _state = SHOOTING;
+        {
+            _changeState(SHOOTING);
+            std::cout << _currentWeapon->getCurrentAmmo() << " / " << _currentWeapon->getTotalAmmo() << std::endl;
+        }
         else
-            _state = IDLE;
+            _changeState(IDLE);
+    }
+
+    if (_state == RELOADING && _currentAnimation.isDone())
+    {
+        _currentWeapon->reload();
+        _state = IDLE;
     }
 
     _shootLight->radius = 0;
@@ -140,7 +154,7 @@ void Hunter::update(GameWorld& world)
     }
     else if (_state == MOVING)
     {
-        bool wait = !_lastState==IDLE;
+        bool wait = !(_lastState==IDLE);
         _changeAnimation(_currentWeapon->getMoveAnimation(), wait);
     }
     else
@@ -174,6 +188,15 @@ void Hunter::render()
     GameRender::addQuad(_feetAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
 
     GraphicUtils::createEntityShadow(this);
+}
+
+void Hunter::_changeState(HunterState state)
+{
+    if (_state != RELOADING)
+    {
+        _lastState = _state;
+        _state = state;
+    }
 }
 
 void Hunter::_changeAnimation(Animation& anim, bool wait)

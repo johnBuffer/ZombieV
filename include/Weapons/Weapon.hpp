@@ -16,10 +16,18 @@ public:
 
     float getRecoil()   const {return _recoil;}
     float getFireDist() const {return _fireDist;}
+    bool  isReady()     const;
+    bool  isFull()      const {return _currentAmmo == _magazineSize;}
+    bool  isEmpty()     const {return _totalAmmo == 0;}
+    bool  canReload()   const {return !isFull() && !isEmpty();}
 
-    Animation& getShootAnimation() {return _shootAnimation;}
-    Animation& getMoveAnimation()  {return _moveAnimation;}
-    Animation& getIdleAnimation()  {return _idleAnimation;}
+    size_t getCurrentAmmo() const {return _currentAmmo;}
+    size_t getTotalAmmo()   const {return _totalAmmo;}
+
+    Animation& getShootAnimation()  {return _shootAnimation;}
+    Animation& getMoveAnimation()   {return _moveAnimation;}
+    Animation& getIdleAnimation()   {return _idleAnimation;}
+    Animation& getReloadAnimation() {return _reloadAnimation;}
 
     virtual Vec2 getFireOutPosition(const WorldEntity* entity) const {return Vec2(0, 0);};
     virtual bool fire(GameWorld* world, WorldEntity* entity)=0;

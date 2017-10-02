@@ -126,9 +126,12 @@ void GameRender::_renderVertices(std::vector<sf::VertexArray>& vertices, sf::Ren
     size_t size(vertices.size());
     for (size_t i(0); i<size; ++i)
     {
-        states.texture = &_textures[i];
-        target.draw(vertices[i], states);
-        ++_drawCalls;
+        if (vertices[i].getVertexCount())
+        {
+            states.texture = &_textures[i];
+            target.draw(vertices[i], states);
+            ++_drawCalls;
+        }
     }
 }
 

@@ -16,7 +16,8 @@ enum HunterState
 {
     IDLE,
     MOVING,
-    SHOOTING
+    SHOOTING,
+    RELOADING
 };
 
 class Hunter : public LifeForm, public DrawableEntity<Hunter>
@@ -31,7 +32,6 @@ public:
 
     HunterState getCurrentState() const {return _state;}
     bool isDone() const {return false;}
-    Vec2 getShakyPos() const {return getCoord()+_shootingShake;}
 
     static void init();
 
@@ -47,8 +47,6 @@ private:
     HunterState _state;
     HunterState _lastState;
 
-    Vec2        _shootingShake;
-
     sf::VertexArray _vertexArray;
 
     Light* _shootLight;
@@ -59,6 +57,7 @@ private:
     static Animation _feetAnimation;
     static size_t    _feetTextureID;
 
+    void _changeState(HunterState state);
     void _changeAnimation(Animation& anim, bool wait=true);
 };
 

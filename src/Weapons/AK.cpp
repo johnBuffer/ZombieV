@@ -8,6 +8,9 @@
 
 AK::AK()
 {
+    _magazineSize        = 30;
+    _currentAmmo         = 30;
+    _totalAmmo           = 90;
     _recoil              = 0.0f;
     _fireCooldown        = 0.075f;
     _currentFireCooldown = 0.0f;
@@ -25,6 +28,10 @@ AK::AK()
     _idleAnimation.setTextureID(_idleTextureID);
     _idleAnimation.setCenter(sf::Vector2f(96, 120));
 
+    _reloadAnimation = Animation(3, 7, 322, 217, 20, 15);
+    _reloadAnimation.setTextureID(_reloadTextureID);
+    _reloadAnimation.setCenter(sf::Vector2f(102, 122));
+
     /// Distance after which fire blast is drawn
     _bulletOut = Vec2(0, 8);
     _fireOut   = Vec2(50, 8);
@@ -34,8 +41,9 @@ AK::AK()
 bool AK::fire(GameWorld* world, WorldEntity* entity)
 {
     /// Check if weapon is ready
-    if (!_currentFireCooldown)
+    if (isReady())
     {
+        --_currentAmmo;
         SoundPlayer::playInstanceOf(_shootSoundID);
 
         _currentFireCooldown = _fireCooldown;
@@ -79,7 +87,11 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
 
 void AK::reload()
 {
+    size_t neededAmmo  = _magazineSize-_currentAmmo;
+    int aviableAmmo = std::min(_totalAmmo, neededAmmo);
 
+    _currentAmmo += aviableAmmo;
+    _totalAmmo   -= aviableAmmo;
 }
 
 void AK::update()
@@ -102,9 +114,10 @@ Vec2 AK::getFireOutPosition(const WorldEntity* entity) const
 /// Static texture loading
 void AK::init()
 {
-    _shootTextureID = GameRender::registerTexture("data/textures/hunter/hunter_shoot.png");
-    _moveTextureID  = GameRender::registerTexture("data/textures/hunter/hunter_move.png");
-    _idleTextureID  = GameRender::registerTexture("data/textures/hunter/hunter_idle.png");
+    _shootTextureID  = GameRender::registerTexture("data/textures/hunter/hunter_shoot.png");
+    _moveTextureID   = GameRender::registerTexture("data/textures/hunter/hunter_move.png");
+    _idleTextureID   = GameRender::registerTexture("data/textures/hunter/hunter_idle.png");
+    _reloadTextureID = GameRender::registerTexture("data/textures/hunter/hunter_rifle_reload.png");
 
     _shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
 }
