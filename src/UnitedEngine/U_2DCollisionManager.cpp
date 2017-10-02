@@ -2,8 +2,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include <WorldEntity.hpp>
-#include <GameWorld.hpp>
+#include <System/WorldEntity.hpp>
+#include <System/GameWorld.hpp>
 
 GridCell::GridCell()
 {

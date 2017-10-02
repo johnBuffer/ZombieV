@@ -154,7 +154,7 @@ void GameRender::display(sf::RenderTarget* target)
 
     /// Draw lights
     sf::Sprite lightSprite(_lightEngine.render());
-    //_renderTexture.draw(lightSprite, sf::BlendMultiply);
+    _renderTexture.draw(lightSprite, sf::BlendMultiply);
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());

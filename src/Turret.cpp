@@ -171,10 +171,20 @@ void Turret::render()
     va[2].texCoords = sf::Vector2f(recoilRatio+353.0f+recoilDist, textureOffset+103.0f);
     va[3].texCoords = sf::Vector2f(recoilRatio+0.0f, textureOffset+103.0f);
 
+    sf::VertexArray vaTripod(sf::Quads, 4);
+    vaTripod[0].texCoords = sf::Vector2f(394, 0.0f);
+    vaTripod[1].texCoords = sf::Vector2f(786, 0.0f);
+    vaTripod[2].texCoords = sf::Vector2f(786, 206.0f);
+    vaTripod[3].texCoords = sf::Vector2f(394, 206.0f);
+
     GraphicUtils::initQuad(va, sf::Vector2f(353, 103), sf::Vector2f(244, 57), SCALE*0.25f);
     GraphicUtils::transform(va, sf::Vector2f(x, y), _angle);
 
-    GameRender::addQuad(s_textureID, va, RenderLayer::RENDER);
+    GraphicUtils::initQuad(vaTripod, sf::Vector2f(373, 206), sf::Vector2f(210, 125), SCALE*0.37);
+    GraphicUtils::transform(vaTripod, sf::Vector2f(x, y), 0.0f);
+
+    GameRender::addQuad(s_textureID, vaTripod, RenderLayer::RENDER);
+    GameRender::addQuad(s_textureID, va      , RenderLayer::RENDER);
     GameRender::addShadowCaster(getCoord(), CELL_SIZE);
 
     GraphicUtils::createEntityShadow(this);

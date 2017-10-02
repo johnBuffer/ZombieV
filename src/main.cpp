@@ -1,10 +1,10 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "GameWorld.hpp"
-#include "GameRender.hpp"
+#include "System/GameWorld.hpp"
+#include "System/GameRender.hpp"
 
-#include "Container.hpp"
+#include "System/Container.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
@@ -15,7 +15,7 @@ int main()
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60);
+    //window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -28,10 +28,10 @@ int main()
 
     int waveCount = 1;
 
-    /*world.addEntity(new Turret(1000, 1000));
+    world.addEntity(new Turret(1000, 1000));
     world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
-    world.addEntity(new Turret(1000, 1100));*/
+    world.addEntity(new Turret(1000, 1100));
     world.addEntity(new Turret(1050, 1050));
 
     for (int i(100); i--;)

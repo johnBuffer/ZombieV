@@ -15,13 +15,13 @@ GameWorld::GameWorld() :
     _phyManager.setPrecision(2);
 
     Guts::init();
+    Turret::init();
     Hunter::init();
     Bullet::init();
     BulletShell::init();
     AK::init();
     Shotgun::init();
     Pistol::init();
-    Turret::init();
     Smoke::init();
     Fire::init();
     Zombie::init();
