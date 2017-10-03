@@ -27,8 +27,6 @@ Turret::Turret(float x, float y) :
     l.intensity = 1.0f;
     l.radius  = 0;
     light = GameRender::getLightEngine().addDurableLight(l);
-
-    _needsPhysics = true;
 }
 
 void Turret::initPhysics(GameWorld* world)
@@ -106,15 +104,15 @@ void Turret::fire(GameWorld* world)
     m_currentCooldown = m_cooldown;
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    std::unique_ptr<WorldEntity> newBullet(new Bullet(_angle, 1.5*CELL_SIZE, 20, 0));
-    newBullet->init(getCoord(), PI+bulletAngle);
-    newBullet->setImpactForce(2.0f);
-    world->addEntity();
+    Bullet& newBullet(Bullet::add(Bullet(_angle, 1.5*CELL_SIZE, 20, 0)));
+    newBullet.init(getCoord(), PI+bulletAngle);
+    newBullet.setImpactForce(2.0f);
+    world->addEntity(&newBullet);
 
     Vec2 fireOut   = transformVec(Vec2(-130, -2), _angle, getCoord());
     Vec2 smokeOut  = transformVec(Vec2(-60, -2), _angle, getCoord());
 
-    Vec2 bulletVel(newBullet->getV());
+    Vec2 bulletVel(newBullet.getV());
     float v(rand()%25/1000.0f+0.1);
     world->addEntity(new Smoke(smokeOut, bulletVel*v, 0.0125, 100));
 
@@ -128,22 +126,21 @@ void Turret::fire(GameWorld* world)
 
 WorldEntity* Turret::getTarget(GameWorld* world) const
 {
-    Zombie* zombie = Zombie::getHead();
+    std::list<Zombie> zombies = Zombie::getObjects();
+
     Zombie* target = nullptr;
     float minDist  = -1;
 
-    while (zombie)
+    for (Zombie& zombie : zombies)
     {
-        Vec2 v(zombie->getCoord(), getCoord());
+        Vec2 v(zombie.getCoord(), getCoord());
         float dist = v.getNorm();
 
-        if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
+        if ((dist < minDist && !zombie.isMarked()) || minDist < 0)
         {
             minDist = dist;
-            target = zombie;
+            target = &zombie;
         }
-
-        zombie = zombie->prev;
     }
 
     if (target)

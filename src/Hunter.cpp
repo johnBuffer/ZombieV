@@ -9,7 +9,8 @@
 size_t Hunter::_feetTextureID;
 Animation Hunter::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
-Hunter::Hunter(float x, float y)
+Hunter::Hunter(float x, float y) :
+    StandardEntity(x, y, 0)
 {
     _body.setX(x);
     _body.setY(y);

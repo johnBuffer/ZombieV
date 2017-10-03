@@ -18,7 +18,6 @@ void Particle::update()
 Explosion::Explosion() :
     _vertexArray(sf::Quads, 4)
 {
-    _needsPhysics = false;
 }
 
 Explosion::Explosion(float x, float y, float openAngle, float angle, float speed, float size, size_t n):
@@ -58,7 +57,6 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
 
     }
 
-    _needsPhysics = false;
     _traceOnEnd   = true;
     _ratio = 1.0f;
 }

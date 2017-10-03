@@ -2,15 +2,15 @@
 #define BULLET_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "System/WorldEntity.hpp"
-#include "System/DrawableEntity.hpp"
+#include "System/StantardEntity.hpp"
 #include "System/Config.hpp"
 
-class Bullet : public WorldEntity, public DrawableEntity<Bullet>
+class Bullet : public StandardEntity<Bullet>
 {
 public:
     Bullet();
     Bullet(float angle, float speed, float damage, int penetration);
+    ~Bullet();
 
     void initPhysics(GameWorld*) {}
     void init(Vec2 pos, float angle);
@@ -19,7 +19,7 @@ public:
     void render();
     void setImpactForce(float f) {_impact = f;}
 
-    Vec2 getV() const {return Vec2(_vx, _vy);}
+    const Vec2& getV() const {return _v;}
     Vec2 getImpactForce() const;
     bool isDone() const {return _done;}
     float getDamage() const {return _damage;}
@@ -40,7 +40,7 @@ private:
     int   _drawCount;
     bool  _new;
 
-    float _vx, _vy;
+    Vec2  _v;
     float _distance;
 
     sf::VertexArray _ownVertexArray;

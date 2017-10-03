@@ -12,7 +12,6 @@ void Smoke::init()
 Smoke::Smoke() :
     _vertexArray(sf::Quads, 4)
 {
-    _needsPhysics = false;
 }
 
 Smoke::Smoke(Vec2 pos, Vec2 vel, float angularVel, float size) :
@@ -25,7 +24,6 @@ Smoke::Smoke(Vec2 pos, Vec2 vel, float angularVel, float size) :
     _vertexArray(sf::Quads, 4)
 {
     _body.setPosition(pos);
-    _needsPhysics = false;
 
     float a(rand()%3600/10.0f);
     _angle = a*DEGRAD;

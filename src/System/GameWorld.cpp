@@ -36,7 +36,7 @@ void GameWorld::initEventHandler(sf::RenderWindow& window)
     _eventManager.init(&window);
 }
 
-void GameWorld::addEntity(std::unique_ptr<WorldEntity> entity)
+void GameWorld::addEntity(WorldEntity* entity)
 {
     _entities.push_back(entity);
 

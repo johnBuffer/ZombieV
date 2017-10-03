@@ -2,70 +2,68 @@
 #define CHAINEDOBJECT_HPP_INCLUDED
 
 #include <iostream>
+#include <list>
+#include <memory>
+
+template<class T>
+using Shared = std::shared_ptr<T>;
 
 template<class T>
 class ChainedObject
 {
 public:
-    static T* getHead();
-    static T* getTail();
 
-    T* next;
-    T* prev;
+    template<class ... Args>
+    static T& add(Args&&...);
+
+    static T& add(const T& obj);
+    static void remove(const T& obj);
+
+    static std::list<Shared<T>>& getObjects();
 
 protected:
-    static T* _head;
-
-    static void add(T*);
-    static void remove(T*);
+    static std::list<Shared<T>> _classData;
 };
 
-template<class T> T* ChainedObject<T>::_head = nullptr;
+template<class T> std::list<Shared<T>> ChainedObject<T>::_classData;
 
 template<class T>
-void ChainedObject<T>::add(T* obj)
+template<class ... Args>
+T& ChainedObject<T>::add(Args&&... args)
 {
-    if (_head)
+    _classData.push_back(std::make_shared<T>(args...));
+    return *(_classData.back());
+}
+
+
+template<class T>
+T& ChainedObject<T>::add(const T& obj)
+{
+    _classData.push_back(obj);
+    return _classData.back();
+}
+
+template<class T>
+void ChainedObject<T>::remove(const T& obj)
+{
+    // hm hm
+    auto it = _classData.begin();
+
+    for (it; it != _classData.end(); it++)
     {
-        _head->next = obj;
-        obj->prev = _head;
-        obj->next = nullptr;
-        _head = obj;
-    }
-    else
-    {
-        _head = obj;
-        _head->next = nullptr;
-        _head->prev = nullptr;
+        T* ptr = &(*it);
+        if (ptr == &obj)
+        {
+            _classData.remove(it);
+            break;
+        }
     }
 }
 
 template<class T>
-void ChainedObject<T>::remove(T* obj)
+std::list<Shared<T>>& ChainedObject<T>::getObjects()
 {
-    T* next = static_cast<T*>(obj->next);
-    T* prev = static_cast<T*>(obj->prev);
-
-    if (next)
-    {
-        next->prev = prev;
-    }
-    else
-    {
-        _head = prev;
-    }
-
-    if (prev)
-    {
-        prev->next = next;
-    }
+    return _classData;
 }
-
-template<class T>
-T* ChainedObject<T>::getHead()
-{
-    return _head;
-}
-
 
 #endif // CHAINEDOBJECT_HPP_INCLUDED

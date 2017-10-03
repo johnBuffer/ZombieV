@@ -19,7 +19,9 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
-    world.addEntity(WorldEntityPtr(new Hunter(1000, 1000)));
+    Hunter& h = Hunter::add(Hunter(1000, 1000));
+    world.addEntity(&h);
+
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
@@ -28,14 +30,14 @@ int main()
     /*world.addEntity(new Turret(1000, 1000));
     world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
-    world.addEntity(new Turret(1000, 1100));*/
-    world.addEntity(WorldEntityPtr(new Turret(1050, 1050)));
+    world.addEntity(new Turret(1000, 1100));
+    world.addEntity(WorldEntityPtr(new Turret(1050, 1050)));*/
 
-    for (int i(100); i--;)
+    for (int i(1); i--;)
     {
-        WorldEntityPtr newZombie(new Zombie(rand()%2000, rand()%2000));
-        newZombie->setTarget(&hunter);
-        world.addEntity(newZombie);
+        Zombie& newZombie(Zombie::add(Zombie(rand()%2000, rand()%2000)));
+        newZombie.setTarget(&(*Hunter::getObjects().front()));
+        world.addEntity(&newZombie);
     }
     waveCount++;
 
@@ -64,7 +66,8 @@ int main()
 
         world.update();
 
-        Vec2 p = hunter.getCoord();
+        Vec2 p = Hunter::getObjects().front()->getCoord();
+
         sf::Vector2f playerPosition(p.x, p.y);
         GameRender::setFocus(playerPosition);
 

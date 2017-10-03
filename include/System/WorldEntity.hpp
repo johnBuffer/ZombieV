@@ -7,6 +7,8 @@
 
 #define SCALE 1.0f
 
+typedef WorldEntity* WorldEntityPtr;
+
 class GameWorld;
 
 /// Represents every object in the GameWorld
@@ -15,10 +17,10 @@ class WorldEntity
 public:
     WorldEntity();
     WorldEntity(float x, float y, float angle);
+    WorldEntity(const WorldEntity& entity);
     virtual ~WorldEntity();
 
     bool          isDying()      const;
-    bool          needsPhysics() const;
     float         getAngle()     const;
     U_2DBody&     getBody();
     const Vec2&   getCoord()     const;
@@ -48,7 +50,6 @@ protected:
     float    _angle;
     float    _time;
     float    _life;
-    bool     _needsPhysics;
     bool     _isDying;
 
     EntityTypes _type;

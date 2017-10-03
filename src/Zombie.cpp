@@ -10,8 +10,8 @@ size_t      Zombie::_attackTextureID;
 Animation   Zombie::_moveAnimation(3, 6, 288, 311, 17, 20);
 Animation   Zombie::_attackAnimation(3, 3, 954/3, 882/3, 9, 20);
 
-Zombie::Zombie(float x, float y):
-    WorldEntity(x, y, 0.0f),
+Zombie::Zombie(float x, float y) :
+    StandardEntity(x, y, 0.0f),
     _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
     _speed = 150;
@@ -25,14 +25,11 @@ Zombie::Zombie(float x, float y):
 
     _currentState = IDLE;
     _marked = false;
-
-    Zombie::add(this);
 }
 
 Zombie::~Zombie()
 {
     std::cout << "DIIIIIIIIIIIE" << std::endl;
-    //Zombie::remove(this);
 }
 
 void Zombie::setTarget(WorldEntity* target)
@@ -92,7 +89,6 @@ void Zombie::update(GameWorld& world)
         world.addEntity(ExplosionProvider::getBase(coord));
         world.removeBody(&_body);
 
-        Zombie::remove(this);
         _done = true;
     }
 
@@ -130,8 +126,6 @@ void Zombie::init()
 
     _moveAnimation.setTextureID(_moveTextureID);
     _attackAnimation.setTextureID(_attackTextureID);
-
-    _head = nullptr;
 }
 
 void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)

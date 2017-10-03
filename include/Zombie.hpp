@@ -1,12 +1,13 @@
 #ifndef ZOMBIE_HPP_INCLUDED
 #define ZOMBIE_HPP_INCLUDED
 
+#include "System/StantardEntity.hpp"
 #include "System/LifeForm.hpp"
 #include "System/DrawableEntity.hpp"
 #include "System/ChainedObject.hpp"
 #include <memory>
 
-class Zombie : public DrawableEntity<Zombie>, public WorldEntity, public ChainedObject<Zombie>
+class Zombie : public StandardEntity<Zombie>, public LifeForm
 {
     enum ZombieState
     {

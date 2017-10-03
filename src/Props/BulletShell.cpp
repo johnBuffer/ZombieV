@@ -11,7 +11,6 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     _vertexArray(sf::Quads, 4)
 {
     _body.setPosition(pos);
-    _needsPhysics = true;
 
     _angularVelocity = 0.2f;
     _angle = angle;

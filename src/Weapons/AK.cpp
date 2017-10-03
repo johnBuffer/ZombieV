@@ -57,11 +57,11 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
         Vec2 fireOut   = transformVec(_fireOut  , entityAngle, entityPos);
         Vec2 shellsOut = transformVec(_shellsOut, entityAngle, entityPos);
 
-        Bullet* newBullet = new Bullet(bulletAngle, 1.5*CELL_SIZE, 20, 3);
-        newBullet->init(bulletOut, entityAngle);
-        world->addEntity(newBullet);
+        Bullet& newBullet = Bullet::add(Bullet(bulletAngle, 1.5*CELL_SIZE, 20, 3));
+        newBullet.init(bulletOut, entityAngle);
+        world->addEntity(&newBullet);
 
-        Vec2 bulletVel(newBullet->getV());
+        Vec2 bulletVel(newBullet.getV());
         float v(rand()%25/1000.0f+0.1);
         world->addEntity(new Smoke(fireOut, bulletVel*v, 0.0125, 50));
 

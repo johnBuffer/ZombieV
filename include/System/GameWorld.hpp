@@ -18,8 +18,6 @@
 #include "Turret.hpp"
 #include "Props/Wall.hpp"
 
-typedef std::unique_ptr<WorldEntity> WorldEntityPtr;
-
 class GameWorld
 {
 public:
@@ -27,7 +25,7 @@ public:
     void initEventHandler(sf::RenderWindow& window);
 
     U_2DConstraint* addConstraint(U_2DBody* body1, U_2DBody* body2, float length=0.0);
-    void addEntity(std::unique_ptr<WorldEntity> entity);
+    void addEntity(WorldEntity* entity);
     void addBody(U_2DBody* body);
     void removeBody(U_2DBody* body);
     void removeConstraint(U_2DConstraint* constraint);
@@ -44,7 +42,7 @@ private:
     float _dt;
     Level  _level;
 
-    std::list<std::unique_ptr<WorldEntity>> _entities;
+    std::list<WorldEntity*> _entities;
 
     U_2DCollisionManager _phyManager;
     EventManager         _eventManager;

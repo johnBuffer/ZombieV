@@ -15,7 +15,6 @@ void Fire::init()
 
 Fire::Fire()
 {
-    _needsPhysics = false;
 }
 
 Fire::Fire(Vec2 pos, float angle, float sizeFactor):
@@ -24,7 +23,6 @@ Fire::Fire(Vec2 pos, float angle, float sizeFactor):
 {
     _body.setPosition(pos);
     _angle = angle;
-    _needsPhysics = false;
     _sizeFactor = sizeFactor;
 }
 

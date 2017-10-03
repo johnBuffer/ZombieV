@@ -3,9 +3,8 @@
 
 #include <map>
 
-#include "System/DrawableEntity.hpp"
 #include "System/LifeForm.hpp"
-#include "System/WorldEntity.hpp"
+#include "System/StantardEntity.hpp"
 #include "System/EventManager.hpp"
 #include "System/Animation.hpp"
 
@@ -20,7 +19,7 @@ enum HunterState
     RELOADING
 };
 
-class Hunter : public LifeForm, public DrawableEntity<Hunter>
+class Hunter : public StandardEntity<Hunter>, public LifeForm
 {
 public:
     Hunter(float x, float y);

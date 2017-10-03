@@ -187,12 +187,12 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
                 collider   ->move2D(Vec2(-vx*massCoef2, -vy*massCoef2));
 
 
-                WorldEntity* colliderEntity = collider->getEntity();
+                /*WorldEntity* colliderEntity = collider->getEntity();
 
                 if (currentEntity)
                     currentEntity->hit(colliderEntity, _world);
                 if (colliderEntity)
-                    colliderEntity->hit(currentEntity, _world);
+                    colliderEntity->hit(currentEntity, _world);*/
             }
         }
     }
@@ -230,6 +230,7 @@ void U_2DCollisionManager::update()
         solveConstraints();
     }
 
+    // friction
     for (auto &body : m_bodies)
     {
         Vec2 velocity = body->getVelocity();
@@ -237,8 +238,6 @@ void U_2DCollisionManager::update()
     }
 
     for (auto& body : m_bodies) body->updatePosition(m_timeStep);
-
-    std::cout << "Constraints : " << m_constraints.size() << " Bodies : " << m_bodies.size() << std::endl;
 }
 
 void U_2DCollisionManager::solveConstraints()
