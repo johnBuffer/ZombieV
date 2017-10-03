@@ -9,6 +9,9 @@ template<class T>
 using Shared = std::shared_ptr<T>;
 
 template<class T>
+using ListPtr = std::list<Shared<T>>;
+
+template<class T>
 class ChainedObject
 {
 public:
