@@ -133,13 +133,13 @@ WorldEntity* Turret::getTarget(GameWorld* world) const
 
     for (Shared<Zombie>& zombie : zombies)
     {
-        Vec2 v(zombie.getCoord(), getCoord());
+        Vec2 v(zombie->getCoord(), getCoord());
         float dist = v.getNorm();
 
-        if ((dist < minDist && !zombie.isMarked()) || minDist < 0)
+        if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
         {
             minDist = dist;
-            target = &zombie;
+            target = &(*zombie);
         }
     }
 

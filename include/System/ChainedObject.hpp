@@ -19,7 +19,6 @@ public:
     template<class ... Args>
     static T& add(Args&&...);
 
-    static T& add(const T& obj);
     static void remove(const T& obj);
 
     static std::list<Shared<T>>& getObjects();
@@ -34,16 +33,9 @@ template<class T>
 template<class ... Args>
 T& ChainedObject<T>::add(Args&&... args)
 {
-    _classData.push_back(std::make_shared<T>(args...));
+    Shared<T> newShared = std::make_shared<T>(args...);
+    _classData.push_back(newShared);
     return *(_classData.back());
-}
-
-
-template<class T>
-T& ChainedObject<T>::add(const T& obj)
-{
-    _classData.push_back(obj);
-    return _classData.back();
 }
 
 template<class T>

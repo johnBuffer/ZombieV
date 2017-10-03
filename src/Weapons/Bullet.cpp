@@ -31,7 +31,7 @@ Bullet::Bullet(float angle, float speed, float damage, int penetration) :
 
 Bullet::~Bullet()
 {
-    std::cout << "Bullet : destroyed" << std::endl;
+    //std::cout << "Bullet : destroyed" << std::endl;
 }
 
 void Bullet::init(Vec2 pos, float angle)
@@ -62,7 +62,7 @@ void Bullet::update(GameWorld& world)
     std::cout << "Update Bullet v:" << _v.x << std::endl;
     /// Update position
     const Vec2& pos = _body.getPosition();
-    _body.move2D(_v);
+    //_body.move2D(_v);
     _distance += _speed;
 
     /// Move the vertexArray
