@@ -45,18 +45,28 @@ void GameWorld::addEntity(WorldEntity* entity)
 
 void GameWorld::update()
 {
-    _entities.remove_if([](const WorldEntity* e){return e->isDone();});
+    std::list<WorldEntity*>::iterator it;
+    for (it=_entities.begin(); it!=_entities.end(); it++)
+    {
+        WorldEntity*& entity = *it;
+        if (entity->isDying())
+        {
+            entity->kill();
+            it = _entities.erase(it);
 
-    //sf::Clock clock;
+        }
+        else if (entity->isDone())
+        {
+            entity->setDying();
+        }
+    }
+
     _phyManager.update();
-    //float time = clock.restart().asMilliseconds();
 
     for (WorldEntity* entity : _entities)
     {
         entity->update(*this);
     }
-
-    //std::cout << "Entities : " << _entities.size() << std::endl;
 }
 
 GridCell* GameWorld::getBodiesAt(Vec2 coord)

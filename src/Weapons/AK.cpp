@@ -44,7 +44,7 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
     if (isReady())
     {
         --_currentAmmo;
-        SoundPlayer::playInstanceOf(_shootSoundID);
+        //SoundPlayer::playInstanceOf(_shootSoundID);
 
         m_fireCooldown.reset();
         float accuracy = (tanh(4.0f*_recoil))*0.05f;

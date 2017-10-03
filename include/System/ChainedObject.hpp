@@ -19,42 +19,37 @@ public:
     template<class ... Args>
     static T& add(Args&&...);
 
-    static void remove(const T& obj);
-
-    static std::list<Shared<T>>& getObjects();
+    void remove();
+    static ListPtr<T>& getObjects();
 
 protected:
-    static std::list<Shared<T>> _classData;
+    typename ListPtr<T>::iterator m_iterator;
+
+    static ListPtr<T> _classData;
 };
 
+/// Init static container
 template<class T> std::list<Shared<T>> ChainedObject<T>::_classData;
 
+/// Allows to create and store new objects
 template<class T>
-template<class ... Args>
+template<class... Args>
 T& ChainedObject<T>::add(Args&&... args)
 {
     Shared<T> newShared = std::make_shared<T>(args...);
-    _classData.push_back(newShared);
-    return *(_classData.back());
+    _classData.push_front(newShared);
+    newShared->m_iterator = _classData.begin();
+    return *(_classData.front());
 }
 
+/// Removes an objects
 template<class T>
-void ChainedObject<T>::remove(const T& obj)
+void ChainedObject<T>::remove()
 {
-    // hm hm
-    auto it = _classData.begin();
-
-    for (it; it != _classData.end(); it++)
-    {
-        T* ptr = &(*it);
-        if (ptr == &obj)
-        {
-            _classData.remove(it);
-            break;
-        }
-    }
+    _classData.erase(m_iterator);
 }
 
+/// Returns the container
 template<class T>
 std::list<Shared<T>>& ChainedObject<T>::getObjects()
 {

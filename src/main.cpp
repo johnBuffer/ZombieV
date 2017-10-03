@@ -33,7 +33,7 @@ int main()
     world.addEntity(new Turret(1000, 1100));
     world.addEntity(new Turret(1050, 1050));
 
-    for (int i(100); i--;)
+    for (int i(2000); i--;)
     {
         Zombie& newZombie(Zombie::add(rand()%2000, rand()%2000));
         newZombie.setTarget(&(*Hunter::getObjects().front()));

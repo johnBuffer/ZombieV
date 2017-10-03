@@ -44,6 +44,11 @@ WorldEntity::~WorldEntity()
 
 void WorldEntity::kill()
 {
+    // deleter
+}
+
+void WorldEntity::setDying()
+{
     _isDying = true;
 }
 

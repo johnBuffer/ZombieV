@@ -29,7 +29,12 @@ Zombie::Zombie(float x, float y) :
 
 Zombie::~Zombie()
 {
+    //std::cout << "Suicide" << std::endl;
+}
 
+void Zombie::kill()
+{
+    this->remove();
 }
 
 void Zombie::setTarget(WorldEntity* target)
