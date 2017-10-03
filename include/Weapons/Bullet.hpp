@@ -10,6 +10,7 @@ class Bullet : public StandardEntity<Bullet>
 public:
     Bullet();
     Bullet(float angle, float speed, float damage, int penetration);
+    Bullet(const Bullet& bullet);
     ~Bullet();
 
     void initPhysics(GameWorld*) {}

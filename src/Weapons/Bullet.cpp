@@ -14,11 +14,11 @@ Bullet::Bullet()
 }
 
 Bullet::Bullet(float angle, float speed, float damage, int penetration) :
+    StandardEntity(0.0f, 0.0f, angle),
+    _speed(speed),
     _v(_speed*cos(_angle), _speed*sin(_angle)),
     _ownVertexArray(sf::Quads, 4)
 {
-    _angle  = angle;
-    _speed  = speed;
     _damage = damage;
     _done   = false;
 
@@ -27,11 +27,18 @@ Bullet::Bullet(float angle, float speed, float damage, int penetration) :
     _new = true;
     _drawCount = rand()%4;
     _impact = 10.0f;
+
+    std::cout << "Speed : " << _v.x << std::endl;
+}
+
+Bullet::Bullet(const Bullet& bullet)
+{
+    std::cout << "copy constructor" << std::endl;
 }
 
 Bullet::~Bullet()
 {
-    //std::cout << "Bullet : destroyed" << std::endl;
+    std::cout << "Bullet : destroyed" << std::endl;
 }
 
 void Bullet::init(Vec2 pos, float angle)
@@ -59,7 +66,8 @@ void Bullet::init(Vec2 pos, float angle)
 
 void Bullet::update(GameWorld& world)
 {
-    std::cout << "Update Bullet v:" << _v.x << std::endl;
+    //std::cout << "Update Bullet v:" << _v.x << std::endl;
+
     /// Update position
     const Vec2& pos = _body.getPosition();
     //_body.move2D(_v);
