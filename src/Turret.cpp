@@ -19,7 +19,7 @@ Turret::Turret(float x, float y) :
 {
     m_currentState = Turret::IDLE;
     m_accuracy     = 0.05f;
-    m_cooldown     = 0.075f;
+    m_cooldown     = 0.010f;
     m_currentCooldown = 0.0f;
 
     Light l;
@@ -104,8 +104,8 @@ void Turret::fire(GameWorld* world)
     m_currentCooldown = m_cooldown;
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet& newBullet(Bullet::add(Bullet(_angle, 1.5*CELL_SIZE, 20, 0)));
-    newBullet.init(getCoord(), PI+bulletAngle);
+    Bullet& newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
+    newBullet.init(getCoord(), PI+_angle);
     newBullet.setImpactForce(2.0f);
     world->addEntity(&newBullet);
 
@@ -180,7 +180,6 @@ void Turret::render()
 void Turret::init()
 {
     s_textureID = GameRender::registerTexture("data/textures/turret_v1.png");
-
     s_shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
 }
 

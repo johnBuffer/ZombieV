@@ -29,7 +29,7 @@ Zombie::Zombie(float x, float y) :
 
 Zombie::~Zombie()
 {
-    std::cout << "DIIIIIIIIIIIE" << std::endl;
+
 }
 
 void Zombie::setTarget(WorldEntity* target)

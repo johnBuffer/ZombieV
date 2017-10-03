@@ -12,8 +12,8 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(false);
+    //window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -27,15 +27,15 @@ int main()
 
     int waveCount = 1;
 
-    /*world.addEntity(new Turret(1000, 1000));
+    world.addEntity(new Turret(1000, 1000));
     world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
     world.addEntity(new Turret(1000, 1100));
-    world.addEntity(WorldEntityPtr(new Turret(1050, 1050)));*/
+    world.addEntity(new Turret(1050, 1050));
 
-    for (int i(1); i--;)
+    for (int i(100); i--;)
     {
-        Zombie& newZombie(Zombie::add(Zombie(rand()%2000, rand()%2000)));
+        Zombie& newZombie(Zombie::add(rand()%2000, rand()%2000));
         newZombie.setTarget(&(*Hunter::getObjects().front()));
         world.addEntity(&newZombie);
     }

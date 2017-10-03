@@ -6,6 +6,7 @@
 #include <iostream>
 #include "System/GameRender.hpp"
 #include "Props/Guts.hpp"
+#include <cmath>
 
 size_t Bullet::_textureID;
 
@@ -16,19 +17,16 @@ Bullet::Bullet()
 Bullet::Bullet(float angle, float speed, float damage, int penetration) :
     StandardEntity(0.0f, 0.0f, angle),
     _speed(speed),
-    _v(_speed*cos(_angle), _speed*sin(_angle)),
+    _v(_speed, _speed),
     _ownVertexArray(sf::Quads, 4)
 {
     _damage = damage;
     _done   = false;
-
     _penetration = penetration;
     _type = EntityTypes::BULLET;
     _new = true;
     _drawCount = rand()%4;
     _impact = 10.0f;
-
-    std::cout << "Speed : " << _v.x << std::endl;
 }
 
 Bullet::Bullet(const Bullet& bullet)
@@ -38,7 +36,6 @@ Bullet::Bullet(const Bullet& bullet)
 
 Bullet::~Bullet()
 {
-    std::cout << "Bullet : destroyed" << std::endl;
 }
 
 void Bullet::init(Vec2 pos, float angle)
@@ -62,6 +59,8 @@ void Bullet::init(Vec2 pos, float angle)
 
     /// Initialize traveled distance
     _distance = 0.0;
+    _v.x *= cos(_angle);
+    _v.y *= sin(_angle);
 }
 
 void Bullet::update(GameWorld& world)
@@ -70,7 +69,7 @@ void Bullet::update(GameWorld& world)
 
     /// Update position
     const Vec2& pos = _body.getPosition();
-    //_body.move2D(_v);
+    _body.move2D(_v);
     _distance += _speed;
 
     /// Move the vertexArray
@@ -107,7 +106,7 @@ void Bullet::update(GameWorld& world)
 
     _done = _done || !world.isInLevelBounds(pos);
 
-    std::cout << "Update Bullet done" << std::endl;
+    //std::cout << "Update Bullet done" << std::endl;
 }
 
 void Bullet::render()
