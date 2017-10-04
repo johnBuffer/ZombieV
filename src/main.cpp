@@ -27,11 +27,11 @@ int main()
 
     int waveCount = 1;
 
-    world.addEntity(new Turret(1000, 1000));
+    /*world.addEntity(new Turret(1000, 1000));
     world.addEntity(new Turret(1100, 1000));
     world.addEntity(new Turret(1100, 1100));
     world.addEntity(new Turret(1000, 1100));
-    world.addEntity(new Turret(1050, 1050));
+    world.addEntity(new Turret(1050, 1050));*/
 
     for (int i(100); i--;)
     {

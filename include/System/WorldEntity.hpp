@@ -17,6 +17,7 @@ class WorldEntity
 public:
     WorldEntity();
     WorldEntity(float x, float y, float angle);
+    WorldEntity(const WorldEntity& entity);
 
     virtual ~WorldEntity();
 
@@ -51,7 +52,7 @@ protected:
     U_2DBody _body;
     float    _angle;
     float    _time;
-    // float    _life;
+    float    _life;
     bool     _isDying;
 
     EntityTypes _type;
