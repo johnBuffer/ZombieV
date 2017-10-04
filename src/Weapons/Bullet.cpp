@@ -38,7 +38,7 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::init(Vec2 pos, float angle)
+void Bullet::init(const Vec2& pos, float angle)
 {
     _body.setPosition(pos);
     _angle += angle;

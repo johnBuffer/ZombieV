@@ -37,7 +37,7 @@ public:
     bool  isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
     const EventManager& getEvents() const {return _eventManager;}
 
-    GridCell* getBodiesAt(Vec2 coord);
+    GridCell* getBodiesAt(const Vec2& coord);
 
 private:
     float _dt;

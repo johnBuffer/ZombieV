@@ -74,7 +74,7 @@ void GameWorld::_cleanEntities()
     }
 }
 
-GridCell* GameWorld::getBodiesAt(Vec2 coord)
+GridCell* GameWorld::getBodiesAt(const Vec2& coord)
 {
     return _phyManager.getBodyAt(coord);
 }

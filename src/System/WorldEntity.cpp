@@ -25,7 +25,7 @@ WorldEntity::WorldEntity(float x, float y, float angle):
 WorldEntity::WorldEntity(const WorldEntity& entity) :
     _body(Vec2(0.0f, 0.0f), 1.0f)
 {
-    _id   = WorldEntity::_entityCount++;
+    _id = WorldEntity::_entityCount++;
     _body.setPosition(entity.getCoord());
     _body.stop();
     _body.setEntity(this);
