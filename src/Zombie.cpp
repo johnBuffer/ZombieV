@@ -101,8 +101,9 @@ void Zombie::render()
 {
     if (GameRender::isVisible(this))
     {
-        float x = _body.getPosition().x;
-        float y = _body.getPosition().y;
+        const Vec2& coord = _body.getPosition();
+        float x = coord.x;
+        float y = coord.y;
 
         GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), SCALE*0.25);
         sf::VertexArray& vertices(_vertexArray);

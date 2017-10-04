@@ -73,14 +73,8 @@ void Turret::update(GameWorld& world)
             m_currentState = Turret::IDLE;
         }
 
-        if (dot2 < 0)
-        {
-            _angle -= coeff;
-        }
-        else
-        {
-            _angle += coeff;
-        }
+        _angle += dot2<0?-coeff:coeff;
+
 
         if (m_target->isDying())
             m_target = nullptr;
@@ -105,7 +99,7 @@ void Turret::fire(GameWorld* world)
     m_currentCooldown = m_cooldown;
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
+    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 2, 0));
     newBullet->init(getCoord(), PI+_angle);
     newBullet->setImpactForce(2.0f);
     world->addEntity(newBullet);

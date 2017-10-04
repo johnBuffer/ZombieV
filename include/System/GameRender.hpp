@@ -41,14 +41,17 @@ public:
 
 private:
     static void               _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
-    static float              _quality;
+    static float              _quality, _zoom, _ratio;
     static sf::Vector2u       _renderSize;
     static sf::Vector2f       _focus;
+    static sf::Vector2f       _baseOffset;
     static sf::RenderTexture  _renderTexture;
     static sf::RenderTexture  _blurTexture;
     static sf::RenderTexture  _groundTexture;
     static DynamicBlur        _blur;
-    static void               _renderBloom();
+
+    static void _renderBloom();
+    static void _translateToFocus(sf::Transform& transform);
 
     static std::vector<sf::Texture>                  _textures;
     static std::vector<std::vector<sf::VertexArray>> _vertices;

@@ -1,9 +1,9 @@
 #ifndef BOT_HPP_INCLUDED
 #define BOT_HPP_INCLUDED
 
-#include "Hunter.hpp"
+#include "HunterBase.hpp"
 
-class Bot : public Hunter
+class Bot : public HunterBase, public ChainedObject<Bot>
 {
 public:
     Bot();

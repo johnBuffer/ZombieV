@@ -4,8 +4,11 @@
 #include <iostream>
 
 float              GameRender::_quality;
+float              GameRender::_zoom;
+float              GameRender::_ratio;
 sf::Vector2u       GameRender::_renderSize;
 sf::Vector2f       GameRender::_focus;
+sf::Vector2f       GameRender::_baseOffset;
 sf::RenderTexture  GameRender::_renderTexture;
 sf::RenderTexture  GameRender::_blurTexture;
 sf::RenderTexture  GameRender::_groundTexture;
@@ -20,15 +23,25 @@ LightEngine GameRender::_lightEngine;
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    _quality = 0.5f;
+    _quality = 1.f;
+    _zoom    = 2.f;
+
+    _ratio = _zoom/_quality;
     _focus = sf::Vector2f(0.0, 0.0);
     _renderSize = sf::Vector2u(width*_quality, height*_quality);
+
+    float bx = _renderSize.x/(_quality*2)*0.5f;
+    float by = _renderSize.y/(_quality*2)*0.5f;
+    _baseOffset = sf::Vector2f(bx, by);
+
     _renderTexture.create(_renderSize.x, _renderSize.y);
     _blurTexture.create(_renderSize.x, _renderSize.y);
     _groundTexture.create(MAP_SIZE, MAP_SIZE);
+
     _blur.init(_renderSize.x*0.5f, _renderSize.y*0.5f);
     _blur.setDownSizeFactor(2);
     _lightEngine.init(_renderSize.x, _renderSize.y);
+
     _vertices.resize(3);
 
     GraphicUtils::init();
@@ -94,13 +107,8 @@ size_t GameRender::registerTexture(std::string filename, bool isRepeated)
 ///
 void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target)
 {
-    float baseOffsetX = _renderSize.x*0.5f;
-    float baseOffsetY = _renderSize.y*0.5f;
-
-    baseOffsetX -= _focus.x;
-    baseOffsetY -= _focus.y;
     sf::Transform tf;
-    tf.translate(baseOffsetX, baseOffsetY);
+    _translateToFocus(tf);
     sf::RenderStates states;
     states.transform = tf;
 
@@ -138,13 +146,9 @@ void GameRender::_renderVertices(std::vector<sf::VertexArray>& vertices, sf::Ren
 /// Finalizes the textures
 void GameRender::display(sf::RenderTarget* target)
 {
-    float baseOffsetX = _renderSize.x*0.5f;
-    float baseOffsetY = _renderSize.y*0.5f;
-
-    baseOffsetX -= _focus.x;
-    baseOffsetY -= _focus.y;
     sf::Transform tf;
-    tf.translate(baseOffsetX, baseOffsetY);
+    tf.scale(_quality, _quality);
+    _translateToFocus(tf);
     sf::RenderStates states;
     states.transform = tf;
 
@@ -158,34 +162,29 @@ void GameRender::display(sf::RenderTarget* target)
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());
-    float ratio = 1.0f/_quality;
-    renderSprite.setScale(ratio, ratio);
+    renderSprite.setScale(_ratio, _ratio);
     target->draw(renderSprite);
 }
 
 /// Determines if something is in the render view
 bool GameRender::isVisible(WorldEntity* entity)
 {
-    Vec2 coord(entity->getCoord());
-
-    float baseOffsetX = _renderSize.x*0.5f;
-    float baseOffsetY = _renderSize.y*0.5f;
+    /*Vec2 coord(entity->getCoord());
 
     float screenPosX = coord.x-_focus.x;
     float screenPosY = coord.y-_focus.y;
 
-    return (std::abs(screenPosX) < baseOffsetX+2*CELL_SIZE && std::abs(screenPosY) < baseOffsetY+2*CELL_SIZE);
+    return (std::abs(screenPosX) < _baseOffset.x+2*CELL_SIZE && std::abs(screenPosY) < _baseOffset.y+2*CELL_SIZE);*/
+
+    return isVisible(entity->getCoord(), 2*CELL_SIZE);
 }
 
 bool GameRender::isVisible(const Vec2& position, float radius)
 {
-    float baseOffsetX = _renderSize.x*0.5f;
-    float baseOffsetY = _renderSize.y*0.5f;
-
     float screenPosX = position.x-_focus.x;
     float screenPosY = position.y-_focus.y;
 
-    return (std::abs(screenPosX) < baseOffsetX+radius && std::abs(screenPosY) < baseOffsetY+radius);
+    return (std::abs(screenPosX) < _baseOffset.x+radius && std::abs(screenPosY) < _baseOffset.y+radius);
 }
 
 
@@ -208,17 +207,20 @@ void GameRender::renderGround()
     sf::RenderStates states;
     _renderVertices(_vertices[RenderLayer::GROUND], _groundTexture, states);
 
-    float baseOffsetX = _renderSize.x*0.5f;
-    float baseOffsetY = _renderSize.y*0.5f;
-
-    baseOffsetX -= _focus.x;
-    baseOffsetY -= _focus.y;
-
     _groundTexture.display();
     sf::Sprite groundSprite(_groundTexture.getTexture());
-    groundSprite.setPosition(baseOffsetX, baseOffsetY);
-    groundSprite.setColor(sf::Color(255, 255, 255, 255 ));
-    _renderTexture.draw(groundSprite);
+    groundSprite.setScale(_quality, _quality);
+    float tx = (_focus.x-_baseOffset.x)*_quality;
+    float ty = (_focus.y-_baseOffset.y)*_quality;
+
+    groundSprite.setPosition(-tx, -ty);
+    groundSprite.setColor(sf::Color(255, 255, 255, 255));
+    _renderTexture.draw(groundSprite, states);
+}
+
+void GameRender::_translateToFocus(sf::Transform& transform)
+{
+    transform.translate(_baseOffset.x-_focus.x, _baseOffset.y-_focus.y);
 }
 
 LightEngine& GameRender::getLightEngine()

@@ -2,13 +2,13 @@
 #include "System/GameWorld.hpp"
 
 Bot::Bot() :
-    Hunter(0, 0)
+    HunterBase(0, 0)
 {
 
 }
 
 Bot::Bot(float x, float y) :
-    Hunter(x, y),
+    HunterBase(x, y),
     m_target(nullptr)
 {
 
@@ -26,6 +26,7 @@ void Bot::update(GameWorld& world)
     {
         if (!_currentWeapon->fire(&world, this))
         {
+            _changeState(IDLE);
             if (_currentWeapon->isMagEmpty())
             {
                 _changeAnimation(_currentWeapon->getReloadAnimation(), false);
@@ -58,9 +59,9 @@ void Bot::update(GameWorld& world)
     }
 
     _shootLight->position = _currentWeapon->getFireOutPosition(this);
-    _flashlight->position = _shootLight->position;
+    /*_flashlight->position = _shootLight->position;
     _littleLight->position = _shootLight->position;
-    _flashlight->angle = getAngle()+PI;
+    _flashlight->angle = getAngle()+PI;*/
 }
 
 void Bot::computeControls(GameWorld& world)

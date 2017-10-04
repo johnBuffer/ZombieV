@@ -56,7 +56,7 @@ sf::Sprite LightEngine::render()
     int nLights = 0;
     for (const Light& light : _durableLights)
     {
-        if (GameRender::isVisible(light.position, light.radius))
+        if (GameRender::isVisible(light.position, light.radius) && light.radius>1)
         {
             nLights++;
             sf::VertexArray shadows(sf::Quads, nCasters*4);
