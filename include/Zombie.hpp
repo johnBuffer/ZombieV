@@ -1,7 +1,7 @@
 #ifndef ZOMBIE_HPP_INCLUDED
 #define ZOMBIE_HPP_INCLUDED
 
-#include "System/StantardEntity.hpp"
+#include "System/StandardEntity.hpp"
 #include "System/LifeForm.hpp"
 #include "System/DrawableEntity.hpp"
 #include "System/ChainedObject.hpp"

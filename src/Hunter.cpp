@@ -134,7 +134,6 @@ void Hunter::update(GameWorld& world)
         if (_currentWeapon->fire(&world, this))
         {
             _changeState(SHOOTING);
-            std::cout << _currentWeapon->getCurrentAmmo() << " / " << _currentWeapon->getTotalAmmo() << std::endl;
         }
         else
             _changeState(IDLE);

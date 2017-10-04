@@ -2,7 +2,7 @@
 #define BULLET_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "System/StantardEntity.hpp"
+#include "System/StandardEntity.hpp"
 #include "System/Config.hpp"
 
 class Bullet : public StandardEntity<Bullet>

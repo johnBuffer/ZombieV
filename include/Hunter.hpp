@@ -4,7 +4,7 @@
 #include <map>
 
 #include "System/LifeForm.hpp"
-#include "System/StantardEntity.hpp"
+#include "System/StandardEntity.hpp"
 #include "System/EventManager.hpp"
 #include "System/Animation.hpp"
 

@@ -14,12 +14,12 @@ Turret::Turret()
 }
 
 Turret::Turret(float x, float y) :
-    WorldEntity(x, y, 0.0f),
+    StandardEntity(x, y, 0.0f),
     m_target(nullptr)
 {
     m_currentState = Turret::IDLE;
     m_accuracy     = 0.05f;
-    m_cooldown     = 0.010f;
+    m_cooldown     = 0.075f;
     m_currentCooldown = 0.0f;
 
     Light l;
@@ -82,7 +82,8 @@ void Turret::update(GameWorld& world)
             _angle += coeff;
         }
 
-        m_target = m_target->isDone()?nullptr:m_target;
+        if (m_target->isDying())
+            m_target = nullptr;
     }
     else
     {
