@@ -3,6 +3,7 @@
 
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
+#include "Bot.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
@@ -12,8 +13,8 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(true);
-    //window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(false);
+    window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -22,6 +23,11 @@ int main()
     Hunter& h = *Hunter::add(Hunter(1000, 1000));
     world.addEntity(&h);
 
+    for (int i(20); i--;)
+    {
+        Bot* bot = new Bot(500+i*50, 1000);
+        world.addEntity(bot);
+    }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
@@ -33,7 +39,7 @@ int main()
     world.addEntity(new Turret(1000, 1100));
     world.addEntity(new Turret(1050, 1050));*/
 
-    for (int i(100); i--;)
+    for (int i(2000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%2000, rand()%2000));
         newZombie->setTarget(&(*Hunter::getObjects().front()));

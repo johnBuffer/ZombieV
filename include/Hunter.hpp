@@ -24,9 +24,10 @@ class Hunter : public StandardEntity<Hunter>, public LifeForm
 public:
     Hunter(float x, float y);
 
-    void initPhysics(GameWorld* world);
     void updateControls(const EventManager& em);
     void update(GameWorld& world);
+
+    void initPhysics(GameWorld* world);
     void render();
 
     HunterState getCurrentState() const {return _state;}
@@ -34,7 +35,7 @@ public:
 
     static void init();
 
-private:
+protected:
     std::vector<Weapon*> _weapons;
 
     Weapon*     _currentWeapon;

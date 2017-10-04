@@ -20,6 +20,7 @@ public:
     bool  isReady()     const;
     bool  isFull()      const {return _currentAmmo == _magazineSize;}
     bool  isEmpty()     const {return _totalAmmo == 0;}
+    bool  isMagEmpty()  const {return _currentAmmo == 0;}
     bool  canReload()   const {return !isFull() && !isEmpty();}
 
     size_t getCurrentAmmo() const {return _currentAmmo;}
