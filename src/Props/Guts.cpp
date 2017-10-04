@@ -6,7 +6,7 @@
 size_t Guts::_textureID;
 
 Guts::Guts(U_2DBody* anchor, Vec2 pos, Vec2 v) :
-    WorldEntity(pos.x, pos.y, 0.0),
+    StandardEntity(pos.x, pos.y, 0.0),
     _initialVelocity(v),
     _anchor(anchor)
 {

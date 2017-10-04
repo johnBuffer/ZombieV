@@ -1,8 +1,7 @@
-#include <System/WorldEntity.hpp>
-#include <System/DrawableEntity.hpp>
+#include <System/StandardEntity.hpp>
 #include <UnitedEngine/U_2DConstraint.h>
 
-class Guts : public WorldEntity, public DrawableEntity<Guts>
+class Guts : public StandardEntity<Guts>
 {
 public:
     Guts(U_2DBody* anchor, Vec2 pos, Vec2 v);

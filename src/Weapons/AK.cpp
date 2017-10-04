@@ -13,7 +13,7 @@ AK::AK()
     _totalAmmo           = 90;
     _recoil              = 0.0f;
 
-    m_fireCooldown = Cooldown(0.075f);
+    m_fireCooldown = Cooldown(0.1f);
 
     /// Init weapon animations, could be static
     _shootAnimation = Animation(3, 1, 312, 206, 3, 40);
@@ -44,7 +44,7 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
     if (isReady())
     {
         --_currentAmmo;
-        SoundPlayer::playInstanceOf(_shootSoundID);
+        //SoundPlayer::playInstanceOf(_shootSoundID);
 
         m_fireCooldown.reset();
         float accuracy = (tanh(4.0f*_recoil))*0.05f;
@@ -57,24 +57,25 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
         Vec2 fireOut   = transformVec(_fireOut  , entityAngle, entityPos);
         Vec2 shellsOut = transformVec(_shellsOut, entityAngle, entityPos);
 
-        Bullet* newBullet = new Bullet(bulletAngle, 1.5*CELL_SIZE, 20, 3);
+        Bullet* newBullet = Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 3);
         newBullet->init(bulletOut, entityAngle);
         world->addEntity(newBullet);
 
         Vec2 bulletVel(newBullet->getV());
         float v(rand()%25/1000.0f+0.1);
-        world->addEntity(new Smoke(fireOut, bulletVel*v, 0.0125, 50));
+        world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125, 50));
 
         Vec2 firePos(fireOut);
-        world->addEntity(new Fire(firePos, entityAngle-PIS2));
-        world->addEntity(new Fire(firePos, entityAngle, 0.5));
-        world->addEntity(new Fire(firePos, entityAngle+PI, 0.5));
+        world->addEntity(Fire::add(firePos, entityAngle-PIS2));
+        world->addEntity(Fire::add(firePos, entityAngle, 0.5));
+        world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5));
 
         Vec2 shellVec(-bulletVel.y+rand()%11-5, bulletVel.x+rand()%11-5);
         Vec2 shellPos(shellsOut);
 
-        world->addEntity(new BulletShell(shellPos, shellVec*0.15, entityAngle-PIS2));
-        world->addEntity(new Smoke(shellPos, shellVec*0.05, 0.05, 15));
+        BulletShell* bulletShell(BulletShell::add(shellPos, shellVec*0.15, entityAngle-PIS2));
+        world->addEntity(bulletShell);
+        world->addEntity(Smoke::add(shellPos, shellVec*0.05, 0.05, 15));
 
         _recoil += 0.2;
         _recoil = _recoil>1.0f?1.0f:_recoil;

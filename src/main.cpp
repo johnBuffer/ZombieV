@@ -4,8 +4,6 @@
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
 
-#include "System/Container.hpp"
-
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
 
@@ -21,8 +19,9 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
-    Hunter hunter(1000, 1000);
-    world.addEntity(&hunter);
+    Hunter& h = *Hunter::add(Hunter(1000, 1000));
+    world.addEntity(&h);
+
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
@@ -36,8 +35,8 @@ int main()
 
     for (int i(100); i--;)
     {
-        Zombie* newZombie = new Zombie(rand()%2000, rand()%2000);
-        newZombie->setTarget(&hunter);
+        Zombie* newZombie(Zombie::add(rand()%2000, rand()%2000));
+        newZombie->setTarget(&(*Hunter::getObjects().front()));
         world.addEntity(newZombie);
     }
     waveCount++;
@@ -67,7 +66,8 @@ int main()
 
         world.update();
 
-        Vec2 p = hunter.getCoord();
+        Vec2 p = Hunter::getObjects().front()->getCoord();
+
         sf::Vector2f playerPosition(p.x, p.y);
         GameRender::setFocus(playerPosition);
 

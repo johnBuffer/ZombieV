@@ -14,7 +14,7 @@ Turret::Turret()
 }
 
 Turret::Turret(float x, float y) :
-    WorldEntity(x, y, 0.0f),
+    StandardEntity(x, y, 0.0f),
     m_target(nullptr)
 {
     m_currentState = Turret::IDLE;
@@ -27,8 +27,6 @@ Turret::Turret(float x, float y) :
     l.intensity = 1.0f;
     l.radius  = 0;
     light = GameRender::getLightEngine().addDurableLight(l);
-
-    _needsPhysics = true;
 }
 
 void Turret::initPhysics(GameWorld* world)
@@ -84,7 +82,8 @@ void Turret::update(GameWorld& world)
             _angle += coeff;
         }
 
-        m_target = m_target->isDone()?nullptr:m_target;
+        if (m_target->isDying())
+            m_target = nullptr;
     }
     else
     {
@@ -106,8 +105,8 @@ void Turret::fire(GameWorld* world)
     m_currentCooldown = m_cooldown;
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet* newBullet = new Bullet(_angle, 1.5*CELL_SIZE, 20, 0);
-    newBullet->init(getCoord(), PI+bulletAngle);
+    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
+    newBullet->init(getCoord(), PI+_angle);
     newBullet->setImpactForce(2.0f);
     world->addEntity(newBullet);
 
@@ -116,10 +115,10 @@ void Turret::fire(GameWorld* world)
 
     Vec2 bulletVel(newBullet->getV());
     float v(rand()%25/1000.0f+0.1);
-    world->addEntity(new Smoke(smokeOut, bulletVel*v, 0.0125, 100));
+    world->addEntity(Smoke::add(smokeOut, bulletVel*v, 0.0125, 100));
 
     Vec2 firePos(fireOut);
-    world->addEntity(new Fire(firePos, _angle-PIS2, 1.5f));
+    world->addEntity(Fire::add(firePos, _angle-PIS2, 1.5f));
 
     light->position = smokeOut;
     light->radius   = 350;
@@ -128,11 +127,12 @@ void Turret::fire(GameWorld* world)
 
 WorldEntity* Turret::getTarget(GameWorld* world) const
 {
-    Zombie* zombie = Zombie::getHead();
+    ListPtr<Zombie> zombies = Zombie::getObjects();
+
     Zombie* target = nullptr;
     float minDist  = -1;
 
-    while (zombie)
+    for (Shared<Zombie>& zombie : zombies)
     {
         Vec2 v(zombie->getCoord(), getCoord());
         float dist = v.getNorm();
@@ -140,10 +140,8 @@ WorldEntity* Turret::getTarget(GameWorld* world) const
         if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
         {
             minDist = dist;
-            target = zombie;
+            target = &(*zombie);
         }
-
-        zombie = zombie->prev;
     }
 
     if (target)
@@ -193,7 +191,6 @@ void Turret::render()
 void Turret::init()
 {
     s_textureID = GameRender::registerTexture("data/textures/turret_v1.png");
-
     s_shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
 }
 

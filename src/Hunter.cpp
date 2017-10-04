@@ -9,7 +9,8 @@
 size_t Hunter::_feetTextureID;
 Animation Hunter::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
-Hunter::Hunter(float x, float y)
+Hunter::Hunter(float x, float y) :
+    StandardEntity(x, y, 0)
 {
     _body.setX(x);
     _body.setY(y);
@@ -133,7 +134,6 @@ void Hunter::update(GameWorld& world)
         if (_currentWeapon->fire(&world, this))
         {
             _changeState(SHOOTING);
-            std::cout << _currentWeapon->getCurrentAmmo() << " / " << _currentWeapon->getTotalAmmo() << std::endl;
         }
         else
             _changeState(IDLE);

@@ -6,36 +6,42 @@
 #include <iostream>
 #include "System/GameRender.hpp"
 #include "Props/Guts.hpp"
+#include <cmath>
 
 size_t Bullet::_textureID;
 
 Bullet::Bullet()
 {
-    _needsPhysics = false;
 }
 
-Bullet::Bullet(float angle, float speed, float damage, int penetration):
+Bullet::Bullet(float angle, float speed, float damage, int penetration) :
+    StandardEntity(0.0f, 0.0f, angle),
+    _speed(speed),
+    _v(_speed, _speed),
     _ownVertexArray(sf::Quads, 4)
 {
-    _angle  = angle;
-    _speed  = speed;
     _damage = damage;
     _done   = false;
-
     _penetration = penetration;
     _type = EntityTypes::BULLET;
-    _needsPhysics = false;
     _new = true;
     _drawCount = rand()%4;
     _impact = 10.0f;
+}
+
+Bullet::Bullet(const Bullet& bullet)
+{
+    std::cout << "copy constructor" << std::endl;
+}
+
+Bullet::~Bullet()
+{
 }
 
 void Bullet::init(Vec2 pos, float angle)
 {
     _body.setPosition(pos);
     _angle += angle;
-    _vx     = _speed*cos(_angle);
-    _vy     = _speed*sin(_angle);
 
     float length = 40;
     float rectA  = PI/40.0;
@@ -53,21 +59,24 @@ void Bullet::init(Vec2 pos, float angle)
 
     /// Initialize traveled distance
     _distance = 0.0;
+    _v.x *= cos(_angle);
+    _v.y *= sin(_angle);
 }
 
 void Bullet::update(GameWorld& world)
 {
+    //std::cout << "Update Bullet v:" << _v.x << std::endl;
+
     /// Update position
-    Vec2 v(_vx, _vy);
-    Vec2 pos = _body.getPosition();
-    _body.move2D(v);
+    const Vec2& pos = _body.getPosition();
+    _body.move2D(_v);
     _distance += _speed;
 
     /// Move the vertexArray
     for (int i(0); i<4; ++i)
     {
-        _ownVertexArray[i].position.x += _vx;
-        _ownVertexArray[i].position.y += _vy;
+        _ownVertexArray[i].position.x += _v.x;
+        _ownVertexArray[i].position.y += _v.y;
     }
 
     /// Check collisions with surrounding enemies
@@ -86,7 +95,7 @@ void Bullet::update(GameWorld& world)
                 {
                     _recoilForce = (!(_penetration--))?_impact:_impact*0.5f;
                     entity->hit(this, &world);
-                    pos.move2D(v);
+                    //pos.move2D(_v);
                     _new = false;
                 }
             }
@@ -96,6 +105,8 @@ void Bullet::update(GameWorld& world)
     }
 
     _done = _done || !world.isInLevelBounds(pos);
+
+    //std::cout << "Update Bullet done" << std::endl;
 }
 
 void Bullet::render()
@@ -131,7 +142,7 @@ void Bullet::init()
 
 Vec2 Bullet::getImpactForce() const
 {
-    Vec2 result(_vx*_recoilForce, _vy*_recoilForce);
+    Vec2 result(_v.x*_recoilForce, _v.y*_recoilForce);
 
     return result;
 }

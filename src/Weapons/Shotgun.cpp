@@ -39,17 +39,17 @@ bool Shotgun::fire(GameWorld* world, WorldEntity* entity)
         {
             float angle = rand()%openAngle-openAngle/2;
             float speed = (rand()%50+125)/100.f;
-            Bullet* newBullet = new Bullet(angle*DEGRAD, speed*CELL_SIZE, 15, 30);
+            Bullet* newBullet = Bullet::add(angle*DEGRAD, speed*CELL_SIZE, 15, 30);
             newBullet->init(entity->getCoord(), entityAngle);
             world->addEntity(newBullet);
 
             Vec2 bulletVel(newBullet->getV());
             Vec2 smokePos = newBullet->getCoord()+bulletVel*1.25f;
             float v(rand()%50/1000.0f+0.1);
-            world->addEntity(new Smoke(smokePos, bulletVel*v, 0.05, 75));
+            world->addEntity(Smoke::add(smokePos, bulletVel*v, 0.05, 75));
 
             Vec2 firePos(newBullet->getCoord()+bulletVel*_fireDist);
-            world->addEntity(new Fire(firePos, entityAngle+PIS2));
+            world->addEntity(Fire::add(firePos, entityAngle+PIS2));
         }
 
         return true;

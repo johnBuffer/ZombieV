@@ -12,7 +12,7 @@ Vec2::Vec2(const Vec2& coord1, const Vec2& coord2)
 Vec2::Vec2(float cx, float cy) : x(cx), y(cy)
 {}
 
-void Vec2::move2D(Vec2& vec)
+void Vec2::move2D(const Vec2& vec)
 {
     this->x += vec.x;
     this->y += vec.y;

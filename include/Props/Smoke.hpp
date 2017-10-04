@@ -1,11 +1,11 @@
 #ifndef SMOKE_HPP_INCLUDED
 #define SMOKE_HPP_INCLUDED
 
-#include "System/WorldEntity.hpp"
+#include "System/StandardEntity.hpp"
 
 #include <SFML/Graphics.hpp>
 
-class Smoke : public WorldEntity
+class Smoke : public StandardEntity<Smoke>
 {
 public:
     Smoke();

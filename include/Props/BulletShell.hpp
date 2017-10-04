@@ -1,11 +1,10 @@
 #ifndef BULLETSHELL_HPP_INCLUDED
 #define BULLETSHELL_HPP_INCLUDED
 
-#include "System/WorldEntity.hpp"
-#include "System/DrawableEntity.hpp"
-#include "UnitedEngine\U_2DConstraint.h"
+#include "System/StandardEntity.hpp"
+#include "UnitedEngine/U_2DConstraint.h"
 
-class BulletShell : public WorldEntity, public DrawableEntity<BulletShell>
+class BulletShell : public StandardEntity<BulletShell>
 {
 public:
     BulletShell(const Vec2& pos, const Vec2& velocity, float angle);

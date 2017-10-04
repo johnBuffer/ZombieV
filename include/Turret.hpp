@@ -1,11 +1,10 @@
 #ifndef TURRET_HPP_INCLUDED
 #define TURRET_HPP_INCLUDED
 
-#include "System/WorldEntity.hpp"
-#include "System/DrawableEntity.hpp"
+#include "System/StandardEntity.hpp"
 #include "LightEngine/LightEngine.hpp"
 
-class Turret : public WorldEntity, public DrawableEntity<Turret>
+class Turret : public StandardEntity<Turret>
 {
 public:
     Turret();

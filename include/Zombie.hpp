@@ -1,12 +1,13 @@
 #ifndef ZOMBIE_HPP_INCLUDED
 #define ZOMBIE_HPP_INCLUDED
 
+#include "System/StandardEntity.hpp"
 #include "System/LifeForm.hpp"
 #include "System/DrawableEntity.hpp"
 #include "System/ChainedObject.hpp"
 #include <memory>
 
-class Zombie : public DrawableEntity<Zombie>, public WorldEntity, public ChainedObject<Zombie>
+class Zombie : public StandardEntity<Zombie>, public LifeForm
 {
     enum ZombieState
     {
@@ -25,6 +26,7 @@ public:
     void update(GameWorld& world);
     void render();
     void setMarked(bool b) {_marked = b;}
+    void kill();
 
     bool isDone() const {return _done;}
     bool isMarked() const {return _marked;}

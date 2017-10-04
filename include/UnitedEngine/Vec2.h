@@ -8,7 +8,7 @@ public:
     Vec2(const Vec2&, const Vec2&);
     Vec2(float x, float y);
 
-    void move2D(Vec2& vec);
+    void move2D(const Vec2& vec);
     float getNorm() const;
 
     float x, y;

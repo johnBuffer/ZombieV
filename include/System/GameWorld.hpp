@@ -18,7 +18,6 @@
 #include "Turret.hpp"
 #include "Props/Wall.hpp"
 
-typedef std::unique_ptr<WorldEntity> WorldEntityPtr;
 
 class GameWorld
 {
@@ -48,6 +47,8 @@ private:
 
     U_2DCollisionManager _phyManager;
     EventManager         _eventManager;
+
+    void _cleanEntities();
 };
 
 #endif // GAMEWORLD_HPP_INCLUDED

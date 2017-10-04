@@ -15,16 +15,13 @@ void Fire::init()
 
 Fire::Fire()
 {
-    _needsPhysics = false;
 }
 
 Fire::Fire(Vec2 pos, float angle, float sizeFactor):
+    StandardEntity(pos.x, pos.y, angle),
     _vertexArray(sf::Quads, 4),
     _isDone(false)
 {
-    _body.setPosition(pos);
-    _angle = angle;
-    _needsPhysics = false;
     _sizeFactor = sizeFactor;
 }
 

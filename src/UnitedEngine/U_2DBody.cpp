@@ -1,5 +1,5 @@
 #include "UnitedEngine/U_2DBody.h"
-#include "WorldEntity.hpp"
+#include "System/WorldEntity.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -26,18 +26,18 @@ void U_2DBody::init(Vec2 position, float mass, bool included)
     m_gridChange = true;
 }
 
-void U_2DBody::move2D(Vec2 vec)
+void U_2DBody::move2D(const Vec2& vec)
 {
     if (!m_static)
         m_position.move2D(vec);
 }
 
-void U_2DBody::moveLastPos2D(Vec2 vec)
+void U_2DBody::moveLastPos2D(const Vec2& vec)
 {
     m_lastPosition.move2D(vec);
 }
 
-void U_2DBody::accelerate2D(Vec2 vec)
+void U_2DBody::accelerate2D(const Vec2& vec)
 {
     m_acceleration.move2D(vec);
 }
@@ -73,7 +73,7 @@ WorldEntity* U_2DBody::getEntity()
     return _entity;
 }
 
-void U_2DBody::setPosition(Vec2 pos)
+void U_2DBody::setPosition(const Vec2& pos)
 {
     m_position = pos;
 }

@@ -7,21 +7,18 @@
 size_t BulletShell::_textureID;
 
 BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
+    StandardEntity(pos.x, pos.y, angle),
     _velocity(velocity),
     _vertexArray(sf::Quads, 4)
 {
-    _body.setPosition(pos);
-    _needsPhysics = true;
-
     _angularVelocity = 0.2f;
-    _angle = angle;
-
     _ratio  = rand()%10+1;
     _isDone = false;
 
     _body.setMass(0.01);
     _body.stop();
     _body.setRadius(1.5);
+
     _type = EntityTypes::PROPS;
 
     _b2 = new U_2DBody(Vec2(pos.x, pos.y+2), 0.005);
@@ -40,6 +37,8 @@ void BulletShell::update(GameWorld& world)
         world.removeBody(&_body);
         world.removeBody(_b2);
         world.removeConstraint(_constraint);
+
+        delete _b2;
     }
 }
 

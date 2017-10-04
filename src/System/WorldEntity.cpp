@@ -10,21 +10,51 @@ WorldEntity::WorldEntity():
     _angle(0.0)
 {
     _body.setEntity(this);
-    _needsPhysics = true;
+    _isDying = false;
 }
 
 WorldEntity::WorldEntity(float x, float y, float angle):
     _id(WorldEntity::_entityCount++),
     _body(Vec2(x, y), 1.0, false),
-    _angle(0.0)
+    _angle(angle)
 {
     _body.setEntity(this);
-    _needsPhysics = true;
+    _isDying = false;
+}
+
+WorldEntity::WorldEntity(const WorldEntity& entity) :
+    _body(Vec2(0.0f, 0.0f), 1.0f)
+{
+    _id   = WorldEntity::_entityCount++;
+    _body.setPosition(entity.getCoord());
+    _body.stop();
+    _body.setEntity(this);
+
+    _angle   = entity._angle;
+    _time    = entity._time;
+    _life    = entity._life;
+    _isDying = entity._isDying;
+    _type    = entity._type;
 }
 
 WorldEntity::~WorldEntity()
 {
 
+}
+
+void WorldEntity::kill()
+{
+    // deleter
+}
+
+void WorldEntity::setDying()
+{
+    _isDying = true;
+}
+
+bool WorldEntity::isDying() const
+{
+    return _isDying;
 }
 
 U_2DBody& WorldEntity::getBody()
@@ -50,11 +80,6 @@ float WorldEntity::getAngle() const
 EntityTypes WorldEntity::getType() const
 {
     return _type;
-}
-
-bool WorldEntity::needsPhysics() const
-{
-    return _needsPhysics;
 }
 
 void WorldEntity::addLife(float life)
