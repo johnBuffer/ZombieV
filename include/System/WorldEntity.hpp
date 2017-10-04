@@ -18,6 +18,7 @@ public:
     WorldEntity();
     WorldEntity(float x, float y, float angle);
     WorldEntity(const WorldEntity& entity);
+
     virtual ~WorldEntity();
 
     bool          isDying()      const;
@@ -27,6 +28,7 @@ public:
     EntityTypes   getType()      const;
     virtual bool  isDone()       const=0;
     const size_t& getID()        const;
+
 
     void setDying();
     void setEnemy();

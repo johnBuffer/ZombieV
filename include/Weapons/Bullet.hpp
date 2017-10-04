@@ -14,7 +14,7 @@ public:
     ~Bullet();
 
     void initPhysics(GameWorld*) {}
-    void init(Vec2 pos, float angle);
+    void init(const Vec2& pos, float angle);
     void update(GameWorld& world);
     void setDone() {_done = true;}
     void render();

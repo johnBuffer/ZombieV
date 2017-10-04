@@ -1,6 +1,7 @@
 #ifndef LIFEFORM_HPP_INCLUDED
 #define LIFEFORM_HPP_INCLUDED
 
+
 #include "Animation.hpp"
 
 class LifeForm

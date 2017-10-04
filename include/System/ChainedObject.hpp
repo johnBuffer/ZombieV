@@ -15,7 +15,6 @@ template<class T>
 class ChainedObject
 {
 public:
-
     template<class ... Args>
     static T* add(Args&&...);
 
