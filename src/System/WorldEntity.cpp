@@ -16,7 +16,7 @@ WorldEntity::WorldEntity():
 WorldEntity::WorldEntity(float x, float y, float angle):
     _id(WorldEntity::_entityCount++),
     _body(Vec2(x, y), 1.0, false),
-    _angle(0.0)
+    _angle(angle)
 {
     _body.setEntity(this);
     _isDying = false;

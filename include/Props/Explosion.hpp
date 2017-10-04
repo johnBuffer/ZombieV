@@ -1,8 +1,7 @@
 #ifndef EXPLOSION_HPP_INCLUDED
 #define EXPLOSION_HPP_INCLUDED
 
-#include "System/WorldEntity.hpp"
-#include "System/DrawableEntity.hpp"
+#include "System/StandardEntity.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -22,7 +21,7 @@ struct Particle
     sf::Color _color;
 };
 
-class Explosion : public WorldEntity, public DrawableEntity<Explosion>
+class Explosion : public StandardEntity<Explosion>
 {
 public:
     Explosion();

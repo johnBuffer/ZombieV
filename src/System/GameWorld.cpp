@@ -45,6 +45,18 @@ void GameWorld::addEntity(WorldEntity* entity)
 
 void GameWorld::update()
 {
+    _cleanEntities();
+
+    _phyManager.update();
+
+    for (WorldEntity* entity : _entities)
+    {
+        entity->update(*this);
+    }
+}
+
+void GameWorld::_cleanEntities()
+{
     std::list<WorldEntity*>::iterator it;
     for (it=_entities.begin(); it!=_entities.end(); it++)
     {
@@ -59,13 +71,6 @@ void GameWorld::update()
         {
             entity->setDying();
         }
-    }
-
-    _phyManager.update();
-
-    for (WorldEntity* entity : _entities)
-    {
-        entity->update(*this);
     }
 }
 

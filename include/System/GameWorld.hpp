@@ -46,6 +46,8 @@ private:
 
     U_2DCollisionManager _phyManager;
     EventManager         _eventManager;
+
+    void _cleanEntities();
 };
 
 #endif // GAMEWORLD_HPP_INCLUDED

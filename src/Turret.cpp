@@ -105,20 +105,20 @@ void Turret::fire(GameWorld* world)
     m_currentCooldown = m_cooldown;
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet& newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
-    newBullet.init(getCoord(), PI+_angle);
-    newBullet.setImpactForce(2.0f);
-    world->addEntity(&newBullet);
+    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
+    newBullet->init(getCoord(), PI+_angle);
+    newBullet->setImpactForce(2.0f);
+    world->addEntity(newBullet);
 
     Vec2 fireOut   = transformVec(Vec2(-130, -2), _angle, getCoord());
     Vec2 smokeOut  = transformVec(Vec2(-60, -2), _angle, getCoord());
 
-    Vec2 bulletVel(newBullet.getV());
+    Vec2 bulletVel(newBullet->getV());
     float v(rand()%25/1000.0f+0.1);
-    world->addEntity(new Smoke(smokeOut, bulletVel*v, 0.0125, 100));
+    world->addEntity(Smoke::add(smokeOut, bulletVel*v, 0.0125, 100));
 
     Vec2 firePos(fireOut);
-    world->addEntity(new Fire(firePos, _angle-PIS2, 1.5f));
+    world->addEntity(Fire::add(firePos, _angle-PIS2, 1.5f));
 
     light->position = smokeOut;
     light->radius   = 350;

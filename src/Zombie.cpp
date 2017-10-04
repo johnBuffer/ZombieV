@@ -62,14 +62,7 @@ void Zombie::update(GameWorld& world)
         float absDot = std::abs(dot2);
         coeff *= absDot;
 
-        if (dot2 > 0)
-        {
-            _angle -= coeff;
-        }
-        else
-        {
-            _angle += coeff;
-        }
+        _angle += dot2>0?-coeff:coeff;
 
         if (_currentState == MOVING)
         {
@@ -151,7 +144,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
             if (bullet->getDistance() < 50)
             {
                 gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
-                gameWorld->addEntity(new Guts(&entity->getBody(), pos, bullet->getV()*40.f));
+                gameWorld->addEntity(Guts::add(&entity->getBody(), pos, bullet->getV()*40.f));
             }
 
             if (bullet->getPenetration()>-1)

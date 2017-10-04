@@ -17,7 +17,7 @@ class ChainedObject
 public:
 
     template<class ... Args>
-    static T& add(Args&&...);
+    static T* add(Args&&...);
 
     void remove();
     static ListPtr<T>& getObjects();
@@ -34,12 +34,12 @@ template<class T> std::list<Shared<T>> ChainedObject<T>::_classData;
 /// Allows to create and store new objects
 template<class T>
 template<class... Args>
-T& ChainedObject<T>::add(Args&&... args)
+T* ChainedObject<T>::add(Args&&... args)
 {
     Shared<T> newShared = std::make_shared<T>(args...);
     _classData.push_front(newShared);
     newShared->m_iterator = _classData.begin();
-    return *(_classData.front());
+    return &(*_classData.front());
 }
 
 /// Removes an objects

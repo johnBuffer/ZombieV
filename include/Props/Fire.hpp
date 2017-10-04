@@ -2,9 +2,9 @@
 #define FIRE_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "System/WorldEntity.hpp"
+#include "System/StandardEntity.hpp"
 
-class Fire : public WorldEntity
+class Fire : public StandardEntity<Fire>
 {
 public:
     Fire();

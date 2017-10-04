@@ -15,6 +15,7 @@ Smoke::Smoke() :
 }
 
 Smoke::Smoke(Vec2 pos, Vec2 vel, float angularVel, float size) :
+    StandardEntity(pos.x, pos.y, 0.0f),
     _ratio(0.0f),
     _ratioSpeed(4.0f),
     _size(size),
@@ -23,8 +24,6 @@ Smoke::Smoke(Vec2 pos, Vec2 vel, float angularVel, float size) :
     _isDone(false),
     _vertexArray(sf::Quads, 4)
 {
-    _body.setPosition(pos);
-
     float a(rand()%3600/10.0f);
     _angle = a*DEGRAD;
 }
