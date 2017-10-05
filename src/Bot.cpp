@@ -83,14 +83,14 @@ void Bot::computeControls(GameWorld& world)
         float absDot = std::abs(dot2);
         coeff *= absDot;
 
-        if (absDot<0.25f)
+        if (absDot<0.25f || dist < 100)
         {
             if (dist < 300)
             {
                 _changeState(SHOOTING);
                 if (dist < 100)
                 {
-                    _changeState(HunterState::MOVING);
+                    //_changeState(HunterState::MOVING);
                     _feetTime += DT;
 
                     _body.stop();
@@ -134,7 +134,7 @@ void Bot::getTarget(GameWorld* world)
     Zombie* target = nullptr;
     float minDist  = -1;
 
-    int skip = 5;
+    int skip = 2;
     int step(m_getTargetCount%skip);
     int i(0);
     for (Shared<Zombie>& zombie : zombies)
@@ -145,7 +145,7 @@ void Bot::getTarget(GameWorld* world)
             Vec2 v(zombie->getCoord(), getCoord());
             float dist = v.getNorm2();
 
-            if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
+            if (dist < minDist|| minDist < 0)
             {
                 minDist = dist;
                 target = &(*zombie);
@@ -154,7 +154,9 @@ void Bot::getTarget(GameWorld* world)
     }
 
     if (target)
+    {
         m_target = target;
+    }
 }
 
 void Bot::hit(WorldEntity* entity, GameWorld* gameWorld)
@@ -163,8 +165,7 @@ void Bot::hit(WorldEntity* entity, GameWorld* gameWorld)
     {
         case(EntityTypes::ZOMBIE) :
         {
-            /*_changeState(SHOOTING);
-            m_target = entity;*/
+            m_target = entity;
             break;
         }
         default:

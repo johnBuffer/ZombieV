@@ -24,7 +24,7 @@ LightEngine GameRender::_lightEngine;
 void GameRender::initialize(size_t width, size_t height)
 {
     _quality = 1.f;
-    _zoom    = 1.5f;
+    _zoom    = 1.75f;
 
     _ratio = _zoom/_quality;
     _focus = sf::Vector2f(0.0, 0.0);
@@ -106,15 +106,13 @@ size_t GameRender::registerTexture(std::string filename, bool isRepeated)
 ///
 void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target)
 {
-    sf::Transform tf;
-    _translateToFocus(tf);
     sf::RenderStates states;
-    states.transform = tf;
+    _translateToFocus(states.transform);
 
     target.draw(va, states);
 }
 
-void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states)
+void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates states)
 {
     _translateToFocus(states.transform);
 

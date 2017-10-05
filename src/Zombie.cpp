@@ -32,7 +32,6 @@ Zombie::Zombie(float x, float y) :
 
 Zombie::~Zombie()
 {
-    //std::cout << "Suicide" << std::endl;
 }
 
 void Zombie::kill()
@@ -42,6 +41,7 @@ void Zombie::kill()
 
 void Zombie::setTarget(WorldEntity* target)
 {
+    _currentState = MOVING;
     _target = target;
 }
 
@@ -88,7 +88,6 @@ void Zombie::update(GameWorld& world)
 
     if (_life<0)
     {
-
         const Vec2 coord = getCoord();
         world.addEntity(ExplosionProvider::getBig(coord, true));
         world.addEntity(ExplosionProvider::getBigFast(coord));
@@ -228,7 +227,7 @@ void Zombie::_getTarget()
     }
 
     if (target)
-        _target = target;
+        setTarget(target);
 }
 
 

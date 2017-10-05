@@ -23,7 +23,7 @@ int main()
     Hunter& h = *Hunter::add(Hunter(MAP_SIZE/2, MAP_SIZE/2));
     world.addEntity(&h);
 
-    for (int i(25); i--;)
+    for (int i(5); i--;)
     {
         //world.addEntity(Turret::add(0+i*100, 1800));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -36,7 +36,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(4000); i--;)
+    for (int i(1000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));

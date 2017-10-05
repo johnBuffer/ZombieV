@@ -28,7 +28,7 @@ public:
     static void renderGround();
 
     static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target);
-    static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states);
+    static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates states);
     static void addShadowCaster(const Vec2& position, float radius);
 
     static bool   isVisible(WorldEntity* entity);
