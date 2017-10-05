@@ -54,31 +54,35 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
         Vec2  entityPos   = entity->getCoord();
 
         Vec2 bulletOut = transformVec(_bulletOut, entityAngle, entityPos);
-        Vec2 fireOut   = transformVec(_fireOut  , entityAngle, entityPos);
-        Vec2 shellsOut = transformVec(_shellsOut, entityAngle, entityPos);
 
         Bullet* newBullet = Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 3);
         newBullet->init(bulletOut, entityAngle);
         world->addEntity(newBullet);
 
-        Vec2 bulletVel(newBullet->getV());
-        float v(rand()%25/1000.0f+0.1);
-        world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125, 50));
-
-        Vec2 firePos(fireOut);
-        world->addEntity(Fire::add(firePos, entityAngle-PIS2));
-        world->addEntity(Fire::add(firePos, entityAngle, 0.5));
-        world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5));
-
-        Vec2 shellVec(-bulletVel.y+rand()%11-5, bulletVel.x+rand()%11-5);
-        Vec2 shellPos(shellsOut);
-
-        BulletShell* bulletShell(BulletShell::add(shellPos, shellVec*0.15, entityAngle-PIS2));
-        world->addEntity(bulletShell);
-        world->addEntity(Smoke::add(shellPos, shellVec*0.05, 0.05, 15));
-
         _recoil += 0.2;
         _recoil = _recoil>1.0f?1.0f:_recoil;
+
+        if (GameRender::isVisible(entity))
+        {
+            Vec2 fireOut   = transformVec(_fireOut  , entityAngle, entityPos);
+            Vec2 shellsOut = transformVec(_shellsOut, entityAngle, entityPos);
+
+            Vec2 bulletVel(newBullet->getV());
+            float v(rand()%25/1000.0f+0.1);
+            world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125, 50));
+
+            Vec2 firePos(fireOut);
+            world->addEntity(Fire::add(firePos, entityAngle-PIS2));
+            world->addEntity(Fire::add(firePos, entityAngle, 0.5));
+            world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5));
+
+            Vec2 shellVec(-bulletVel.y+rand()%11-5, bulletVel.x+rand()%11-5);
+            Vec2 shellPos(shellsOut);
+
+            BulletShell* bulletShell(BulletShell::add(shellPos, shellVec*0.15, entityAngle-PIS2));
+            world->addEntity(bulletShell);
+            world->addEntity(Smoke::add(shellPos, shellVec*0.05, 0.05, 15));
+        }
 
         return true;
     }

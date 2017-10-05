@@ -12,7 +12,7 @@ GameWorld::GameWorld() :
     _phyManager(_dt, CELL_SIZE, Vec2(MAP_SIZE, MAP_SIZE), this)
 {
     _phyManager.setGravity(Vec2(0.0f, 0.0f));
-    _phyManager.setPrecision(2);
+    _phyManager.setPrecision(1);
 
     Guts::init();
     Turret::init();
@@ -60,12 +60,11 @@ void GameWorld::_cleanEntities()
     std::list<WorldEntity*>::iterator it;
     for (it=_entities.begin(); it!=_entities.end(); it++)
     {
-        WorldEntity*& entity = *it;
+        WorldEntity* entity = *it;
         if (entity->isDying())
         {
-            entity->kill();
             it = _entities.erase(it);
-
+            entity->kill();
         }
         else if (entity->isDone())
         {

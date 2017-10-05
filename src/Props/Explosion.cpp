@@ -61,6 +61,11 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     _ratio = 1.0f;
 }
 
+void Explosion::kill()
+{
+    this->remove();
+}
+
 void Explosion::update(GameWorld& world)
 {
     for (Particle& p : _particles)

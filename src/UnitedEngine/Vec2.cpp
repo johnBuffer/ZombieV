@@ -23,6 +23,11 @@ float Vec2::getNorm() const
     return sqrt(x*x+y*y);
 }
 
+float Vec2::getNorm2() const
+{
+    return x*x+y*y;
+}
+
 Vec2 operator/(const Vec2& c, float d)
 {
     return Vec2(c.x/d, c.y/d);

@@ -14,6 +14,7 @@ public:
     void initPhysics(GameWorld* world);
     void update(GameWorld& world);
     void render();
+    void kill();
 
     static void init();
 

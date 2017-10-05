@@ -52,6 +52,8 @@ private:
 
     static Animation _moveAnimation;
     static Animation _attackAnimation;
+
+    void _getTarget();
 };
 
 #endif // ZOMBIE_HPP_INCLUDED

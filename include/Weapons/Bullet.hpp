@@ -19,6 +19,7 @@ public:
     void setDone() {_done = true;}
     void render();
     void setImpactForce(float f) {_impact = f;}
+    void kill();
 
     const Vec2& getV() const {return _v;}
     Vec2 getImpactForce() const;

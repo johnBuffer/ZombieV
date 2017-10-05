@@ -9,11 +9,13 @@ public:
     Bot();
     Bot(float x, float y);
 
+    void hit(WorldEntity* entity, GameWorld* gameWorld);
     void setTarget(WorldEntity* entity) {m_target = entity;}
     void update(GameWorld& world);
 
 private:
     WorldEntity* m_target;
+    size_t m_getTargetCount;
 
     void computeControls(GameWorld& world);
     void getTarget(GameWorld* world);

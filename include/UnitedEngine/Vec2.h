@@ -9,7 +9,8 @@ public:
     Vec2(float x, float y);
 
     void move2D(const Vec2& vec);
-    float getNorm() const;
+    float getNorm()  const;
+    float getNorm2() const;
 
     float x, y;
 

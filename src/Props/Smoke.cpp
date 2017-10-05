@@ -28,6 +28,11 @@ Smoke::Smoke(Vec2 pos, Vec2 vel, float angularVel, float size) :
     _angle = a*DEGRAD;
 }
 
+void Smoke::kill()
+{
+    this->remove();
+}
+
 void Smoke::update(GameWorld& world)
 {
     _ratio += _ratioSpeed*DT;

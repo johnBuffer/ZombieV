@@ -38,6 +38,11 @@ Bullet::~Bullet()
 {
 }
 
+void Bullet::kill()
+{
+    this->remove();
+}
+
 void Bullet::init(const Vec2& pos, float angle)
 {
     _body.setPosition(pos);

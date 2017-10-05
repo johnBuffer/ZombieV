@@ -14,30 +14,32 @@ int main()
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(false);
-    window.setFramerateLimit(70);
+    window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
     world.initEventHandler(window);
 
-    Hunter& h = *Hunter::add(Hunter(1000, 1000));
+    Hunter& h = *Hunter::add(Hunter(MAP_SIZE/2, MAP_SIZE/2));
     world.addEntity(&h);
 
-    for (int i(0); i--;)
+    for (int i(25); i--;)
     {
-        world.addEntity(Turret::add(0+i*100, 1800));
-        Bot* bot = Bot::add(500+i*50, 1900);
-        world.addEntity(bot);
+        //world.addEntity(Turret::add(0+i*100, 1800));
+        //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
+        //Bot* newBot(Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
+        Bot* newBot(Bot::add(MAP_SIZE/2+2, MAP_SIZE/2-2));
+        world.addEntity(newBot);
     }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     int waveCount = 1;
 
-    for (int i(100); i--;)
+    for (int i(4000); i--;)
     {
-        Zombie* newZombie(Zombie::add(rand()%2000, rand()%1000));
-        newZombie->setTarget(&(*Hunter::getObjects().front()));
+        Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
+        //newZombie->setTarget(&(*Hunter::getObjects().front()));
         world.addEntity(newZombie);
     }
     waveCount++;
@@ -66,6 +68,13 @@ int main()
         }
 
         world.update();
+
+        /*std::cout << "Bullets      count : " << Bullet::getObjects().size() << std::endl;
+        std::cout << "Zombies      count : " << Zombie::getObjects().size() << std::endl;
+        std::cout << "Explosions   count : " << Explosion::getObjects().size() << std::endl;
+        std::cout << "Smokes       count : " << Smoke::getObjects().size() << std::endl;
+        std::cout << "BulletShells count : " << BulletShell::getObjects().size() << std::endl;
+        std::cout << "===================================\n" << std::endl;*/
 
         Vec2 p = Hunter::getObjects().front()->getCoord();
 

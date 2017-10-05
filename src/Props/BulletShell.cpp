@@ -27,6 +27,11 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     _b2->setEntity(this);
 }
 
+void BulletShell::kill()
+{
+    this->remove();
+}
+
 void BulletShell::update(GameWorld& world)
 {
     _ratio -= DT;

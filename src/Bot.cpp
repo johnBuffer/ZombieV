@@ -9,7 +9,8 @@ Bot::Bot() :
 
 Bot::Bot(float x, float y) :
     HunterBase(x, y),
-    m_target(nullptr)
+    m_target(nullptr),
+    m_getTargetCount(0)
 {
 
 }
@@ -77,23 +78,13 @@ void Bot::computeControls(GameWorld& world)
         float vy = vTarget.y/dist;
 
         float dot2 = vx*directionNormal.x + vy*directionNormal.y;
-        float coeff = 0.1f;
+        float coeff = 0.25f;
 
         float absDot = std::abs(dot2);
         coeff *= absDot;
 
         if (absDot<0.25f)
         {
-            /*if (dist > 300)
-            {
-                _changeState(HunterState::MOVING);
-                _feetTime += DT;
-
-                _body.stop();
-                _body.accelerate2D(Vec2(-vx*_speed, -vy*_speed));
-            }
-            else */
-
             if (dist < 300)
             {
                 _changeState(SHOOTING);
@@ -137,23 +128,46 @@ void Bot::computeControls(GameWorld& world)
 
 void Bot::getTarget(GameWorld* world)
 {
+    ++m_getTargetCount;
     ListPtr<Zombie> zombies = Zombie::getObjects();
 
     Zombie* target = nullptr;
     float minDist  = -1;
 
+    int skip = 5;
+    int step(m_getTargetCount%skip);
+    int i(0);
     for (Shared<Zombie>& zombie : zombies)
     {
-        Vec2 v(zombie->getCoord(), getCoord());
-        float dist = v.getNorm();
-
-        if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
+        ++i;
+        if ((i+step)%skip==0)
         {
-            minDist = dist;
-            target = &(*zombie);
+            Vec2 v(zombie->getCoord(), getCoord());
+            float dist = v.getNorm2();
+
+            if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
+            {
+                minDist = dist;
+                target = &(*zombie);
+            }
         }
     }
 
     if (target)
         m_target = target;
+}
+
+void Bot::hit(WorldEntity* entity, GameWorld* gameWorld)
+{
+    switch(entity->getType())
+    {
+        case(EntityTypes::ZOMBIE) :
+        {
+            /*_changeState(SHOOTING);
+            m_target = entity;*/
+            break;
+        }
+        default:
+            break;
+    }
 }

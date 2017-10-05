@@ -24,14 +24,14 @@ LightEngine GameRender::_lightEngine;
 void GameRender::initialize(size_t width, size_t height)
 {
     _quality = 1.f;
-    _zoom    = 2.f;
+    _zoom    = 1.5f;
 
     _ratio = _zoom/_quality;
     _focus = sf::Vector2f(0.0, 0.0);
     _renderSize = sf::Vector2u(width*_quality, height*_quality);
 
-    float bx = _renderSize.x/(_quality*2)*0.5f;
-    float by = _renderSize.y/(_quality*2)*0.5f;
+    float bx = _renderSize.x/(_quality*_zoom)*0.5f;
+    float by = _renderSize.y/(_quality*_zoom)*0.5f;
     _baseOffset = sf::Vector2f(bx, by);
 
     _renderTexture.create(_renderSize.x, _renderSize.y);
@@ -89,7 +89,6 @@ size_t GameRender::registerTexture(std::string filename, bool isRepeated)
     if (_textures.back().loadFromFile(filename))
     {
         _textures.back().setRepeated(isRepeated);
-
         _vertices[RenderLayer::RENDER].push_back(sf::VertexArray(sf::Quads, 0));
         _vertices[RenderLayer::GROUND].push_back(sf::VertexArray(sf::Quads, 0));
         _vertices[RenderLayer::BLOOM ].push_back(sf::VertexArray(sf::Quads, 0));
@@ -117,13 +116,7 @@ void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture&
 
 void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates& states)
 {
-    float baseOffsetX = _renderSize.x*0.5f;
-    float baseOffsetY = _renderSize.y*0.5f;
-
-    baseOffsetX -= _focus.x;
-    baseOffsetY -= _focus.y;
-
-    states.transform.translate(baseOffsetX, baseOffsetY);
+    _translateToFocus(states.transform);
 
     target.draw(va, states);
 }
