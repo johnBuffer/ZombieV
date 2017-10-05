@@ -14,7 +14,7 @@ int main()
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(false);
-    window.setFramerateLimit(60);
+    //window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -23,12 +23,12 @@ int main()
     Hunter& h = *Hunter::add(Hunter(MAP_SIZE/2, MAP_SIZE/2));
     world.addEntity(&h);
 
-    for (int i(5); i--;)
+    for (int i(35); i--;)
     {
         //world.addEntity(Turret::add(0+i*100, 1800));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
-        //Bot* newBot(Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
-        Bot* newBot(Bot::add(MAP_SIZE/2+2, MAP_SIZE/2-2));
+        Bot* newBot(Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
+        //Bot* newBot(Bot::add(MAP_SIZE/2+2, MAP_SIZE/2-2));
         world.addEntity(newBot);
     }
 
@@ -36,7 +36,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(1000); i--;)
+    for (int i(8000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -44,12 +44,12 @@ int main()
     }
     waveCount++;
 
-    for (int i(0); i<10; ++i)
+    for (int i(0); i<25; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
-        light.radius   = 150+rand()%150;
+        light.radius   = 200+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);
     }
 
