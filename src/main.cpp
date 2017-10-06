@@ -16,7 +16,7 @@ int main()
     settings.antialiasingLevel = 0;
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(false);
-    //window.setFramerateLimit(60);
+    window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -26,7 +26,7 @@ int main()
     world.addEntity(&h);
 
     Bot* newBot;
-    for (int i(30); i--;)
+    for (int i(2); i--;)
     {
         //world.addEntity(Turret::add(0+i*100, 1800));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -39,7 +39,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(4000); i--;)
+    for (int i(1000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -56,8 +56,12 @@ int main()
         GameRender::getLightEngine().addDurableLight(light);
     }
 
+    int frameCount = 0;
+
     while (window.isOpen())
     {
+        ++frameCount;
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -88,6 +92,9 @@ int main()
 
         world.render();
         GameRender::display(&window);
+
+        if (frameCount%20 == 0)
+            GameRender::fadeGround();
 
         window.display();
     }

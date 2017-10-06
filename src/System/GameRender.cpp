@@ -12,6 +12,8 @@ sf::Vector2f       GameRender::_baseOffset;
 sf::RenderTexture  GameRender::_renderTexture;
 sf::RenderTexture  GameRender::_blurTexture;
 sf::RenderTexture  GameRender::_groundTexture;
+sf::VertexArray    GameRender::_groundQuad;
+size_t             GameRender::_groundTextureID;
 size_t             GameRender::_drawCalls;
 
 std::vector<sf::Texture>                  GameRender::_textures;
@@ -61,7 +63,8 @@ void GameRender::clear()
         for (sf::VertexArray& va : v) va.clear();
     }
 
-    _renderTexture.clear(sf::Color::Black);
+    //_renderTexture.clear(sf::Color::Black);
+    renderVertexArray(_groundQuad, _renderTexture, _groundTextureID);
     _screenSpaceEntities.clear();
     _lightEngine.clear();
 }
@@ -119,6 +122,15 @@ void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture&
     target.draw(va, states);
 }
 
+void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, size_t textureID)
+{
+    sf::RenderStates states;
+    _translateToFocus(states.transform);
+    states.texture = &_textures[textureID];
+
+    target.draw(va, states);
+}
+
 /// Draws a vertexArray in the texture
 void GameRender::_renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states)
 {
@@ -160,13 +172,6 @@ void GameRender::display(sf::RenderTarget* target)
 /// Determines if something is in the render view
 bool GameRender::isVisible(WorldEntity* entity)
 {
-    /*Vec2 coord(entity->getCoord());
-
-    float screenPosX = coord.x-_focus.x;
-    float screenPosY = coord.y-_focus.y;
-
-    return (std::abs(screenPosX) < _baseOffset.x+2*CELL_SIZE && std::abs(screenPosY) < _baseOffset.y+2*CELL_SIZE);*/
-
     return isVisible(entity->getCoord(), 2*CELL_SIZE);
 }
 
@@ -186,9 +191,9 @@ const sf::Texture& GameRender::getBlur(const sf::Texture& texture)
 
 void GameRender::initGround(size_t textureID, sf::VertexArray& quad)
 {
-    sf::RenderStates states;
-    states.texture = &_textures[textureID];
-    _groundTexture.draw(quad, states);
+    _groundTextureID = textureID;
+    _groundQuad = quad;
+    _groundTexture.clear(sf::Color(0.0, 0.0, 0.0, 0.0));
 }
 
 
@@ -207,6 +212,14 @@ void GameRender::renderGround()
     groundSprite.setPosition(-tx, -ty);
     groundSprite.setColor(sf::Color(255, 255, 255, 255));
     _renderTexture.draw(groundSprite, states);
+}
+
+void GameRender::fadeGround()
+{
+    sf::Vector2i size(_groundTexture.getSize());
+    sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));
+    rectangle.setFillColor(sf::Color(255, 255, 255, 254));
+    _groundTexture.draw(rectangle, sf::BlendMultiply);
 }
 
 void GameRender::_translateToFocus(sf::Transform& transform)

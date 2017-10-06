@@ -12,10 +12,18 @@ Level::Level(float width, float height) :
 {
     _groundTextureID = GameRender::registerTexture("data/ground3.jpg", true);
 
-    _vertexArray[0].texCoords = sf::Vector2f(0              , 0);
-    _vertexArray[1].texCoords = sf::Vector2f(4*_dimension.x, 0);
-    _vertexArray[2].texCoords = sf::Vector2f(4*_dimension.x, 4*_dimension.y);
-    _vertexArray[3].texCoords = sf::Vector2f(0              , 4*_dimension.y);
+    size_t scaleDown = 4;
+    _vertexArray[0].texCoords = sf::Vector2f(0                     , 0);
+    _vertexArray[1].texCoords = sf::Vector2f(scaleDown*_dimension.x, 0);
+    _vertexArray[2].texCoords = sf::Vector2f(scaleDown*_dimension.x, scaleDown*_dimension.y);
+    _vertexArray[3].texCoords = sf::Vector2f(0                     , scaleDown*_dimension.y);
+
+    _vertexArray[0].position = sf::Vector2f(0           , 0);
+    _vertexArray[1].position = sf::Vector2f(_dimension.x, 0);
+    _vertexArray[2].position = sf::Vector2f(_dimension.x, _dimension.y);
+    _vertexArray[3].position = sf::Vector2f(0           , _dimension.y);
+
+    GameRender::initGround(_groundTextureID, _vertexArray);
 }
 
 bool Level::isInBounds(const Vec2& coord) const
@@ -30,7 +38,7 @@ void Level::render()
     _vertexArray[2].position = sf::Vector2f(_dimension.x, _dimension.y);
     _vertexArray[3].position = sf::Vector2f(0            , _dimension.y);
 
-    GameRender::initGround(_groundTextureID, _vertexArray);
+    GameRender::addQuad(_groundTextureID, _vertexArray, RENDER);
 }
 
 

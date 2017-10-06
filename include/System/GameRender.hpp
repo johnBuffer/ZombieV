@@ -26,9 +26,11 @@ public:
     static void display(sf::RenderTarget* target);
     static void initGround(size_t textureID, sf::VertexArray& quad);
     static void renderGround();
+    static void fadeGround();
 
     static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target);
     static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, sf::RenderStates states);
+    static void renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, size_t textureID);
     static void addShadowCaster(const Vec2& position, float radius);
 
     static bool   isVisible(WorldEntity* entity);
@@ -48,7 +50,9 @@ private:
     static sf::RenderTexture  _renderTexture;
     static sf::RenderTexture  _blurTexture;
     static sf::RenderTexture  _groundTexture;
+    static sf::VertexArray    _groundQuad;
     static DynamicBlur        _blur;
+    static size_t             _groundTextureID;
 
     static void _renderBloom();
     static void _translateToFocus(sf::Transform& transform);

@@ -26,9 +26,6 @@ GameWorld::GameWorld() :
     Fire::init();
     Zombie::init();
     Explosion::init();
-
-
-    _level.render();
 }
 
 void GameWorld::initEventHandler(sf::RenderWindow& window)
