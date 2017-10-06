@@ -29,14 +29,11 @@ public:
     virtual bool  isDone()       const=0;
     const size_t& getID()        const;
 
-
     void setDying();
     void setEnemy();
     void resetTime();
     void addLife(float life);
     void setLife(float life);
-    void setNext(WorldEntity* entity);
-    void setPrev(WorldEntity* entity);
 
     virtual void kill();
     virtual void initPhysics(GameWorld* world)=0;

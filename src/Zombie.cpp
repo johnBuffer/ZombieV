@@ -114,12 +114,11 @@ void Zombie::render()
         float y = coord.y;
 
         GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), SCALE*0.25);
-        sf::VertexArray& vertices(_vertexArray);
-        GraphicUtils::transform(vertices, sf::Vector2f(x, y), _angle);
+        GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
 
-        _currentAnimation.applyOnQuad(vertices, _time);
+        _currentAnimation.applyOnQuad(_vertexArray, _time);
 
-        GameRender::addQuad(_currentAnimation.getTexture(), vertices, RenderLayer::RENDER);
+        GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
         GameRender::addShadowCaster(getCoord(), CELL_SIZE);
         GraphicUtils::createEntityShadow(this);
     }
