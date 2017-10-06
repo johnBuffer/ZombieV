@@ -23,12 +23,13 @@ public:
 
 protected:
     typename ListPtr<T>::iterator m_iterator;
+    int m_index;
 
     static ListPtr<T> _classData;
 };
 
 /// Init static container
-template<class T> std::list<Shared<T>> ChainedObject<T>::_classData;
+template<class T> ListPtr<T> ChainedObject<T>::_classData;
 
 /// Allows to create and store new objects
 template<class T>
@@ -50,7 +51,7 @@ void ChainedObject<T>::remove()
 
 /// Returns the container
 template<class T>
-std::list<Shared<T>>& ChainedObject<T>::getObjects()
+ListPtr<T>& ChainedObject<T>::getObjects()
 {
     return _classData;
 }
