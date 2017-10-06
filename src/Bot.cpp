@@ -2,7 +2,8 @@
 #include "System/GameWorld.hpp"
 
 Bot::Bot() :
-    HunterBase(0, 0)
+    HunterBase(0, 0),
+    m_target(nullptr)
 {
 
 }
@@ -90,23 +91,17 @@ void Bot::computeControls(GameWorld& world)
                 _changeState(SHOOTING);
                 if (dist < 100)
                 {
-                    //_changeState(HunterState::MOVING);
                     _feetTime += DT;
-
                     _body.stop();
                     _body.accelerate2D(Vec2(vx*_speed, vy*_speed));
                 }
             }
-            else if (dist < 500)
+            else
             {
                 float speedFactor = 0.25f;
                 _body.stop();
                 _body.accelerate2D(Vec2(-vx*_speed*speedFactor, -vy*_speed*speedFactor));
                 _feetTime += DT*speedFactor;
-            }
-            else
-            {
-                getTarget(&world);
             }
         }
         else

@@ -56,6 +56,11 @@ private:
     sf::VertexArray _vertexArray;
 
     static size_t _textureID;
+    static std::vector<float> _preCalculatedVx;
+    static std::vector<float> _preCalculatedVy;
+
+    static float getRandVx(int i);
+    static float getRandVy(int i);
 
 };
 

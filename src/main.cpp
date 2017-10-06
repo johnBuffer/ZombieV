@@ -8,6 +8,8 @@
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
 
+#include "System/Utils.hpp"
+
 int main()
 {
     sf::ContextSettings settings;
@@ -23,12 +25,13 @@ int main()
     Hunter& h = *Hunter::add(Hunter(MAP_SIZE/2, MAP_SIZE/2));
     world.addEntity(&h);
 
-    for (int i(35); i--;)
+    Bot* newBot;
+    for (int i(30); i--;)
     {
         //world.addEntity(Turret::add(0+i*100, 1800));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
-        Bot* newBot(Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
-        //Bot* newBot(Bot::add(MAP_SIZE/2+2, MAP_SIZE/2-2));
+        //newBot = Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE);
+        newBot = Bot::add(MAP_SIZE/2+2, MAP_SIZE/2-2);
         world.addEntity(newBot);
     }
 
@@ -36,7 +39,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(8000); i--;)
+    for (int i(4000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -76,7 +79,7 @@ int main()
         std::cout << "BulletShells count : " << BulletShell::getObjects().size() << std::endl;
         std::cout << "===================================\n" << std::endl;*/
 
-        Vec2 p = Hunter::getObjects().front()->getCoord();
+        Vec2 p = h.getCoord();
 
         sf::Vector2f playerPosition(p.x, p.y);
         GameRender::setFocus(playerPosition);

@@ -1,8 +1,11 @@
 #include "Props/Explosion.hpp"
 #include "System/Config.hpp"
 #include "System/GameRender.hpp"
+#include "System/Utils.hpp"
 
 size_t Explosion::_textureID;
+std::vector<float> Explosion::_preCalculatedVx;
+std::vector<float> Explosion::_preCalculatedVy;
 
 Particle::Particle()
 {
@@ -11,8 +14,8 @@ Particle::Particle()
 
 void Particle::update()
 {
-    _x += _vx+rand()%7-3;
-    _y += _vy+rand()%7-3;
+    _x += _vx+getRandInt(-3, 3);
+    _y += _vy+getRandInt(-3, 3);
 }
 
 Explosion::Explosion() :
@@ -22,7 +25,7 @@ Explosion::Explosion() :
 
 Explosion::Explosion(float x, float y, float openAngle, float angle, float speed, float size, size_t n):
     _n(n),
-    _openAngle(openAngle),
+    _openAngle(openAngle*0.5f),
     _angle(angle),
     _speed(speed),
     _size(size),
@@ -35,26 +38,23 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
 
     for (size_t i(0); i<_n; ++i)
     {
+        Particle& p = _particles[i];
         float speed = rand()%_speed;
-        float a = (rand()%int(openAngle*10.f)-openAngle*5.f)/10.0;
-        a *= DEGRAD;
-        a += angle;
+        float a = getRandInt(-openAngle, openAngle)*DEGRAD+angle;
 
-        /// todo create randangle
-        float a2 = (rand()%int(3600))/10.0;
-        a2 *= DEGRAD;
+        int indexA = rand()%1000;
 
-        _particles[i]._x = x;
-        _particles[i]._y = y;
-        _particles[i]._vx = speed*cos(a);
-        _particles[i]._vy = speed*sin(a);
-        _particles[i]._vax = cos(a2);
-        _particles[i]._vay = sin(a2);
-        _particles[i]._size = rand()%int(_size)+2;
+        p._x = x;
+        p._y = y;
+        p._vx = speed*cos(a);
+        p._vy = speed*sin(a);
+        p._vax = getRandVx(indexA);
+        p._vay = getRandVy(indexA);
+        p._size = rand()%int(_size)+2;
 
-        int color = 50+rand()%75;
-        _particles[i]._color = sf::Color(color, color, color);
-
+        int color = getRandInt(50, 125);
+        int alpha = getRandInt(100, 200);
+        p._color = sf::Color(color, color, color, alpha);
     }
 
     _traceOnEnd   = true;
@@ -87,20 +87,21 @@ void Explosion::render()
 
         if (_isTrace)
         {
-            float a2 = (rand()%int(3600))/10.0;
-            a2 *= DEGRAD;
-            sx = 2*p._size*_ratio/2*cos(a2);
-            sy = 2*p._size*_ratio/2*sin(a2);
+            int indexA = rand()%1000;
+            sx = p._size*_ratio*getRandVx(indexA);
+            sy = p._size*_ratio*getRandVx(indexA);
         }
         else
         {
-            sx = 2*p._size*_ratio/2*p._vax;
-            sy = 2*p._size*_ratio/2*p._vay;
+            sx = p._size*_ratio*p._vax;
+            sy = p._size*_ratio*p._vay;
         }
 
         sf::Color color = p._color;
         if (!_isTrace)
-            color = sf::Color(150, 150, 150);
+        {
+            color.a = 255;
+        }
 
         sf::Vertex v1(sf::Vector2f(x+sx, y+sy), color, sf::Vector2f(0 , 0));
         sf::Vertex v2(sf::Vector2f(x+sy, y-sx), color, sf::Vector2f(70, 0));
@@ -129,4 +130,21 @@ void Explosion::render()
 void Explosion::init()
 {
     _textureID = GameRender::registerTexture("data/textures/blood.png");
+
+    for (int i(0); i<1000; ++i)
+    {
+        float a = getRandomAngle(0.0f, PI2);
+        _preCalculatedVx.push_back(cos(a));
+        _preCalculatedVy.push_back(sin(a));
+    }
+}
+
+float Explosion::getRandVx(int i)
+{
+    return _preCalculatedVx[i];
+}
+
+float Explosion::getRandVy(int i)
+{
+    return _preCalculatedVy[i];
 }

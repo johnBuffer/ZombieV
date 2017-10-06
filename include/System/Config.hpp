@@ -6,6 +6,7 @@
 #define MAP_SIZE  4096
 
 #define PI     3.1415926
+#define PI2    6.2831854
 #define PIS2   1.5707963
 #define RADDEG 57.2958
 #define DEGRAD 0.0174533
