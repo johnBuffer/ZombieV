@@ -25,8 +25,8 @@ LightEngine GameRender::_lightEngine;
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    _quality = 1.f;
-    _zoom    = 1.75f;
+    _quality = 0.5f;
+    _zoom    = 2.f;
 
     _ratio = _zoom/_quality;
     _focus = sf::Vector2f(0.0, 0.0);
@@ -63,7 +63,7 @@ void GameRender::clear()
         for (sf::VertexArray& va : v) va.clear();
     }
 
-    //_renderTexture.clear(sf::Color::Black);
+    _renderTexture.clear(sf::Color::Black);
     renderVertexArray(_groundQuad, _renderTexture, _groundTextureID);
     _screenSpaceEntities.clear();
     _lightEngine.clear();
@@ -125,6 +125,8 @@ void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture&
 void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture& target, size_t textureID)
 {
     sf::RenderStates states;
+    states.transform.scale(_quality*_zoom, _quality*_zoom);
+
     _translateToFocus(states.transform);
     states.texture = &_textures[textureID];
 
@@ -150,7 +152,7 @@ void GameRender::_renderVertices(std::vector<sf::VertexArray>& vertices, sf::Ren
 void GameRender::display(sf::RenderTarget* target)
 {
     sf::Transform tf;
-    tf.scale(_quality, _quality);
+    tf.scale(_quality*_zoom, _quality*_zoom);
     _translateToFocus(tf);
     sf::RenderStates states;
     states.transform = tf;
@@ -160,12 +162,13 @@ void GameRender::display(sf::RenderTarget* target)
     _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
 
     /// Draw lights
-    //sf::Sprite lightSprite(_lightEngine.render());
-    //_renderTexture.draw(lightSprite, sf::BlendMultiply);
+    sf::Sprite lightSprite(_lightEngine.render());
+    lightSprite.scale(_quality*_zoom, _quality*_zoom);
+    _renderTexture.draw(lightSprite, sf::BlendMultiply);
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());
-    renderSprite.setScale(_ratio, _ratio);
+    renderSprite.setScale(1/_quality, 1/_quality);
     target->draw(renderSprite);
 }
 
@@ -205,10 +208,10 @@ void GameRender::renderGround()
 
     _groundTexture.display();
     sf::Sprite groundSprite(_groundTexture.getTexture());
-    groundSprite.setScale(_quality, _quality);
-    float tx = (_focus.x-_baseOffset.x)*_quality;
-    float ty = (_focus.y-_baseOffset.y)*_quality;
-
+    groundSprite.setScale(_quality*_zoom, _quality*_zoom);
+    //_translateToFocus(states.transform);
+    float tx = (_focus.x-_baseOffset.x)*_quality*_zoom;
+    float ty = (_focus.y-_baseOffset.y)*_quality*_zoom;
     groundSprite.setPosition(-tx, -ty);
     groundSprite.setColor(sf::Color(255, 255, 255, 255));
     _renderTexture.draw(groundSprite, states);
@@ -218,13 +221,16 @@ void GameRender::fadeGround()
 {
     sf::Vector2i size(_groundTexture.getSize());
     sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));
-    rectangle.setFillColor(sf::Color(255, 255, 255, 254));
+    rectangle.setFillColor(sf::Color(254, 254, 254, 254));
     _groundTexture.draw(rectangle, sf::BlendMultiply);
 }
 
 void GameRender::_translateToFocus(sf::Transform& transform)
 {
-    transform.translate(_baseOffset.x-_focus.x, _baseOffset.y-_focus.y);
+    float tx = -_focus.x+_baseOffset.x;
+    float ty = -_focus.y+_baseOffset.y;
+
+    transform.translate(tx, ty);
 }
 
 LightEngine& GameRender::getLightEngine()
