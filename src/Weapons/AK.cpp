@@ -44,7 +44,12 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
     if (isReady())
     {
         --_currentAmmo;
-        //SoundPlayer::playInstanceOf(_shootSoundID);
+
+        size_t id = rand()%2;
+        float volume = 50/(GameRender::getDistToFocus(entity)*0.02f+1);
+        volume = volume>25?25:volume;
+
+        SoundPlayer::playInstanceOf(_shootSoundsID[id], volume);
 
         m_fireCooldown.reset();
         float accuracy = (tanh(4.0f*_recoil))*0.05f;
@@ -121,5 +126,6 @@ void AK::init()
     _idleTextureID   = GameRender::registerTexture("data/textures/hunter/hunter_idle.png");
     _reloadTextureID = GameRender::registerTexture("data/textures/hunter/hunter_rifle_reload.png");
 
-    _shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
+    _shootSoundsID.push_back(SoundPlayer::registerSound("data/fire1.wav"));
+    _shootSoundsID.push_back(SoundPlayer::registerSound("data/fire2.wav"));
 }

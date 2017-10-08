@@ -1,7 +1,7 @@
 #ifndef HUNTERBASE_HPP_INCLUDED
 #define HUNTERBASE_HPP_INCLUDED
 
-#include <map>
+#include <vector>
 
 #include "System/LifeForm.hpp"
 #include "System/Animation.hpp"
@@ -22,7 +22,7 @@ public:
 
     HunterBase(float x, float y);
 
-    void update(GameWorld& world);
+    void update(GameWorld& world) {};
     void initPhysics(GameWorld* world);
     void render();
 
@@ -40,6 +40,7 @@ protected:
     bool        _clicking;
     float       _stamina;
     float       _angleTarget;
+    Cooldown    _feetSoundCooldown;
     HunterState _state;
     HunterState _lastState;
 
@@ -52,9 +53,13 @@ protected:
     float            _feetTime;
     static Animation _feetAnimation;
     static size_t    _feetTextureID;
+    static std::vector<size_t> _stepsSounds;
 
+    void _walk(float speed);
+    void _update();
     void _changeState(HunterState state);
     void _changeAnimation(Animation& anim, bool wait=true);
+
 };
 
 #endif // HUNTERBASE_HPP_INCLUDED

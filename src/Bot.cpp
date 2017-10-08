@@ -16,8 +16,14 @@ Bot::Bot(float x, float y) :
 
 }
 
+Bot::~Bot()
+{
+
+}
+
 void Bot::update(GameWorld& world)
 {
+    _update();
     computeControls(world);
     _currentWeapon->update();
 
@@ -91,7 +97,7 @@ void Bot::computeControls(GameWorld& world)
                 _changeState(SHOOTING);
                 if (dist < 100)
                 {
-                    _feetTime += DT;
+                    _walk(1.0f);
                     _body.stop();
                     _body.accelerate2D(Vec2(vx*_speed, vy*_speed));
                 }
@@ -101,7 +107,7 @@ void Bot::computeControls(GameWorld& world)
                 float speedFactor = 0.25f;
                 _body.stop();
                 _body.accelerate2D(Vec2(-vx*_speed*speedFactor, -vy*_speed*speedFactor));
-                _feetTime += DT*speedFactor;
+                _walk(speedFactor);
             }
         }
         else

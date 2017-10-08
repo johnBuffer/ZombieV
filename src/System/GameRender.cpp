@@ -242,3 +242,12 @@ const std::list<ShadowCaster>& GameRender::getScreenSpaceShadowCasters()
 {
     return _screenSpaceEntities;
 }
+
+float GameRender::getDistToFocus(const WorldEntity* entity)
+{
+    const Vec2& coord(entity->getCoord());
+    float vx = coord.x-_focus.x;
+    float vy = coord.y-_focus.y;
+
+    return sqrt(vx*vx+vy*vy);
+}

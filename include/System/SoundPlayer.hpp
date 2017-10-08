@@ -8,9 +8,9 @@
 class SoundPlayer
 {
 public:
-    static size_t    registerSound(std::string filename);
-    static void      playInstanceOf(size_t soundID);
-    static sf::Sound getInstanceOf(size_t soundID);
+    static size_t     registerSound(std::string filename);
+    static sf::Sound& playInstanceOf(size_t soundID, float power=100.0f);
+    static sf::Sound  getInstanceOf(size_t soundID);
 
 private:
     static std::list<sf::Sound>         _sounds;

@@ -8,6 +8,7 @@ class Bot : public HunterBase, public ChainedObject<Bot>
 public:
     Bot();
     Bot(float x, float y);
+    ~Bot();
 
     void hit(WorldEntity* entity, GameWorld* gameWorld);
     void setTarget(WorldEntity* entity) {m_target = entity;}

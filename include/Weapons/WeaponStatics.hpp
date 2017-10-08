@@ -13,7 +13,7 @@ protected:
     static size_t _reloadTextureID;
     static size_t _idleTextureID;
 
-    static size_t _shootSoundID;
+    static std::vector<size_t> _shootSoundsID;
 };
 
 template <class T>
@@ -29,6 +29,6 @@ template <class T>
 size_t WeaponStatics<T>::_idleTextureID;
 
 template <class T>
-size_t WeaponStatics<T>::_shootSoundID;
+std::vector<size_t> WeaponStatics<T>::_shootSoundsID;
 
 #endif // WEAPONSTATICS_HPP_INCLUDED

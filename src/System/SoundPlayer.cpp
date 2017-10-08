@@ -12,19 +12,23 @@ size_t SoundPlayer::registerSound(std::string filename)
     return _buffers.size()-1;
 }
 
-void SoundPlayer::playInstanceOf(size_t soundID)
+sf::Sound& SoundPlayer::playInstanceOf(size_t soundID, float power)
 {
     _sounds.push_back(sf::Sound());
-    _sounds.back().setBuffer(_buffers[soundID]);
-    _sounds.back().play();
+
+    sf::Sound& newSound = _sounds.back();
+    newSound.setBuffer(_buffers[soundID]);
+    newSound.play();
+    newSound.setVolume(power);
 
     update();
+
+    return newSound;
 }
 
 sf::Sound SoundPlayer::getInstanceOf(size_t soundID)
 {
-    sf::Sound sound(_buffers[soundID]);
-    return sound;
+    return sf::Sound(_buffers[soundID]);
 }
 
 void SoundPlayer::update()

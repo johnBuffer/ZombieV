@@ -9,6 +9,8 @@
 size_t HunterBase::_feetTextureID;
 Animation HunterBase::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
+std::vector<size_t> HunterBase::_stepsSounds;
+
 HunterBase::HunterBase(float x, float y) :
     WorldEntity(x, y, 0)
 {
@@ -34,6 +36,7 @@ HunterBase::HunterBase(float x, float y) :
     _currentAnimation = _currentWeapon->getMoveAnimation();
 
     _feetTime = 0.0f;
+    _feetSoundCooldown = Cooldown(0.35);
 
     _type = EntityTypes::HUNTER;
 
@@ -61,11 +64,19 @@ void HunterBase::init()
     _feetTextureID = GameRender::registerTexture("data/textures/hunter/hunter_walk.png");
     _feetAnimation.setTextureID(_feetTextureID);
     _feetAnimation.setCenter(sf::Vector2f(76, 62));
+
+    _stepsSounds.push_back(SoundPlayer::registerSound("data/Sounds/step1.wav"));
+    _stepsSounds.push_back(SoundPlayer::registerSound("data/Sounds/step2.wav"));
+    _stepsSounds.push_back(SoundPlayer::registerSound("data/Sounds/step3.wav"));
+    _stepsSounds.push_back(SoundPlayer::registerSound("data/Sounds/step4.wav"));
+    _stepsSounds.push_back(SoundPlayer::registerSound("data/Sounds/step5.wav"));
+
 }
 
-void HunterBase::update(GameWorld& world)
+void HunterBase::_walk(float speed)
 {
-
+    _feetTime += DT*speed;
+    _feetSoundCooldown.update(DT*speed);
 }
 
 void HunterBase::render()
@@ -88,6 +99,19 @@ void HunterBase::render()
     GameRender::addQuad(_feetAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
 
     GraphicUtils::createEntityShadow(this);
+}
+
+void HunterBase::_update()
+{
+    if (_feetSoundCooldown.isReady())
+    {
+        _feetSoundCooldown.reset();
+        int stepIndex = rand()%5;
+
+        float volume = 100/(GameRender::getDistToFocus(this)*0.02f+1);
+
+        SoundPlayer::playInstanceOf(_stepsSounds[stepIndex], volume);
+    }
 }
 
 void HunterBase::_changeState(HunterState state)

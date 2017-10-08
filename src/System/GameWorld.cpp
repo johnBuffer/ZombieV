@@ -16,7 +16,7 @@ GameWorld::GameWorld() :
 
     Guts::init();
     Turret::init();
-    Hunter::init();
+    HunterBase::init();
     Bullet::init();
     BulletShell::init();
     AK::init();

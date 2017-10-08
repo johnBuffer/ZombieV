@@ -36,7 +36,8 @@ public:
     static bool   isVisible(WorldEntity* entity);
     static bool   isVisible(const Vec2& position, float radius);
     static size_t registerTexture(std::string filename, bool isRepeated=false);
-    const static  std::list<ShadowCaster>& getScreenSpaceShadowCasters();
+    static const  std::list<ShadowCaster>& getScreenSpaceShadowCasters();
+    static float  getDistToFocus(const WorldEntity* entity);
 
     static LightEngine& getLightEngine();
     static const sf::Texture& getBlur(const sf::Texture& texture);

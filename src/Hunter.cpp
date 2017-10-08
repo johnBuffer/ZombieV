@@ -48,7 +48,7 @@ void Hunter::updateControls(const EventManager& em)
     if (vx || vy)
     {
         _changeState(HunterState::MOVING);
-        _feetTime += DT;
+        _walk(1.0f);
     }
     else
         _changeState(HunterState::IDLE);
@@ -72,6 +72,8 @@ void Hunter::updateControls(const EventManager& em)
 
 void Hunter::update(GameWorld& world)
 {
+    _update();
+
     updateControls(world.getEvents());
     _currentWeapon->update();
 
