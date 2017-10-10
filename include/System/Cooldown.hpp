@@ -9,7 +9,9 @@ public:
 
     bool  isReady() const;
     float getDelay() const;
+    float getRatio() const;
 
+    void setDelay(float delay);
     void update(float dt);
     void reset();
 

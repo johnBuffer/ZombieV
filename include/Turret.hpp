@@ -3,6 +3,8 @@
 
 #include "System/StandardEntity.hpp"
 #include "LightEngine/LightEngine.hpp"
+#include "System/Cooldown.hpp"
+#include "System/AutoAim.hpp"
 
 class Turret : public StandardEntity<Turret>
 {
@@ -14,7 +16,7 @@ public:
     void update(GameWorld& world);
     void render();
 
-    void setTarget(WorldEntity* entity) {m_target = entity;}
+    void setTarget(WorldEntity* entity);
 
     bool isDone() const {return false;}
 
@@ -28,13 +30,14 @@ public:
     };
 
 private:
-    float m_cooldown, m_currentCooldown;
-    float m_accuracy;
+    Cooldown m_fireCooldown;
+    float    m_accuracy;
 
     Light* light;
 
-    TurretState m_currentState;
+    TurretState  m_currentState;
     WorldEntity* m_target;
+    AutoAim      m_autoAim;
 
     WorldEntity* getTarget(GameWorld* world) const;
     void fire(GameWorld* world);

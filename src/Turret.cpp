@@ -15,12 +15,12 @@ Turret::Turret()
 
 Turret::Turret(float x, float y) :
     StandardEntity(x, y, 0.0f),
-    m_target(nullptr)
+    m_fireCooldown(0.075f),
+    m_target(nullptr),
+    m_autoAim(this, 0.05f)
 {
     m_currentState = Turret::IDLE;
     m_accuracy     = 0.05f;
-    m_cooldown     = 0.075f;
-    m_currentCooldown = 0.0f;
 
     Light l;
     l.color = sf::Color(255, 127, 0);
@@ -46,23 +46,11 @@ void Turret::update(GameWorld& world)
     light->radius = 0;
     if (m_target)
     {
-        Vec2 vTarget(m_target->getCoord(), getCoord());
-        Vec2 direction(cos(_angle), sin(_angle));
-        Vec2 directionNormal(-direction.y, direction.x);
+        m_autoAim.update(DT);
 
-        float dist = vTarget.getNorm();
-        float vx = vTarget.x/dist;
-        float vy = vTarget.y/dist;
-
-        float dot2 = vx*directionNormal.x + vy*directionNormal.y;
-        float coeff = 0.05f;
-
-        float absDot = std::abs(dot2);
-        coeff *= absDot;
-
-        if (absDot<0.25f)
+        if (m_autoAim.getDotDist()<0.25f)
         {
-            if (m_currentCooldown <= 0)
+            if (m_fireCooldown.isReady())
             {
                 m_currentState = Turret::SHOOTING;
                 fire(&world);
@@ -73,7 +61,7 @@ void Turret::update(GameWorld& world)
             m_currentState = Turret::IDLE;
         }
 
-        _angle += dot2<0?-coeff:coeff;
+        _angle += m_autoAim.getDelta();
 
 
         if (m_target->isDying())
@@ -89,14 +77,12 @@ void Turret::update(GameWorld& world)
     Vec2 smokeOut = transformVec(Vec2(-45, -2), _angle, getCoord());
     m_body->setPosition(smokeOut);
 
-    m_currentCooldown -= DT;
-    if (m_currentCooldown<0.0f)
-        m_currentCooldown = 0.0f;
+    m_fireCooldown.update(DT);
 }
 
 void Turret::fire(GameWorld* world)
 {
-    m_currentCooldown = m_cooldown;
+    m_fireCooldown.reset();
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
     Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 2, 0));
@@ -144,16 +130,13 @@ WorldEntity* Turret::getTarget(GameWorld* world) const
     return target;
 }
 
-
-
-
 void Turret::render()
 {
     float x = _body.getPosition().x;
     float y = _body.getPosition().y;
 
     float recoilDist  = 10.0f;
-    float recoilRatio = (1.0f-m_currentCooldown/m_cooldown)*recoilDist;
+    float recoilRatio = m_fireCooldown.getRatio()*recoilDist;
 
     float textureOffset = m_currentState==Turret::SHOOTING?103:0;
 
@@ -186,5 +169,11 @@ void Turret::init()
 {
     s_textureID = GameRender::registerTexture("data/textures/turret_v1.png");
     s_shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
+}
+
+void Turret::setTarget(WorldEntity* entity)
+{
+    m_target = entity;
+    m_autoAim.setTarget(entity);
 }
 

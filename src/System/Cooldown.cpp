@@ -33,3 +33,14 @@ void Cooldown::reset()
 {
     m_currentTime = m_delay;
 }
+
+float Cooldown::getRatio() const
+{
+    return 1.0f-m_currentTime/m_delay;
+}
+
+void Cooldown::setDelay(float delay)
+{
+    m_delay = delay;
+}
+
