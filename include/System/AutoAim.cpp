@@ -42,8 +42,8 @@ void AutoAim::update(float dt)
 
         m_deltaAngle = dot2<0?-coeff:coeff;
     }
-
-    m_deltaAngle = 0.0f;
+    else
+        m_deltaAngle = 0.0f;
 }
 
 void AutoAim::setSpeed(float speed)

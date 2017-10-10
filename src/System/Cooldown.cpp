@@ -27,6 +27,8 @@ float Cooldown::getDelay() const
 void Cooldown::update(float dt)
 {
     m_currentTime -= dt;
+    if (m_currentTime < 0)
+        m_currentTime = 0;
 }
 
 void Cooldown::reset()

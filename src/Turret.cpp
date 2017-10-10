@@ -15,7 +15,7 @@ Turret::Turret()
 
 Turret::Turret(float x, float y) :
     StandardEntity(x, y, 0.0f),
-    m_fireCooldown(0.075f),
+    m_fireCooldown(0.1f),
     m_target(nullptr),
     m_autoAim(this, 0.05f)
 {
