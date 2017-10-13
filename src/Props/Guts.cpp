@@ -5,6 +5,12 @@
 
 size_t Guts::_textureID;
 
+Guts::Guts() :
+    StandardEntity()
+{
+
+}
+
 Guts::Guts(U_2DBody* anchor, Vec2 pos, Vec2 v) :
     StandardEntity(pos.x, pos.y, 0.0),
     _initialVelocity(v),

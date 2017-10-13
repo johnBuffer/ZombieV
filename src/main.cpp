@@ -22,7 +22,7 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
-    Hunter& h = *Hunter::add(Hunter(MAP_SIZE/2, MAP_SIZE/2));
+    Hunter& h = *Hunter::add(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
     Bot* newBot;

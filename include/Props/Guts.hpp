@@ -4,6 +4,7 @@
 class Guts : public StandardEntity<Guts>
 {
 public:
+    Guts();
     Guts(U_2DBody* anchor, Vec2 pos, Vec2 v);
 
     bool isDone() const;

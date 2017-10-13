@@ -6,6 +6,12 @@
 
 #include <iostream>
 
+Hunter::Hunter() :
+    HunterBase()
+{
+
+}
+
 Hunter::Hunter(float x, float y) :
     HunterBase(x, y)
 {

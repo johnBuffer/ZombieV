@@ -107,12 +107,12 @@ void Turret::fire(GameWorld* world)
 
 WorldEntity* Turret::getTarget(GameWorld* world) const
 {
-    ListPtr<Zombie> zombies = Zombie::getObjects();
+    Vector<Zombie> zombies = Zombie::getObjects();
 
     Zombie* target = nullptr;
     float minDist  = -1;
 
-    for (Shared<Zombie>& zombie : zombies)
+    for (Ptr<Zombie>& zombie : zombies)
     {
         Vec2 v(zombie->getCoord(), getCoord());
         float dist = v.getNorm();

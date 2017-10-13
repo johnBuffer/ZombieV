@@ -3,10 +3,10 @@
 
 #include "System/WorldEntity.hpp"
 #include "System/DrawableEntity.hpp"
-#include "System/ChainedObject.hpp"
+#include "System/PoolObject.hpp"
 
 template<class T>
-class StandardEntity : public WorldEntity, public DrawableEntity<T>, public ChainedObject<T>
+class StandardEntity : public WorldEntity, public DrawableEntity<T>, public PoolObject<T>
 {
 public:
     StandardEntity() : WorldEntity(0.0f, 0.0f, 0.0f) {}

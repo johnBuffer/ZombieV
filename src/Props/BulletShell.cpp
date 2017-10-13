@@ -6,6 +6,12 @@
 
 size_t BulletShell::_textureID;
 
+BulletShell::BulletShell() :
+    StandardEntity()
+{
+
+}
+
 BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     StandardEntity(pos.x, pos.y, angle),
     _velocity(velocity),

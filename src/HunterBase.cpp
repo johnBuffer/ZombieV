@@ -9,6 +9,11 @@
 size_t HunterBase::_feetTextureID;
 Animation HunterBase::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
+HunterBase::HunterBase() :
+    WorldEntity(0, 0, 0)
+{
+}
+
 HunterBase::HunterBase(float x, float y) :
     WorldEntity(x, y, 0)
 {

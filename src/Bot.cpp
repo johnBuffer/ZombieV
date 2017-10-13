@@ -124,7 +124,7 @@ void Bot::computeControls(GameWorld& world)
 void Bot::getTarget(GameWorld* world)
 {
     ++m_getTargetCount;
-    ListPtr<Zombie> zombies = Zombie::getObjects();
+    Vector<Zombie> zombies = Zombie::getObjects();
 
     Zombie* target = nullptr;
     float minDist  = -1;
@@ -132,7 +132,7 @@ void Bot::getTarget(GameWorld* world)
     int skip = 2;
     int step(m_getTargetCount%skip);
     int i(0);
-    for (Shared<Zombie>& zombie : zombies)
+    for (Ptr<Zombie>& zombie : zombies)
     {
         ++i;
         if ((i+step)%skip==0)

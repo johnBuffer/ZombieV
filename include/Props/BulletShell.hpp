@@ -7,6 +7,7 @@
 class BulletShell : public StandardEntity<BulletShell>
 {
 public:
+    BulletShell();
     BulletShell(const Vec2& pos, const Vec2& velocity, float angle);
 
     bool isDone() const {return _isDone;}

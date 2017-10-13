@@ -3,7 +3,7 @@
 
 #include "HunterBase.hpp"
 
-class Bot : public HunterBase, public ChainedObject<Bot>
+class Bot : public HunterBase, public PoolObject<Bot>
 {
 public:
     Bot();

@@ -17,6 +17,7 @@ class Zombie : public StandardEntity<Zombie>, public LifeForm
     };
 
 public:
+    Zombie();
     Zombie(float x, float y);
     ~Zombie();
 

@@ -20,6 +20,7 @@ public:
         RELOADING
     };
 
+    HunterBase();
     HunterBase(float x, float y);
 
     void update(GameWorld& world);

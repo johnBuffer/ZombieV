@@ -12,6 +12,12 @@ size_t      Zombie::_attackTextureID;
 Animation   Zombie::_moveAnimation(3, 6, 288, 311, 17, 20);
 Animation   Zombie::_attackAnimation(3, 3, 954/3, 882/3, 9, 20);
 
+Zombie::Zombie() :
+    StandardEntity()
+{
+
+}
+
 Zombie::Zombie(float x, float y) :
     StandardEntity(x, y, 0.0f),
     _vertexArray(sf::VertexArray(sf::Quads, 4))
@@ -195,13 +201,13 @@ void Zombie::initPhysics(GameWorld* world)
 
 void Zombie::_getTarget()
 {
-    ListPtr<Bot>& bots = Bot::getObjects();
-    ListPtr<Hunter>& hunters = Hunter::getObjects();
+    Vector<Bot>& bots = Bot::getObjects();
+    Vector<Hunter>& hunters = Hunter::getObjects();
 
     WorldEntity* target = nullptr;
     float minDist  = -1;
 
-    for (Shared<Bot>& bot : bots)
+    for (Ptr<Bot>& bot : bots)
     {
         Vec2 v(bot->getCoord(), getCoord());
         float dist = v.getNorm2();
@@ -213,7 +219,7 @@ void Zombie::_getTarget()
         }
     }
 
-    for (Shared<Hunter>& hunter : hunters)
+    for (Ptr<Hunter>& hunter : hunters)
     {
         Vec2 v(hunter->getCoord(), getCoord());
         float dist = v.getNorm2();

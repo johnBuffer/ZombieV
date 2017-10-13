@@ -12,17 +12,18 @@
 #include "Weapons/Weapons.hpp"
 #include "LightEngine/LightEngine.hpp"
 
-class Hunter : public HunterBase, public ChainedObject<Hunter>
+class Hunter : public HunterBase, public PoolObject<Hunter>
 {
 public:
+    Hunter();
     Hunter(float x, float y);
 
     void updateControls(const EventManager& em);
     void update(GameWorld& world);
 
 protected:
-    bool        _releasedWeaponSwap;
-    bool        _clicking;
+    bool _releasedWeaponSwap;
+    bool _clicking;
 };
 
 #endif // HUNTER_HPP_INCLUDED
