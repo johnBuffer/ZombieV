@@ -43,12 +43,12 @@ void Bot::update(GameWorld& world)
         _state = IDLE;
     }
 
-    _shootLight->radius = 0;
+    //_shootLight->radius = 0;
     if (_state == SHOOTING)
     {
         bool wait = _lastState==SHOOTING;
         _changeAnimation(_currentWeapon->getShootAnimation(), wait);
-        _shootLight->radius = 350;
+        //_shootLight->radius = 350;
     }
     else if (_state == MOVING)
     {
@@ -60,7 +60,7 @@ void Bot::update(GameWorld& world)
         _changeAnimation(_currentWeapon->getIdleAnimation());
     }
 
-    _shootLight->position = _currentWeapon->getFireOutPosition(this);
+    //_shootLight->position = _currentWeapon->getFireOutPosition(this);
     /*_flashlight->position = _shootLight->position;
     _littleLight->position = _shootLight->position;
     _flashlight->angle = getAngle()+PI;*/
@@ -124,7 +124,9 @@ void Bot::computeControls(GameWorld& world)
 void Bot::getTarget(GameWorld* world)
 {
     ++m_getTargetCount;
-    Vector<Zombie> zombies = Zombie::getObjects();
+    Ptr<Zombie>* zombie = nullptr;
+    if (!Zombie::getFirst(zombie))
+        return;
 
     Zombie* target = nullptr;
     float minDist  = -1;
@@ -132,21 +134,20 @@ void Bot::getTarget(GameWorld* world)
     int skip = 2;
     int step(m_getTargetCount%skip);
     int i(0);
-    for (Ptr<Zombie>& zombie : zombies)
-    {
-        ++i;
-        if ((i+step)%skip==0)
-        {
-            Vec2 v(zombie->getCoord(), getCoord());
-            float dist = v.getNorm2();
 
-            if (dist < minDist|| minDist < 0)
-            {
-                minDist = dist;
-                target = &(*zombie);
-            }
+    do
+    {
+        Zombie& z = *(*zombie);
+        Vec2 v(z.getCoord(), getCoord());
+        float dist = v.getNorm2();
+
+        if (dist < minDist|| minDist < 0)
+        {
+            minDist = dist;
+            target = &z;
         }
     }
+    while (Zombie::getNext(zombie, zombie));
 
     if (target)
     {

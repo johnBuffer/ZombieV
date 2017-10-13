@@ -42,13 +42,13 @@ HunterBase::HunterBase(float x, float y) :
 
     _type = EntityTypes::HUNTER;
 
-    Light light;
+    /*Light light;
     light.color = sf::Color(255, 127, 0);
     light.intensity = 1.0f;
     light.radius  = 0;
     _shootLight = GameRender::getLightEngine().addDurableLight(light);
 
-    /*light.color = sf::Color(220, 200, 150);
+    light.color = sf::Color(220, 200, 150);
     light.intensity = 1.0f;
     light.radius  = 300;
     light.width = 45;

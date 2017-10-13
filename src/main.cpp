@@ -14,9 +14,15 @@ int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(false);
     //window.setFramerateLimit(60);
+
+    /*Hunter::resize(10);
+    Bot::resize(20);
+    Smoke::resize(200);
+    Zombie::resize(10000);
+    Bullet::resize(500);*/
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -28,7 +34,7 @@ int main()
     Bot* newBot;
     for (int i(50); i--;)
     {
-        world.addEntity(Turret::add(2000+i*100, 2048));
+        //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
         //newBot = Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE);
         newBot = Bot::add(MAP_SIZE/2+2, MAP_SIZE/2-2);
@@ -47,7 +53,7 @@ int main()
     }
     waveCount++;
 
-    for (int i(0); i<25; ++i)
+    for (int i(0); i<0; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
@@ -74,14 +80,17 @@ int main()
 			}
         }
 
+        sf::Clock clock;
         world.update();
+        int upTime = clock.getElapsedTime().asMilliseconds();
 
-        std::cout << "Bullets      count : " << Bullet::getObjects().size() << std::endl;
-        std::cout << "Zombies      count : " << Zombie::getObjects().size() << std::endl;
-        std::cout << "Explosions   count : " << Explosion::getObjects().size() << std::endl;
-        std::cout << "Smokes       count : " << Smoke::getObjects().size() << std::endl;
-        std::cout << "BulletShells count : " << BulletShell::getObjects().size() << std::endl;
-        std::cout << "===================================\n" << std::endl;
+        std::cout << "Logic update time  : " << upTime << "ms" << std::endl;
+        /*std::cout << "Bullets      count : " << Bullet::size() << std::endl;
+        std::cout << "Zombies      count : " << Zombie::size() << std::endl;
+        std::cout << "Explosions   count : " << Explosion::size() << std::endl;
+        std::cout << "Smokes       count : " << Smoke::size() << std::endl;
+        std::cout << "BulletShells count : " << BulletShell::size() << std::endl;
+        std::cout << "===================================\n" << std::endl;*/
 
         Vec2 p = h.getCoord();
 

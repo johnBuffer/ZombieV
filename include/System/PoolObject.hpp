@@ -12,8 +12,12 @@ public:
 
     void remove();
 
-    static void removeObject(size_t i);
+    static size_t     size() {return s_pool.size();}
+    static bool       getFirst(PoolItem<T>*& item);
+    static bool       getNext(PoolItem<T>* item, PoolItem<T>*& nextItem);
     static Vector<T>& getObjects();
+    static void       removeObject(size_t i);
+    static void       resize(size_t size);
 
 protected:
     size_t m_index;
@@ -49,9 +53,27 @@ void PoolObject<T>::remove()
 }
 
 template<class T>
+void PoolObject<T>::resize(size_t size)
+{
+    s_pool.resize(size);
+}
+
+template<class T>
 Vector<T>& PoolObject<T>::getObjects()
 {
     return s_pool.getObjects();
+}
+
+template<class T>
+bool PoolObject<T>::getFirst(PoolItem<T>*& item)
+{
+    return s_pool.getFirstItem(item);
+}
+
+template<class T>
+bool PoolObject<T>::getNext(PoolItem<T>* item, PoolItem<T>*& nextItem)
+{
+    return s_pool.getNextItem(item, nextItem);
 }
 
 #endif // POOLOBJECT_HPP_INCLUDED

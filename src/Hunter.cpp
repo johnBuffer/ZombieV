@@ -100,12 +100,12 @@ void Hunter::update(GameWorld& world)
         _state = IDLE;
     }
 
-    _shootLight->radius = 0;
+    //_shootLight->radius = 0;
     if (_state == SHOOTING)
     {
         bool wait = _lastState==SHOOTING;
         _changeAnimation(_currentWeapon->getShootAnimation(), wait);
-        _shootLight->radius = 350;
+        //_shootLight->radius = 350;
     }
     else if (_state == MOVING)
     {
@@ -117,8 +117,8 @@ void Hunter::update(GameWorld& world)
         _changeAnimation(_currentWeapon->getIdleAnimation());
     }
 
-    _shootLight->position = _currentWeapon->getFireOutPosition(this);
-    /*_flashlight->position = _shootLight->position;
+    /*_shootLight->position = _currentWeapon->getFireOutPosition(this);
+    _flashlight->position = _shootLight->position;
     _littleLight->position = _shootLight->position;
     _flashlight->angle = getAngle()+PI;*/
 }

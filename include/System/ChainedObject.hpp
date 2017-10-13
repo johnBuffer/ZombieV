@@ -11,7 +11,10 @@ struct PoolItem
     T    object;
     int  index;
     bool isAviable;
-    int  next;
+
+    int nextFree;
+    int nextObject;
+    int prevObject;
 
     T* operator->();
     T& operator*();
@@ -41,15 +44,18 @@ public:
 
     T& operator[](size_t i);
 
+    bool getFirstItem(PoolItem<T>*& item);
     size_t size() {return m_size;}
-
+    bool getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem);
     std::vector<PoolItem<T>>& getObjects() {return m_data;}
 
     void remove(int i);
+    void resize(size_t size);
 
 private:
     size_t m_size;
     int m_firstFree;
+    int m_firstObject;
     std::vector<PoolItem<T>> m_data;
 
 };
@@ -61,7 +67,15 @@ template<class T>
 Pool<T>::Pool(size_t size) :
     m_size(0)
 {
-    m_firstFree = -1;
+    resize(size);
+}
+
+template<class T>
+void Pool<T>::resize(size_t size)
+{
+    m_firstFree   = -1;
+    m_firstObject = -1;
+
     m_data.resize(size);
 
     for (size_t i(0); i<size; ++i)
@@ -69,12 +83,12 @@ Pool<T>::Pool(size_t size) :
         m_data[i].index = i;
 
         m_data[i].isAviable = true;
-        m_data[i].next = i+1;
+        m_data[i].nextFree = i+1;
     }
 
     if (size)
     {
-        m_data.back().next = -1;
+        m_data.back().nextFree = -1;
         m_firstFree = 0;
     }
 }
@@ -88,10 +102,19 @@ size_t Pool<T>::createObject(Args&&... args)
     if (m_firstFree != -1)
     {
         index = m_firstFree;
-        m_firstFree = m_data[m_firstFree].next;
+        m_firstFree = m_data[m_firstFree].nextFree;
 
-        new(&m_data[index].object) T(args...);
-        m_data[index].isAviable = false;
+        PoolItem<T>& poolItem = m_data[index];
+        new(&poolItem.object) T(args...);
+        poolItem.isAviable = false;
+
+        poolItem.nextObject = m_firstObject;
+        poolItem.prevObject = -1;
+
+        if (m_firstObject != -1)
+            m_data[m_firstObject].prevObject = index;
+
+        m_firstObject = index;
     }
     else
     {
@@ -103,6 +126,10 @@ size_t Pool<T>::createObject(Args&&... args)
 
         new(&(newPoolItem.object)) T(args...);
         index = newPoolItem.index;
+
+        m_firstObject = index;
+        newPoolItem.nextObject = -1;
+        newPoolItem.prevObject = -1;
     }
 
     return index;
@@ -117,10 +144,46 @@ T& Pool<T>::operator[](size_t i)
 template<class T>
 void Pool<T>::remove(int i)
 {
+    PoolItem<T>& poolItem = m_data[i];
     --m_size;
-    m_data[i].next = m_firstFree;
-    m_data[i].isAviable = true;
+    poolItem.nextFree = m_firstFree;
+    poolItem.isAviable = true;
     m_firstFree = i;
+
+    if (poolItem.prevObject != -1)
+    {
+        m_data[poolItem.prevObject].nextObject = poolItem.nextObject;
+    }
+
+    if (poolItem.nextObject != -1)
+    {
+        m_data[poolItem.nextObject].prevObject = poolItem.prevObject;
+    }
 }
+
+template<class T>
+bool Pool<T>::getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem)
+{
+    if (item->nextObject != -1)
+    {
+        nextItem = &m_data[item->nextObject];
+        return true;
+    }
+
+    return false;
+}
+
+template<class T>
+bool Pool<T>::getFirstItem(PoolItem<T>*& item)
+{
+    if (m_firstObject != -1)
+    {
+        item = &m_data[m_firstObject];
+        return true;
+    }
+
+    return false;
+}
+
 
 #endif // CHAINEDOBJECT_HPP_INCLUDED
