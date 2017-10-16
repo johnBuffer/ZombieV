@@ -5,6 +5,8 @@
 #include <System/WorldEntity.hpp>
 #include <System/GameWorld.hpp>
 
+#include <thread>
+
 GridCell::GridCell()
 {
     _maxIndex=0;
@@ -51,7 +53,7 @@ void U_2DCollisionManager::addBody(U_2DBody* body)
     if (!body->getRadius())
         body->setRadius(m_bodySize*0.45);
 
-    m_bodies.push_back(body);
+    //m_bodies.push_back(body);
 }
 
 long U_2DCollisionManager::convertPosToHash(int x, int y) const
@@ -103,7 +105,8 @@ void U_2DCollisionManager::applyGravity()
 {
     if (m_gravity.x || m_gravity.y)
     {
-        for (auto b : m_bodies)
+        U_2DBody* b = nullptr;
+        while (U_2DBody::getNext(b))
         {
             b->accelerate2D(m_gravity);
         }
@@ -200,8 +203,12 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
 
 void U_2DCollisionManager::solveCollisions()
 {
-    for(auto &elem : m_grid)   solveGridCollisions(elem.second);
-    for(auto &body : m_bodies) solveBoundCollisions(body);
+    for(auto &elem : m_grid)  solveGridCollisions(elem.second);
+    U_2DBody* b = nullptr;
+    while (U_2DBody::getNext(b))
+    {
+        solveBoundCollisions(b);
+    }
 }
 
 void U_2DCollisionManager::update()
@@ -216,9 +223,10 @@ void U_2DCollisionManager::update()
 
     c1.restart();
     for (auto &elem : m_grid) elem.second.reset();
-    for (auto &body : m_bodies)
+    U_2DBody* b = nullptr;
+    while (U_2DBody::getNext(b))
     {
-        addBodyToGrid(body);
+        addBodyToGrid(b);
     }
 
     c2.restart();
@@ -229,15 +237,16 @@ void U_2DCollisionManager::update()
         solveConstraints();
         solveConstraints();
     }
+    std::cout << "Phys time : " << c2.getElapsedTime().asMilliseconds() << std::endl;
 
     // friction
-    for (auto &body : m_bodies)
+    b = nullptr;
+    while (U_2DBody::getNext(b))
     {
-        Vec2 velocity = body->getVelocity();
-        body->accelerate2D(Vec2(-10*velocity.x, -10*velocity.y));
+        Vec2 velocity = b->getVelocity();
+        b->accelerate2D(Vec2(-10*velocity.x, -10*velocity.y));
+        b->updatePosition(m_timeStep);
     }
-
-    for (auto& body : m_bodies) body->updatePosition(m_timeStep);
 }
 
 void U_2DCollisionManager::solveConstraints()
@@ -252,7 +261,7 @@ void U_2DCollisionManager::solveConstraints()
 
 void U_2DCollisionManager::applyExplosion(Vec2 explosionCoord, float force)
 {
-    for (U2DBody_ptr body : m_bodies)
+    /*for (U2DBody_ptr body : m_bodies)
     {
         Vec2 v(explosionCoord, body->getPosition());
 
@@ -263,7 +272,7 @@ void U_2DCollisionManager::applyExplosion(Vec2 explosionCoord, float force)
 
         if (dist > 100)
             body->accelerate2D(v);
-    }
+    }*/
 }
 
 GridCell* U_2DCollisionManager::getBodyAt(Vec2 coord)
@@ -283,7 +292,7 @@ GridCell* U_2DCollisionManager::getBodyAt(Vec2 coord)
 
 void U_2DCollisionManager::killBody(U_2DBody* body)
 {
-    m_bodies.remove(body);
+    body->remove();
 }
 
 void U_2DCollisionManager::killConstraint(U_2DConstraint* c)
@@ -296,4 +305,31 @@ U_2DConstraint* U_2DCollisionManager::addConstraint(U_2DBody* body1, U_2DBody* b
     m_constraints.push_back(U_2DConstraint(body1, body2, 100.0, length));
     return &m_constraints.back();
 }
+
+size_t U_2DCollisionManager::addBody(const Vec2& coord)
+{
+    U_2DBody* newBody = U_2DBody::add(coord, 1.0f, false);
+    newBody->setRadius(m_bodySize*0.5f);
+
+    return newBody->getIndex();
+}
+
+U_2DBody* U_2DCollisionManager::getBodyByID(size_t id)
+{
+    return U_2DBody::getObjectAt(id);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

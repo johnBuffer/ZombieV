@@ -10,11 +10,12 @@ public:
     template<class...Args>
     static T* add(Args&&...);
 
+    size_t getIndex() const {return m_index;}
     void remove();
 
     static size_t     size() {return s_pool.size();}
-    static bool       getFirst(PoolItem<T>*& item);
-    static bool       getNext(PoolItem<T>* item, PoolItem<T>*& nextItem);
+    static bool       getNext(T*& item);
+    static T*         getObjectAt(size_t i);
     static Vector<T>& getObjects();
     static void       removeObject(size_t i);
     static void       resize(size_t size);
@@ -65,15 +66,29 @@ Vector<T>& PoolObject<T>::getObjects()
 }
 
 template<class T>
-bool PoolObject<T>::getFirst(PoolItem<T>*& item)
+T* PoolObject<T>::getObjectAt(size_t i)
 {
-    return s_pool.getFirstItem(item);
+    return &(s_pool.getPoolItemAt(i).object);
 }
 
 template<class T>
-bool PoolObject<T>::getNext(PoolItem<T>* item, PoolItem<T>*& nextItem)
+bool PoolObject<T>::getNext(T*& item)
 {
-    return s_pool.getNextItem(item, nextItem);
+    if (item)
+    {
+        PoolItem<T>& poolItem(s_pool.getPoolItemAt(item->m_index));
+
+        if (poolItem.nextObject != -1)
+            item = &(poolItem.object);
+        else
+            item = nullptr;
+    }
+    else
+    {
+        item = s_pool.getFirstItem();
+    }
+
+    return item;
 }
 
 #endif // POOLOBJECT_HPP_INCLUDED

@@ -1,38 +1,42 @@
 #include "UnitedEngine/U_2DConstraint.h"
+#include "UnitedEngine/U_2DCollisionManager.h"
 
 U_2DConstraint::U_2DConstraint(U_2DBody* b1, U_2DBody* b2)
 {
-    m_body1 = b1;
-    m_body2 = b2;
+    m_idBody1 = b1->getIndex();
+    m_idBody2 = b2->getIndex();
 
-    m_length = Vec2(m_body2->getPosition(), m_body1->getPosition()).getNorm();
+    m_length = Vec2(b2->getPosition(), b1->getPosition()).getNorm();
     m_broken = false;
-    _maxElongationFactor = 0;
-    _onlyTension = false;
+    m_maxElongationFactor = 0;
+    m_onlyTension = false;
 }
 
 U_2DConstraint::U_2DConstraint(U_2DBody* b1, U_2DBody* b2, float maxElongationFactor, float length)
 {
-    m_body1 = b1;
-    m_body2 = b2;
+    m_idBody1 = b1->getIndex();
+    m_idBody2 = b2->getIndex();
 
     m_length = length;
     if (length == 0)
-        m_length = Vec2(m_body2->getPosition(), m_body1->getPosition()).getNorm();
+        m_length = Vec2(b2->getPosition(), b1->getPosition()).getNorm();
 
     m_broken = false;
-    _maxElongationFactor = maxElongationFactor;
-    _onlyTension = false;
+    m_maxElongationFactor = maxElongationFactor;
+    m_onlyTension = false;
 }
 
 
 void U_2DConstraint::applyConstraint()
 {
-    float vx = m_body1->getPosition().x-m_body2->getPosition().x;
-    float vy = m_body1->getPosition().y-m_body2->getPosition().y;
+    U_2DBody* b1 = U_2DCollisionManager::getBodyByID(m_idBody1);
+    U_2DBody* b2 = U_2DCollisionManager::getBodyByID(m_idBody2);
 
-    float mass1 = m_body1->getMass();
-    float mass2 = m_body2->getMass();
+    float vx = b1->getPosition().x-b2->getPosition().x;
+    float vy = b1->getPosition().y-b2->getPosition().y;
+
+    float mass1 = b1->getMass();
+    float mass2 = b2->getMass();
 
     float coeffMass2 = 1;
     float coeffMass1 = 1;
@@ -45,7 +49,7 @@ void U_2DConstraint::applyConstraint()
 
     float dist = sqrt(vx*vx+vy*vy);
 
-    if (_maxElongationFactor != 0 && dist > m_length*_maxElongationFactor)
+    if (m_maxElongationFactor && dist > m_length*m_maxElongationFactor)
     {
         m_broken = true;
     }
@@ -57,7 +61,7 @@ void U_2DConstraint::applyConstraint()
         vx *= constraintForce;
         vy *= constraintForce;
 
-        if ((_onlyTension && delta>0) || !_onlyTension)
+        if ((m_onlyTension && delta>0) || !m_onlyTension)
         {
             if (delta < 0)
             {
@@ -65,15 +69,18 @@ void U_2DConstraint::applyConstraint()
                 coeffMass2 = 1;
             }
 
-            m_body2->move2D(Vec2(coeffMass2*vx, coeffMass2*vy));
-            m_body1->move2D(Vec2(-coeffMass1*vx, -coeffMass1*vy));
+            b2->move2D(Vec2( coeffMass2*vx,  coeffMass2*vy));
+            b1->move2D(Vec2(-coeffMass1*vx, -coeffMass1*vy));
         }
     }
 }
 
 float U_2DConstraint::getAngle()
 {
-    Vec2 v = m_body1->getPosition()-m_body2->getPosition();
+    U_2DBody* b1 = U_2DCollisionManager::getBodyByID(m_idBody1);
+    U_2DBody* b2 = U_2DCollisionManager::getBodyByID(m_idBody2);
+
+    Vec2 v = b1->getPosition()-b2->getPosition();
 
     float dist = v.getNorm();
     float angle = acos(v.x/dist);

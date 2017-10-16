@@ -124,30 +124,21 @@ void Bot::computeControls(GameWorld& world)
 void Bot::getTarget(GameWorld* world)
 {
     ++m_getTargetCount;
-    Ptr<Zombie>* zombie = nullptr;
-    if (!Zombie::getFirst(zombie))
-        return;
-
+    Zombie* zombie = nullptr;
     Zombie* target = nullptr;
     float minDist  = -1;
 
-    int skip = 2;
-    int step(m_getTargetCount%skip);
-    int i(0);
-
-    do
+    while (Zombie::getNext(zombie));
     {
-        Zombie& z = *(*zombie);
-        Vec2 v(z.getCoord(), getCoord());
+        Vec2 v(zombie->getCoord(), getCoord());
         float dist = v.getNorm2();
 
         if (dist < minDist|| minDist < 0)
         {
             minDist = dist;
-            target = &z;
+            target = zombie;
         }
     }
-    while (Zombie::getNext(zombie, zombie));
 
     if (target)
     {

@@ -2,6 +2,7 @@
 #define CHAINEDOBJECT_HPP_INCLUDED
 
 #include <iostream>
+#include <vector>
 #include <list>
 #include <memory>
 
@@ -44,10 +45,11 @@ public:
 
     T& operator[](size_t i);
 
-    bool getFirstItem(PoolItem<T>*& item);
+    T* getFirstItem();
     size_t size() {return m_size;}
     bool getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem);
     std::vector<PoolItem<T>>& getObjects() {return m_data;}
+    PoolItem<T>& getPoolItemAt(size_t i);
 
     void remove(int i);
     void resize(size_t size);
@@ -174,15 +176,21 @@ bool Pool<T>::getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem)
 }
 
 template<class T>
-bool Pool<T>::getFirstItem(PoolItem<T>*& item)
+T* Pool<T>::getFirstItem()
 {
+    T* item = nullptr;
     if (m_firstObject != -1)
     {
-        item = &m_data[m_firstObject];
-        return true;
+        item = &(m_data[m_firstObject].object);
     }
 
-    return false;
+    return item;
+}
+
+template<class T>
+PoolItem<T>& Pool<T>::getPoolItemAt(size_t i)
+{
+    return m_data[i];
 }
 
 

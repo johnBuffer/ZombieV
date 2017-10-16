@@ -35,20 +35,23 @@ public:
 
     GridCell* getBodyAt(Vec2 coord);
 
-    float  getBodyRadius()  const {return m_bodySize*0.5;};
-    int    getBodiesCount() const {return m_bodies.size();}
-    Vec2   getMapSize()     const {return m_mapSize;};
+    float  getBodyRadius()  const {return m_bodySize*0.5f;}
+    Vec2   getMapSize()     const {return m_mapSize;}
+
+    size_t addBody(const Vec2& pos);
     U_2DConstraint* addConstraint(U_2DBody* body1, U_2DBody* body2, float length);
 
     void addRigidBody(Vec2 pos);
-    void setGravity(Vec2 gravityVec) {m_gravity = gravityVec;};
-    void setPrecision(unsigned int iterationCount) {m_iterationCount = iterationCount;};
+    void setGravity(Vec2 gravityVec) {m_gravity = gravityVec;}
+    void setPrecision(size_t iterationCount) {m_iterationCount = iterationCount;}
     void solveConstraints();
     void applyExplosion(Vec2 explosionCoord, float force);
     void killBody(U_2DBody* body);
     void killConstraint(U_2DConstraint* c);
     void addBody(U_2DBody* body);
     void update();
+
+    static U_2DBody* getBodyByID(size_t id);
 
 private:
     int   m_nCollisionChecked, m_iterationCount;
@@ -58,7 +61,6 @@ private:
     long m_currentIteration;
     int  m_newHash;
 
-    std::list<U2DBody_ptr>    m_bodies;
     std::list<U_2DConstraint> m_constraints;
     std::unordered_map<long, GridCell> m_grid;
 

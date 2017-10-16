@@ -1,11 +1,12 @@
 #ifndef U_2DBODY_H_INCLUDED
 #define U_2DBODY_H_INCLUDED
 
+#include "System/PoolObject.hpp"
 #include "Vec2.h"
 
 class WorldEntity;
 
-class U_2DBody
+class U_2DBody : public PoolObject<U_2DBody>
 {
 public:
     U_2DBody();

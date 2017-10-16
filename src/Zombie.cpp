@@ -201,56 +201,22 @@ void Zombie::initPhysics(GameWorld* world)
 
 void Zombie::_getTarget()
 {
-    /*Vector<Bot>& bots = Bot::getObjects();
-    Vector<Hunter>& hunters = Hunter::getObjects();
-
-    WorldEntity* target = nullptr;
-    float minDist  = -1;
-
-    for (Ptr<Bot>& bot : bots)
-    {
-        Vec2 v(bot->getCoord(), getCoord());
-        float dist = v.getNorm2();
-
-        if (dist < minDist || minDist < 0)
-        {
-            minDist = dist;
-            target = &(*bot);
-        }
-    }
-
-    for (Ptr<Hunter>& hunter : hunters)
-    {
-        Vec2 v(hunter->getCoord(), getCoord());
-        float dist = v.getNorm2();
-
-        if (dist < minDist || minDist < 0)
-        {
-            minDist = dist;
-            target = &(*hunter);
-        }
-    }*/
-
-    Ptr<Hunter>* hunter = nullptr;
-    if (!Hunter::getFirst(hunter))
-        return;
-
+    Hunter* hunter = nullptr;
     Hunter* target = nullptr;
     float minDist  = -1;
 
-    do
+    while (Hunter::getNext(hunter))
     {
-        Hunter& h = *(*hunter);
-        Vec2 v(h.getCoord(), getCoord());
+        Vec2 v(hunter->getCoord(), getCoord());
         float dist = v.getNorm2();
 
         if (dist < minDist|| minDist < 0)
         {
             minDist = dist;
-            target = &h;
+            target = hunter;
         }
     }
-    while (Hunter::getNext(hunter, hunter));
+
 
     if (target)
     {
