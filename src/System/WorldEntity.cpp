@@ -6,29 +6,31 @@ size_t WorldEntity::_entityCount = 0;
 
 WorldEntity::WorldEntity():
     _id(WorldEntity::_entityCount++),
-    _body(Vec2(0.0, 0.0), 1.0, false),
+    //_body(Vec2(0.0, 0.0), 1.0, false),
+    m_coord(0, 0),
     _angle(0.0)
 {
-    _body.setEntity(this);
+    //_body.setEntity(this);
     _isDying = false;
 }
 
 WorldEntity::WorldEntity(float x, float y, float angle):
     _id(WorldEntity::_entityCount++),
-    _body(Vec2(x, y), 1.0, false),
+    //_body(Vec2(x, y), 1.0, false),
+    m_coord(x, y),
     _angle(angle)
 {
-    _body.setEntity(this);
+    //_body.setEntity(this);
     _isDying = false;
 }
 
-WorldEntity::WorldEntity(const WorldEntity& entity) :
-    _body(Vec2(0.0f, 0.0f), 1.0f)
+WorldEntity::WorldEntity(const WorldEntity& entity)// :
+    //_body(Vec2(0.0f, 0.0f), 1.0f)
 {
     _id = WorldEntity::_entityCount++;
-    _body.setPosition(entity.getCoord());
-    _body.stop();
-    _body.setEntity(this);
+    //_body.setPosition(entity.getCoord());
+    //_body.stop();
+    //_body.setEntity(this);
 
     _angle   = entity._angle;
     _time    = entity._time;
@@ -40,6 +42,18 @@ WorldEntity::WorldEntity(const WorldEntity& entity) :
 WorldEntity::~WorldEntity()
 {
 
+}
+
+void WorldEntity::move(float vx, float vy)
+{
+    U_2DBody* b = m_thisBody();
+    b->stop();
+    b->accelerate2D(vx, vy);
+}
+
+U_2DBody* WorldEntity::m_thisBody()
+{
+    return U_2DCollisionManager::getBodyByID(m_bodyID);
 }
 
 void WorldEntity::kill()
@@ -64,7 +78,7 @@ U_2DBody& WorldEntity::getBody()
 
 const Vec2& WorldEntity::getCoord() const
 {
-    return _body.getPosition();
+    return m_coord;
 }
 
 const size_t& WorldEntity::getID() const

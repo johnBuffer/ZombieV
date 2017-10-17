@@ -93,7 +93,7 @@ U_2DConstraint* GameWorld::addConstraint(U_2DBody* body1, U_2DBody* body2, float
     return _phyManager.addConstraint(body1, body2, length);
 }
 
-void GameWorld::addBody(U_2DBody* body)
+void GameWorld::addBody(WorldEntity* entity)
 {
     _phyManager.addBody(body);
 }

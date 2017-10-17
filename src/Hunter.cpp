@@ -59,8 +59,7 @@ void Hunter::updateControls(const EventManager& em)
     else
         _changeState(HunterState::IDLE);
 
-    _body.stop();
-    _body.accelerate2D(Vec2(vx*norm*_speed, vy*norm*_speed));
+    move(vx*norm*_speed, vy*norm*_speed);
 
     sf::Vector2i mousePos = em.getMousePosition();
     _angle = getAngleFromVec(mousePos);

@@ -92,15 +92,13 @@ void Bot::computeControls(GameWorld& world)
                 if (dist < 100)
                 {
                     _feetTime += DT;
-                    _body.stop();
-                    _body.accelerate2D(Vec2(vx*_speed, vy*_speed));
+                    move(vx*_speed, vy*_speed);
                 }
             }
             else
             {
                 float speedFactor = 0.25f;
-                _body.stop();
-                _body.accelerate2D(Vec2(-vx*_speed*speedFactor, -vy*_speed*speedFactor));
+                move(-vx*_speed*speedFactor, -vy*_speed*speedFactor);
                 _feetTime += DT*speedFactor;
             }
         }

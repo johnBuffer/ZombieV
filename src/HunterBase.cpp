@@ -17,9 +17,10 @@ HunterBase::HunterBase() :
 HunterBase::HunterBase(float x, float y) :
     WorldEntity(x, y, 0)
 {
-    _body.setX(x);
-    _body.setY(y);
-    _body.stop();
+    U_2DBody* body = m_thisBody();
+    body->setX(x);
+    body->setY(y);
+    body->stop();
 
     _speed = 150;
 
@@ -78,8 +79,10 @@ void HunterBase::render()
     sf::Vector2f spriteSize(_currentAnimation.getSpriteSize());
     sf::Vector2f feetSpriteSize(_feetAnimation.getSpriteSize());
 
-    float x = _body.getPosition().x;
-    float y = _body.getPosition().y;
+    const Vec2& coord = m_thisBody()->getPosition();
+
+    float x = coord.x;
+    float y = coord.y;
 
     GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), SCALE*0.26f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
@@ -115,6 +118,6 @@ void HunterBase::_changeAnimation(Animation& anim, bool wait)
 
 void HunterBase::initPhysics(GameWorld* world)
 {
-    world->addBody(&_body);
+    world->addBody(this);
 }
 

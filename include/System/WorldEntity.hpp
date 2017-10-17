@@ -29,6 +29,7 @@ public:
     virtual bool  isDone()       const=0;
     const size_t& getID()        const;
 
+    void move(float vx, float vy);
     void setDying();
     void setEnemy();
     void resetTime();
@@ -46,13 +47,16 @@ protected:
     size_t _id;
 
     /// Physical data
-    U_2DBody _body;
-    float    _angle;
-    float    _time;
-    float    _life;
-    bool     _isDying;
+    Vec2   m_coord;
+    size_t m_bodyID;
+    float  _angle;
+    float  _time;
+    float  _life;
+    bool   _isDying;
 
     EntityTypes _type;
+
+    U_2DBody* m_thisBody();
 
 private:
     static size_t _entityCount;

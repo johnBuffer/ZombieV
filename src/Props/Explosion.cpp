@@ -2,6 +2,7 @@
 #include "System/Config.hpp"
 #include "System/GameRender.hpp"
 #include "System/Utils.hpp"
+#include "UnitedEngine/U_2DCollisionManager.h"
 
 size_t Explosion::_textureID;
 std::vector<float> Explosion::_preCalculatedVx;
@@ -33,7 +34,7 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     _vertexArray(sf::Quads, 4)
 {
     _decrease = 0.1;
-    _body.setPosition(Vec2(x, y));
+    U_2DCollisionManager::getBodyByID(m_bodyID)->setPosition(Vec2(x, y));
     _particles.resize(_n);
 
     for (size_t i(0); i<_n; ++i)

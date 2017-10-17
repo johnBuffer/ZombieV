@@ -21,9 +21,10 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     _ratio  = rand()%10+1;
     _isDone = false;
 
-    _body.setMass(0.01);
-    _body.stop();
-    _body.setRadius(1.5);
+    U_2DBody* body = m_thisBody();
+    body.->setMass(0.01);
+    body->stop();
+    body.setRadius(1.5);
 
     _type = EntityTypes::PROPS;
 

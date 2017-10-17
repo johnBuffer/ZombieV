@@ -27,7 +27,7 @@ public:
 
     U_2DConstraint* addConstraint(U_2DBody* body1, U_2DBody* body2, float length=0.0);
     void addEntity(WorldEntity* entity);
-    void addBody(U_2DBody* body);
+    void addBody(WorldEntity* entity);
     void removeBody(U_2DBody* body);
     void removeConstraint(U_2DConstraint* constraint);
     void update();
