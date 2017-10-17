@@ -79,7 +79,7 @@ void HunterBase::render()
     sf::Vector2f spriteSize(_currentAnimation.getSpriteSize());
     sf::Vector2f feetSpriteSize(_feetAnimation.getSpriteSize());
 
-    const Vec2& coord = m_thisBody()->getPosition();
+    const Vec2& coord = getBodyCoord();
 
     float x = coord.x;
     float y = coord.y;
@@ -118,6 +118,6 @@ void HunterBase::_changeAnimation(Animation& anim, bool wait)
 
 void HunterBase::initPhysics(GameWorld* world)
 {
-
+    m_initBody(world);
 }
 

@@ -80,7 +80,8 @@ void Hunter::update(GameWorld& world)
     updateControls(world.getEvents());
     _currentWeapon->update();
 
-    Vec2 pos(getCoord());
+    m_coord = getBodyCoord();
+
     _time += DT;
 
     if (_clicking && _state != RELOADING)
@@ -115,6 +116,8 @@ void Hunter::update(GameWorld& world)
     {
         _changeAnimation(_currentWeapon->getIdleAnimation());
     }
+
+
 
     /*_shootLight->position = _currentWeapon->getFireOutPosition(this);
     _flashlight->position = _shootLight->position;

@@ -71,7 +71,7 @@ void Guts::render()
 {
     for (BodyID& id : _bodies)
     {
-        Vec2 coord = m_thisBody()->getPosition();
+        Vec2 coord = GameWorld::getBodyByID(id)->getPosition();
         sf::Vector2f pos(coord.x, coord.y);
 
         sf::VertexArray va(sf::Quads, 4);
