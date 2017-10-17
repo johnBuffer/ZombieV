@@ -82,12 +82,12 @@ void GameWorld::render()
     }
 }
 
-void GameWorld::removeBody(U_2DBody* body)
+void GameWorld::removeBody(BodyID id)
 {
-    _phyManager.killBody(body);
+    _phyManager.killBody(id);
 }
 
-U_2DConstraint* GameWorld::addConstraint(U_2DBody* body1, U_2DBody* body2, float length)
+U_2DConstraint* GameWorld::addConstraint(BodyID body1, BodyID body2, float length)
 {
     return _phyManager.addConstraint(body1, body2, length);
 }

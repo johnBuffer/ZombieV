@@ -38,7 +38,7 @@ void Smoke::update(GameWorld& world)
     _ratio += _ratioSpeed*DT;
     _ratio =  _ratio>1.0f?1.0f:_ratio;
     _angle += _angularVelocity*(1.0f-_ratio);
-    _body.move2D(_velocity);
+    m_coord.move2D(_velocity);
 
     _isDone = _ratio==1.0f;
 }
@@ -49,9 +49,8 @@ void Smoke::render()
     float sx   = ratio*_size*cos(_angle);
     float sy   = ratio*_size*sin(_angle);
 
-    Vec2 coord(_body.getPosition());
-    float x = coord.x;
-    float y = coord.y;
+    float x = m_coord.x;
+    float y = m_coord.y;
 
     sf::Color color(50, 50, 50, (1.0f-_ratio)*200.0f);
 

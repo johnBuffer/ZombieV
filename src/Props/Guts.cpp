@@ -1,5 +1,6 @@
 #include "Props/Guts.hpp"
 #include "System/GameWorld.hpp"
+#include "System/Utils.hpp"
 
 #include <iostream>
 
@@ -28,25 +29,25 @@ bool Guts::isDone() const
 
 void Guts::initPhysics(GameWorld* world)
 {
+    U_2DBody* body = m_initBody(world);
     float radius = 1.f;
-    Vec2 pos(getCoord());
-    _bodies.push_back(&_body);
-    _body.setRadius(radius);
-    _body.setMass(0.005);
+    _bodies.push_back(m_bodyID);
+    body->setRadius(radius);
+    body->setMass(0.005);
 
-    world->addBody(&_body);
-
-    size_t count=rand()%10+5;
+    size_t count=getRandInt(5, 10);
     for (size_t i(0); i<count; ++i)
     {
-        U_2DBody* newBody = new U_2DBody(pos+Vec2(rand()%5-2, rand()%5-2), 0.005);
+        BodyID newBodyID = world->addBody();
+        U_2DBody* newBody = world->getBodyByID(newBodyID);
         newBody->setEntity(this);
         newBody->setRadius(radius);
-        world->addBody(newBody);
+        newBody->setPosition(m_coord+Vec2(getRandInt(-2, 2), getRandInt(-2, 2)));
+        newBody->accelerate2D(_initialVelocity*1.0f);
 
-        _bodies.back()->accelerate2D(_initialVelocity*float(1.0));
-        _constraints.push_back(world->addConstraint(newBody, _bodies.back(), 2.0f));
-        _bodies.push_back(newBody);
+        _constraints.push_back(world->addConstraint(newBodyID, _bodies.back(), 2.0f));
+        _bodies.push_back(newBodyID);
+
     }
 }
 
@@ -57,8 +58,8 @@ void Guts::update(GameWorld& world)
 
     if (_isDone)
     {
-        world.removeBody(&_body);
-        for (U_2DBody* b : _bodies)
+        world.removeBody(m_bodyID);
+        for (BodyID b : _bodies)
             world.removeBody(b);
 
         for (U_2DConstraint* c : _constraints)
@@ -68,9 +69,10 @@ void Guts::update(GameWorld& world)
 
 void Guts::render()
 {
-    for (auto& body : _bodies)
+    for (BodyID& id : _bodies)
     {
-        sf::Vector2f pos(body->getPosition().x, body->getPosition().y);
+        Vec2 coord = m_thisBody()->getPosition();
+        sf::Vector2f pos(coord.x, coord.y);
 
         sf::VertexArray va(sf::Quads, 4);
         GraphicUtils::initQuad(va, sf::Vector2f(4, 4), sf::Vector2f(2, 2), 1.0f);

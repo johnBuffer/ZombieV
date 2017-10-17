@@ -31,14 +31,14 @@ Turret::Turret(float x, float y) :
 
 void Turret::initPhysics(GameWorld* world)
 {
-    world->addBody(&_body);
-    _body.setStatic(true);
+    U_2DBody* body = m_initBody(world);
+    body->setStatic(true);
 
-    m_body = new U_2DBody(Vec2(0, 0), 1);
-    m_body->setStatic(true);
-    m_body->setEntity(this);
-    m_body->setRadius(15);
-    world->addBody(m_body);
+    m_barrelBody = world->addBody();
+    U_2DBody* barrelBody = world->getBodyByID(m_barrelBody);
+    barrelBody->setStatic(true);
+    barrelBody->setEntity(this);
+    barrelBody->setRadius(15);
 }
 
 void Turret::update(GameWorld& world)
@@ -75,7 +75,7 @@ void Turret::update(GameWorld& world)
     }
 
     Vec2 smokeOut = transformVec(Vec2(-45, -2), _angle, getCoord());
-    m_body->setPosition(smokeOut);
+    GameWorld::getBodyByID(m_barrelBody)->setPosition(smokeOut);
 
     m_fireCooldown.update(DT);
 }
@@ -132,8 +132,9 @@ WorldEntity* Turret::getTarget(GameWorld* world) const
 
 void Turret::render()
 {
-    float x = _body.getPosition().x;
-    float y = _body.getPosition().y;
+    const Vec2& coord = getBodyCoord();
+    float x = coord.x;
+    float y = coord.y;
 
     float recoilDist  = 10.0f;
     float recoilRatio = m_fireCooldown.getRatio()*recoilDist;

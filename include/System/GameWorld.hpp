@@ -27,7 +27,7 @@ public:
 
     U_2DConstraint* addConstraint(BodyID body1, BodyID body2, float length=0.0);
     void addEntity(WorldEntity* entity);
-    void removeBody(U_2DBody* body);
+    void removeBody(BodyID id);
     void removeConstraint(U_2DConstraint* constraint);
     void update();
     void render();
@@ -36,9 +36,9 @@ public:
     bool  isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
     const EventManager& getEvents() const {return _eventManager;}
 
-    BodyID addBody();
+    BodyID    addBody();
     GridCell* getBodiesAt(const Vec2& coord);
-    U_2DBody* getBodyByID(BodyID id);
+    static U_2DBody* getBodyByID(BodyID id);
 
 private:
     float _dt;

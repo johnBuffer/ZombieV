@@ -99,7 +99,7 @@ void Zombie::update(GameWorld& world)
         world.addEntity(ExplosionProvider::getBigFast(coord));
         world.addEntity(ExplosionProvider::getBase(coord));
 
-        world.removeBody(&_body);
+        world.removeBody(m_bodyID);
 
         _done = true;
     }
@@ -115,7 +115,7 @@ void Zombie::render()
 {
     if (GameRender::isVisible(this))
     {
-        const Vec2& coord = _body.getPosition();
+        const Vec2& coord = m_coord;
         float x = coord.x;
         float y = coord.y;
 
@@ -196,7 +196,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
 
 void Zombie::initPhysics(GameWorld* world)
 {
-    world->addBody(&_body);
+    m_initBody(world);
 }
 
 void Zombie::_getTarget()

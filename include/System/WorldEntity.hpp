@@ -26,6 +26,7 @@ public:
     float         getAngle()     const;
     U_2DBody&     getBody();
     const Vec2&   getCoord()     const;
+    const Vec2&   getBodyCoord() const;
     EntityTypes   getType()      const;
     virtual bool  isDone()       const=0;
     const size_t& getID()        const;
@@ -57,8 +58,9 @@ protected:
 
     EntityTypes _type;
 
+    const U_2DBody* m_thisBody() const;
     U_2DBody* m_thisBody();
-    U_2DBody* m_initBody();
+    U_2DBody* m_initBody(GameWorld* world);
 
 private:
     static size_t _entityCount;

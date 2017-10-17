@@ -1,5 +1,5 @@
 #include "System/WorldEntity.hpp"
-
+#include "System/GameWorld.hpp"
 #include <iostream>
 
 size_t WorldEntity::_entityCount = 0;
@@ -51,7 +51,7 @@ void WorldEntity::move(float vx, float vy)
     b->accelerate2D(vx, vy);
 }
 
-U_2DBody* WorldEntity::m_initBody()
+U_2DBody* WorldEntity::m_initBody(GameWorld* world)
 {
     m_bodyID = world->addBody();
     U_2DBody* body = m_thisBody();
@@ -63,9 +63,19 @@ U_2DBody* WorldEntity::m_initBody()
     return body;
 }
 
+const U_2DBody* WorldEntity::m_thisBody() const
+{
+    return U_2DCollisionManager::getBodyByID(m_bodyID);
+}
+
 U_2DBody* WorldEntity::m_thisBody()
 {
     return U_2DCollisionManager::getBodyByID(m_bodyID);
+}
+
+const Vec2& WorldEntity::getBodyCoord() const
+{
+    return m_thisBody()->getPosition();
 }
 
 void WorldEntity::kill()
@@ -85,7 +95,7 @@ bool WorldEntity::isDying() const
 
 U_2DBody& WorldEntity::getBody()
 {
-    return _body;
+    return *m_thisBody();
 }
 
 const Vec2& WorldEntity::getCoord() const

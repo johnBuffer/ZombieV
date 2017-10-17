@@ -300,9 +300,9 @@ void U_2DCollisionManager::killConstraint(U_2DConstraint* c)
     m_constraints.remove_if([=](const U_2DConstraint& c1){return &c1==c;});
 }
 
-U_2DConstraint* U_2DCollisionManager::addConstraint(U_2DBody* body1, U_2DBody* body2, float length)
+U_2DConstraint* U_2DCollisionManager::addConstraint(BodyID body1, BodyID body2, float length)
 {
-    m_constraints.push_back(U_2DConstraint(body1, body2, 100.0, length));
+    m_constraints.push_back(U_2DConstraint(getBodyByID(body1), getBodyByID(body2), 100.0, length));
     return &m_constraints.back();
 }
 

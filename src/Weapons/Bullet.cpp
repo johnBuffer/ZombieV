@@ -45,7 +45,7 @@ void Bullet::kill()
 
 void Bullet::init(const Vec2& pos, float angle)
 {
-    _body.setPosition(pos);
+    m_coord = pos;
     _angle += angle;
 
     float length = 40;
@@ -73,8 +73,7 @@ void Bullet::update(GameWorld& world)
     //std::cout << "Update Bullet v:" << _v.x << std::endl;
 
     /// Update position
-    const Vec2& pos = _body.getPosition();
-    _body.move2D(_v);
+    m_coord.move2D(_v);
     _distance += _speed;
 
     /// Move the vertexArray
@@ -109,7 +108,7 @@ void Bullet::update(GameWorld& world)
         _done = _penetration<0;
     }
 
-    _done = _done || !world.isInLevelBounds(pos);
+    _done = _done || !world.isInLevelBounds(m_coord);
 
     //std::cout << "Update Bullet done" << std::endl;
 }

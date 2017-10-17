@@ -12,10 +12,13 @@ public:
     U_2DBody();
     U_2DBody(Vec2 position, float mass, bool included=false);
     void move2D(const Vec2& vec);
+    void move2D(float vx, float vy);
     void moveLastPos2D(const Vec2& vec);
     void accelerate2D(const Vec2& acc);
+    void accelerate2D(float ax, float ay);
     void updatePosition(float timestep);
     void setPosition(const Vec2& pos);
+    void setPosition(float x, float y);
     void setX(float x);
     void setY(float y);
 	void stop();

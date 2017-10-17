@@ -40,7 +40,7 @@ public:
     Vec2   getMapSize()    const {return m_mapSize;}
 
     BodyID addBody(const Vec2& pos);
-    U_2DConstraint* addConstraint(U_2DBody* body1, U_2DBody* body2, float length);
+    U_2DConstraint* addConstraint(BodyID body1, BodyID body2, float length);
 
     void addRigidBody(Vec2 pos);
     void setGravity(Vec2 gravityVec) {m_gravity = gravityVec;}

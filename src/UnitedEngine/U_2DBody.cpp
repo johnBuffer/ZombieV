@@ -42,6 +42,12 @@ void U_2DBody::accelerate2D(const Vec2& vec)
     m_acceleration.move2D(vec);
 }
 
+void U_2DBody::accelerate2D(float ax, float ay)
+{
+    m_acceleration.x += ax;
+    m_acceleration.y += ay;
+}
+
 void U_2DBody::updatePosition(float timeStep)
 {
     Vec2 newPosition;
@@ -153,4 +159,17 @@ float U_2DBody::getAngle(U_2DBody* body)
 
     return v.y>0?angle:-angle;
 }
+
+void U_2DBody::move2D(float vx, float vy)
+{
+    m_position.x += vx;
+    m_position.y += vy;
+}
+
+void U_2DBody::setPosition(float x, float y)
+{
+    m_position.x = x;
+    m_position.y = y;
+}
+
 

@@ -78,16 +78,17 @@ void BulletShell::init()
 
 void BulletShell::initPhysics(GameWorld* world)
 {
-    U_2DBody* body = m_initBody();
+    U_2DBody* body = m_initBody(world);
     body->setMass(0.01);
     body->stop();
     body->setRadius(1.5);
 
-    BodyID body2 = world->getBodyByID(world->addBody());
-    body2->setPosition(Vec2(pos.x, pos.y+2));
+    BodyID _b2 = world->addBody();
+    U_2DBody* body2 = world->getBodyByID(_b2);
+    body2->setPosition(m_coord.x, m_coord.y+2);
 
-    _constraint = world->addConstraint(_b2, &_body);
-    body.accelerate2D(_velocity*200);
+    _constraint = world->addConstraint(_b2, m_bodyID);
+    body->accelerate2D(_velocity*200);
 }
 
 

@@ -21,7 +21,7 @@ private:
     bool      _isDone;
     float     _duration;
 
-    std::vector<U_2DBody*> _bodies;
+    std::vector<BodyID> _bodies;
     std::vector<U_2DConstraint*> _constraints;
 
     static size_t _textureID;
