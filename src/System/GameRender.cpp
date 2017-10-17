@@ -160,8 +160,8 @@ void GameRender::display(sf::RenderTarget* target)
     _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
 
     /// Draw lights
-    sf::Sprite lightSprite(_lightEngine.render());
-    _renderTexture.draw(lightSprite, sf::BlendMultiply);
+    /*sf::Sprite lightSprite(_lightEngine.render());
+    _renderTexture.draw(lightSprite, sf::BlendMultiply);*/
     _renderTexture.display();
 
     sf::Sprite renderSprite(_renderTexture.getTexture());

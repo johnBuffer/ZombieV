@@ -20,8 +20,6 @@ void Bot::update(GameWorld& world)
 {
     computeControls(world);
     _currentWeapon->update();
-
-    Vec2 pos(getCoord());
     _time += DT;
 
     if (_state == SHOOTING)
@@ -126,7 +124,7 @@ void Bot::getTarget(GameWorld* world)
     Zombie* target = nullptr;
     float minDist  = -1;
 
-    while (Zombie::getNext(zombie));
+    while (Zombie::getNext(zombie))
     {
         Vec2 v(zombie->getCoord(), getCoord());
         float dist = v.getNorm2();

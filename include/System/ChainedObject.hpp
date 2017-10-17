@@ -9,6 +9,12 @@
 template<class T>
 struct PoolItem
 {
+    PoolItem() :
+        nextFree(-1),
+        nextObject(-1),
+        prevObject(-1)
+    {}
+
     T    object;
     int  index;
     bool isAviable;
@@ -86,6 +92,7 @@ void Pool<T>::resize(size_t size)
 
         m_data[i].isAviable = true;
         m_data[i].nextFree = i+1;
+        m_data[i].nextObject = -1;
     }
 
     if (size)
@@ -183,6 +190,8 @@ T* Pool<T>::getFirstItem()
     {
         item = &(m_data[m_firstObject].object);
     }
+
+    //std::cout << item << " ptr" << std::endl;
 
     return item;
 }

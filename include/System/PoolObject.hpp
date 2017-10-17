@@ -14,7 +14,7 @@ public:
     void remove();
 
     static size_t     size() {return s_pool.size();}
-    static bool       getNext(T*& item);
+    static T*         getNext(T*& item);
     static T*         getObjectAt(size_t i);
     static Vector<T>& getObjects();
     static void       removeObject(size_t i);
@@ -72,14 +72,17 @@ T* PoolObject<T>::getObjectAt(size_t i)
 }
 
 template<class T>
-bool PoolObject<T>::getNext(T*& item)
+T* PoolObject<T>::getNext(T*& item)
 {
     if (item)
     {
-        PoolItem<T>& poolItem(s_pool.getPoolItemAt(item->m_index));
+        PoolItem<T>& poolItem = s_pool.getPoolItemAt(item->m_index);
 
-        if (poolItem.nextObject != -1)
-            item = &(poolItem.object);
+        int nextIndex = poolItem.nextObject;
+        if (nextIndex != -1)
+        {
+            item = &(s_pool.getPoolItemAt(nextIndex).object);
+        }
         else
             item = nullptr;
     }
@@ -87,6 +90,8 @@ bool PoolObject<T>::getNext(T*& item)
     {
         item = s_pool.getFirstItem();
     }
+
+    //std::cout << item << " ptr" << std::endl;
 
     return item;
 }

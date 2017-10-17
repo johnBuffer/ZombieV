@@ -237,7 +237,7 @@ void U_2DCollisionManager::update()
         solveConstraints();
         solveConstraints();
     }
-    std::cout << "Phys time : " << c2.getElapsedTime().asMilliseconds() << std::endl;
+    //std::cout << "Phys time : " << c2.getElapsedTime().asMilliseconds() << std::endl;
 
     // friction
     b = nullptr;
