@@ -25,7 +25,7 @@ private:
     Vec2  _velocity;
     bool  _isDone;
 
-    U_2DBody*       _b2;
+    BodyID _b2;
     U_2DConstraint* _constraint;
 
     static size_t _textureID;

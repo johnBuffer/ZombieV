@@ -2,6 +2,7 @@
 #define WORLDENTITY_HPP_INCLUDED
 
 #include "UnitedEngine/U_2DBody.h"
+#include "UnitedEngine/Types.hpp"
 #include "EntityTypes.hpp"
 #include <cstdlib>
 
@@ -57,6 +58,7 @@ protected:
     EntityTypes _type;
 
     U_2DBody* m_thisBody();
+    U_2DBody* m_initBody();
 
 private:
     static size_t _entityCount;

@@ -51,6 +51,18 @@ void WorldEntity::move(float vx, float vy)
     b->accelerate2D(vx, vy);
 }
 
+U_2DBody* WorldEntity::m_initBody()
+{
+    m_bodyID = world->addBody();
+    U_2DBody* body = m_thisBody();
+
+    body->setEntity(this);
+    body->setPosition(m_coord);
+    body->stop();
+
+    return body;
+}
+
 U_2DBody* WorldEntity::m_thisBody()
 {
     return U_2DCollisionManager::getBodyByID(m_bodyID);

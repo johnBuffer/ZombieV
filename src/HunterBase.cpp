@@ -118,6 +118,6 @@ void HunterBase::_changeAnimation(Animation& anim, bool wait)
 
 void HunterBase::initPhysics(GameWorld* world)
 {
-    world->addBody(this);
+
 }
 

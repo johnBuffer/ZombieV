@@ -3,6 +3,7 @@
 
 #include "U_2DBody.h"
 #include "U_2DConstraint.h"
+#include "UnitedEngine/Types.hpp"
 
 #include <unordered_map>
 #include <vector>
@@ -35,10 +36,10 @@ public:
 
     GridCell* getBodyAt(Vec2 coord);
 
-    float  getBodyRadius()  const {return m_bodySize*0.5f;}
-    Vec2   getMapSize()     const {return m_mapSize;}
+    float  getBodyRadius() const {return m_bodySize*0.5f;}
+    Vec2   getMapSize()    const {return m_mapSize;}
 
-    size_t addBody(const Vec2& pos);
+    BodyID addBody(const Vec2& pos);
     U_2DConstraint* addConstraint(U_2DBody* body1, U_2DBody* body2, float length);
 
     void addRigidBody(Vec2 pos);
@@ -46,12 +47,12 @@ public:
     void setPrecision(size_t iterationCount) {m_iterationCount = iterationCount;}
     void solveConstraints();
     void applyExplosion(Vec2 explosionCoord, float force);
-    void killBody(U_2DBody* body);
+    void killBody(BodyID id);
     void killConstraint(U_2DConstraint* c);
     void addBody(U_2DBody* body);
     void update();
 
-    static U_2DBody* getBodyByID(size_t id);
+    static U_2DBody* getBodyByID(BodyID id);
 
 private:
     int   m_nCollisionChecked, m_iterationCount;

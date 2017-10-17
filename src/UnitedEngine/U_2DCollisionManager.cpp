@@ -290,9 +290,9 @@ GridCell* U_2DCollisionManager::getBodyAt(Vec2 coord)
     return nullptr;
 }
 
-void U_2DCollisionManager::killBody(U_2DBody* body)
+void U_2DCollisionManager::killBody(BodyID id)
 {
-    body->remove();
+    U_2DBody::getObjectAt(id)->remove();
 }
 
 void U_2DCollisionManager::killConstraint(U_2DConstraint* c)

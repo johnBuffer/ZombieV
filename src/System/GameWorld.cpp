@@ -36,7 +36,6 @@ void GameWorld::initEventHandler(sf::RenderWindow& window)
 void GameWorld::addEntity(WorldEntity* entity)
 {
     _entities.push_back(entity);
-
     entity->initPhysics(this);
 }
 
@@ -93,15 +92,21 @@ U_2DConstraint* GameWorld::addConstraint(U_2DBody* body1, U_2DBody* body2, float
     return _phyManager.addConstraint(body1, body2, length);
 }
 
-void GameWorld::addBody(WorldEntity* entity)
+BodyID GameWorld::addBody()
 {
-    _phyManager.addBody(body);
+    return _phyManager.addBody(Vec2(0, 0));
 }
 
 void GameWorld::removeConstraint(U_2DConstraint* constraint)
 {
     _phyManager.killConstraint(constraint);
 }
+
+U_2DBody* GameWorld::getBodyByID(BodyID id)
+{
+    return U_2DCollisionManager::getBodyByID(id);
+}
+
 
 
 
