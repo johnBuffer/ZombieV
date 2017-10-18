@@ -15,7 +15,7 @@ public:
     void setRatioSpeed(float speed) {_ratioSpeed=speed;}
     void update(GameWorld& world);
     void render();
-    void kill();
+    void kill(GameWorld* world);
 
     static void init();
 

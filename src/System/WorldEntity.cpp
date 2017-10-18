@@ -78,7 +78,7 @@ const Vec2& WorldEntity::getBodyCoord() const
     return m_thisBody()->getPosition();
 }
 
-void WorldEntity::kill()
+void WorldEntity::kill(GameWorld* world)
 {
     // deleter
 }

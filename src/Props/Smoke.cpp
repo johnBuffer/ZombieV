@@ -28,7 +28,7 @@ Smoke::Smoke(Vec2 pos, Vec2 vel, float angularVel, float size) :
     _angle = a*DEGRAD;
 }
 
-void Smoke::kill()
+void Smoke::kill(GameWorld* world)
 {
     this->remove();
 }

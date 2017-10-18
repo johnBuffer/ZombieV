@@ -18,7 +18,7 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     _vertexArray(sf::Quads, 4)
 {
     _angularVelocity = 0.2f;
-    _ratio  = rand()%10+1;
+    _ratio  = rand()%5+1;
     _isDone = false;
 
     _type = EntityTypes::PROPS;
@@ -29,8 +29,12 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     _b2->setEntity(this);*/
 }
 
-void BulletShell::kill()
+void BulletShell::kill(GameWorld* world)
 {
+    world->removeBody(m_bodyID);
+    world->removeBody(_b2);
+    world->removeConstraint(_constraint);
+
     this->remove();
 }
 
@@ -40,15 +44,6 @@ void BulletShell::update(GameWorld& world)
     _isDone = _ratio<0.0f;
 
     m_coord = getBodyCoord();
-
-    if (_isDone)
-    {
-        /*world.removeBody(&_body);
-        world.removeBody(_b2);
-        world.removeConstraint(_constraint);
-
-        delete _b2;*/
-    }
 }
 
 void BulletShell::render()
@@ -58,8 +53,6 @@ void BulletShell::render()
     U_2DBody* b2 = GameWorld::getBodyByID(_b2);
     GraphicUtils::initQuad(_vertexArray, sf::Vector2f(75, 351), sf::Vector2f(37, 175), 0.02f);
     GraphicUtils::transform(_vertexArray, pos, b2->getAngle(b1)+PIS2);
-
-
 
     _vertexArray[0].texCoords = sf::Vector2f(0 , 0);
     _vertexArray[1].texCoords = sf::Vector2f(75, 0);

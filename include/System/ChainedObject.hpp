@@ -127,6 +127,7 @@ size_t Pool<T>::createObject(Args&&... args)
     }
     else
     {
+        std::cout << "Capacity overflow" << std::endl;
         m_data.push_back(PoolItem<T>());
 
         PoolItem<T>& newPoolItem = m_data.back();
@@ -153,20 +154,27 @@ T& Pool<T>::operator[](size_t i)
 template<class T>
 void Pool<T>::remove(int i)
 {
-    PoolItem<T>& poolItem = m_data[i];
     --m_size;
+    PoolItem<T>& poolItem = m_data[i];
     poolItem.nextFree = m_firstFree;
     poolItem.isAviable = true;
     m_firstFree = i;
 
-    if (poolItem.prevObject != -1)
+    int nextObject = poolItem.nextObject;
+    int prevObject = poolItem.prevObject;
+
+    if (prevObject != -1)
     {
-        m_data[poolItem.prevObject].nextObject = poolItem.nextObject;
+        m_data[prevObject].nextObject = nextObject;
+    }
+    else
+    {
+        m_firstObject = poolItem.nextObject;
     }
 
-    if (poolItem.nextObject != -1)
+    if (nextObject != -1)
     {
-        m_data[poolItem.nextObject].prevObject = poolItem.prevObject;
+        m_data[nextObject].prevObject = prevObject;
     }
 }
 

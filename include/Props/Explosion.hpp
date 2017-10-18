@@ -36,7 +36,7 @@ public:
     void setTrace(bool isTrace) {_isTrace  = isTrace;}
     void setDecrease(float d)   {_decrease = d;}
     void setSpeed(float d)      {_speed    = d;}
-    void kill();
+    void kill(GameWorld* world);
 
     static void init();
 

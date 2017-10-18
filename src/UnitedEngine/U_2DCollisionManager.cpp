@@ -65,6 +65,7 @@ void U_2DCollisionManager::addBodyToGrid(U2DBody_ptr body)
 {
     int bodyX = body->getPosition().x;
     int bodyY = body->getPosition().y;
+
     int caseSize = m_bodySize;
     int gridX = bodyX/caseSize;
     int gridY = bodyY/caseSize;
@@ -219,9 +220,6 @@ void U_2DCollisionManager::update()
     m_newHash = 0;
     applyGravity();
 
-    sf::Clock c1, c2;
-
-    c1.restart();
     for (auto &elem : m_grid) elem.second.reset();
     U_2DBody* b = nullptr;
     while (U_2DBody::getNext(b))
@@ -229,12 +227,9 @@ void U_2DCollisionManager::update()
         addBodyToGrid(b);
     }
 
-    c2.restart();
     for (int i(0); i<m_iterationCount; ++i)
     {
         solveCollisions();
-
-        solveConstraints();
         solveConstraints();
     }
     //std::cout << "Phys time : " << c2.getElapsedTime().asMilliseconds() << std::endl;

@@ -19,7 +19,7 @@ public:
     void setDone() {_done = true;}
     void render();
     void setImpactForce(float f) {_impact = f;}
-    void kill();
+    void kill(GameWorld* world);
 
     const Vec2& getV() const {return _v;}
     Vec2 getImpactForce() const;

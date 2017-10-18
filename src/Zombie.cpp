@@ -40,8 +40,9 @@ Zombie::~Zombie()
 {
 }
 
-void Zombie::kill()
+void Zombie::kill(GameWorld* world)
 {
+    world->removeBody(m_bodyID);
     this->remove();
 }
 
@@ -98,9 +99,6 @@ void Zombie::update(GameWorld& world)
         world.addEntity(ExplosionProvider::getBig(coord, true));
         world.addEntity(ExplosionProvider::getBigFast(coord));
         world.addEntity(ExplosionProvider::getBase(coord));
-
-        world.removeBody(m_bodyID);
-
         _done = true;
     }
 
@@ -152,11 +150,11 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
             const Vec2& pos(bullet->getCoord());
             float bulletAngle = bullet->getAngle();
 
-            //m_thisBody()->accelerate2D(bullet->getImpactForce());
+            m_thisBody()->accelerate2D(bullet->getImpactForce());
             addLife(-bullet->getDamage());
             _time = getRandInt(0, 1000);
 
-            /*if (GameRender::isVisible(this))
+            if (GameRender::isVisible(this))
             {
                 gameWorld->addEntity(ExplosionProvider::getBase(pos));
                 if (bullet->getDistance() < 50)
@@ -175,7 +173,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
                 {
                     gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
                 }
-            }*/
+            }
 
             break;
         }

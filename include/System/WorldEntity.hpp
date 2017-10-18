@@ -38,7 +38,7 @@ public:
     void addLife(float life);
     void setLife(float life);
 
-    virtual void kill();
+    virtual void kill(GameWorld* world);
     virtual void initPhysics(GameWorld* world)=0;
     virtual void hit(WorldEntity* entity, GameWorld* gameWorld) {};
     virtual void update(GameWorld& world)=0;

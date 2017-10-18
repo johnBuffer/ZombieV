@@ -31,14 +31,13 @@ Bullet::Bullet(float angle, float speed, float damage, int penetration) :
 
 Bullet::Bullet(const Bullet& bullet)
 {
-    std::cout << "copy constructor" << std::endl;
 }
 
 Bullet::~Bullet()
 {
 }
 
-void Bullet::kill()
+void Bullet::kill(GameWorld* world)
 {
     this->remove();
 }

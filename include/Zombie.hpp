@@ -27,7 +27,7 @@ public:
     void update(GameWorld& world);
     void render();
     void setMarked(bool b) {_marked = b;}
-    void kill();
+    void kill(GameWorld* world);
 
     bool isDone() const {return _done;}
     bool isMarked() const {return _marked;}

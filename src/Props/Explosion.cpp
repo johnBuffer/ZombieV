@@ -36,7 +36,7 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     _decrease = 0.1;
     _particles.resize(_n);
 
-    for (size_t i(0); i<_n; ++i)
+    for (size_t i(_n); i--;)
     {
         Particle& p = _particles[i];
         float speed = rand()%_speed;
@@ -61,7 +61,7 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     _ratio = 1.0f;
 }
 
-void Explosion::kill()
+void Explosion::kill(GameWorld* world)
 {
     this->remove();
 }

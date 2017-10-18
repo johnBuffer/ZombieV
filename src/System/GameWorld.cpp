@@ -60,7 +60,7 @@ void GameWorld::_cleanEntities()
         if (entity->isDying())
         {
             it = _entities.erase(it);
-            entity->kill();
+            entity->kill(this);
         }
         else if (entity->isDone())
         {

@@ -50,20 +50,19 @@ void Guts::initPhysics(GameWorld* world)
     }
 }
 
+void Guts::kill(GameWorld* world)
+{
+    for (BodyID b : _bodies)
+        world->removeBody(b);
+
+    for (U_2DConstraint* c : _constraints)
+        world->removeConstraint(c);
+}
+
 void Guts::update(GameWorld& world)
 {
     _duration -= DT;
     _isDone = _duration<0;
-
-    if (_isDone)
-    {
-        world.removeBody(m_bodyID);
-        for (BodyID b : _bodies)
-            world.removeBody(b);
-
-        for (U_2DConstraint* c : _constraints)
-            world.removeConstraint(c);
-    }
 }
 
 void Guts::render()
