@@ -77,6 +77,7 @@ void Hunter::updateControls(const EventManager& em)
 
 void Hunter::update(GameWorld& world)
 {
+    //std::cout << "Hun " << m_bodyID << std::endl;
     updateControls(world.getEvents());
     _currentWeapon->update();
 

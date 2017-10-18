@@ -240,7 +240,6 @@ void U_2DCollisionManager::update()
     //std::cout << "Phys time : " << c2.getElapsedTime().asMilliseconds() << std::endl;
 
     // friction
-    b = nullptr;
     while (U_2DBody::getNext(b))
     {
         Vec2 velocity = b->getVelocity();

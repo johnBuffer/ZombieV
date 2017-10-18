@@ -64,7 +64,7 @@ void GameRender::clear()
     }
 
     _renderTexture.clear(sf::Color::Black);
-    renderVertexArray(_groundQuad, _renderTexture, _groundTextureID);
+    //renderVertexArray(_groundQuad, _renderTexture, _groundTextureID);
     _screenSpaceEntities.clear();
     _lightEngine.clear();
 }

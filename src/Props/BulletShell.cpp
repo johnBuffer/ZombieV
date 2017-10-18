@@ -39,6 +39,8 @@ void BulletShell::update(GameWorld& world)
     _ratio -= DT;
     _isDone = _ratio<0.0f;
 
+    m_coord = getBodyCoord();
+
     if (_isDone)
     {
         /*world.removeBody(&_body);
@@ -51,10 +53,13 @@ void BulletShell::update(GameWorld& world)
 
 void BulletShell::render()
 {
-    sf::Vector2f pos(getCoord().x, getCoord().y);
-
+    sf::Vector2f pos(m_coord.x, m_coord.y);
+    U_2DBody* b1 = m_thisBody();
+    U_2DBody* b2 = GameWorld::getBodyByID(_b2);
     GraphicUtils::initQuad(_vertexArray, sf::Vector2f(75, 351), sf::Vector2f(37, 175), 0.02f);
-    //GraphicUtils::transform(_vertexArray, pos, _b2->getAngle(&_body)+PIS2);
+    GraphicUtils::transform(_vertexArray, pos, b2->getAngle(b1)+PIS2);
+
+
 
     _vertexArray[0].texCoords = sf::Vector2f(0 , 0);
     _vertexArray[1].texCoords = sf::Vector2f(75, 0);
@@ -82,13 +87,17 @@ void BulletShell::initPhysics(GameWorld* world)
     body->setMass(0.01);
     body->stop();
     body->setRadius(1.5);
-
-    BodyID _b2 = world->addBody();
-    U_2DBody* body2 = world->getBodyByID(_b2);
-    body2->setPosition(m_coord.x, m_coord.y+2);
-
-    _constraint = world->addConstraint(_b2, m_bodyID);
     body->accelerate2D(_velocity*200);
+
+    _b2 = world->addBody();
+    U_2DBody* body2 = world->getBodyByID(_b2);
+    body2->setEntity(this);
+    body2->setPosition(m_coord.x, m_coord.y+2);
+    body2->stop();
+    body2->setMass(0.01);
+    body2->setRadius(1.5);
+
+    _constraint = world->addConstraint(_b2, m_bodyID, 3);
 }
 
 

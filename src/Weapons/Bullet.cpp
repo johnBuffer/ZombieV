@@ -87,7 +87,7 @@ void Bullet::update(GameWorld& world)
     GridCell* bodies = world.getBodiesAt(getCoord());
     if (bodies)
     {
-        for (int i(0); i<bodies->_maxIndex; ++i)
+        for (int i(bodies->_maxIndex); i--;)
         {
             U2DBody_ptr body    = bodies->_bodies[i];
             WorldEntity* entity = body->getEntity();
@@ -135,7 +135,7 @@ bool Bullet::collidesWith(WorldEntity* entity) const
     float distFactor = 1.0f;
     Vec2 vec(entity->getCoord(), getCoord());
 
-    return vec.getNorm() < distFactor*CELL_SIZE;
+    return vec.getNorm2() < distFactor*CELL_SIZE*CELL_SIZE;
 }
 
 void Bullet::init()

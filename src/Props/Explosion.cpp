@@ -25,16 +25,15 @@ Explosion::Explosion() :
 }
 
 Explosion::Explosion(float x, float y, float openAngle, float angle, float speed, float size, size_t n):
+    StandardEntity(x, y, angle),
     _n(n),
     _openAngle(openAngle*0.5f),
-    _angle(angle),
     _speed(speed),
     _size(size),
     _isTrace(false),
     _vertexArray(sf::Quads, 4)
 {
     _decrease = 0.1;
-    U_2DCollisionManager::getBodyByID(m_bodyID)->setPosition(Vec2(x, y));
     _particles.resize(_n);
 
     for (size_t i(0); i<_n; ++i)
@@ -88,7 +87,7 @@ void Explosion::render()
 
         if (_isTrace)
         {
-            int indexA = rand()%1000;
+            int indexA = getRandInt(0, 1000);
             sx = p._size*_ratio*getRandVx(indexA);
             sy = p._size*_ratio*getRandVx(indexA);
         }

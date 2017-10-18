@@ -12,10 +12,9 @@ Guts::Guts() :
 
 }
 
-Guts::Guts(U_2DBody* anchor, Vec2 pos, Vec2 v) :
+Guts::Guts(const Vec2& pos, const Vec2& v) :
     StandardEntity(pos.x, pos.y, 0.0),
-    _initialVelocity(v),
-    _anchor(anchor)
+    _initialVelocity(v)
 {
     _type   = PROPS;
     _isDone = false;

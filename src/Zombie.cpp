@@ -3,7 +3,7 @@
 #include "System/GameRender.hpp"
 #include "Props/Guts.hpp"
 #include "Bot.hpp"
-
+#include "System/Utils.hpp"
 
 #include <iostream>
 
@@ -75,8 +75,8 @@ void Zombie::update(GameWorld& world)
 
         if (_currentState == MOVING)
         {
-            float speed = 10;
-            getBody().accelerate2D(Vec2(speed*direction.x, speed*direction.y));
+            float speed = 75;
+            move(speed*direction.x, speed*direction.y);
         }
         else if (_currentAnimation.isDone())
         {
@@ -109,6 +109,8 @@ void Zombie::update(GameWorld& world)
         _currentAnimation = _moveAnimation;
         _currentState = MOVING;
     }
+
+    m_coord = getBodyCoord();
 }
 
 void Zombie::render()
@@ -150,17 +152,17 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
             const Vec2& pos(bullet->getCoord());
             float bulletAngle = bullet->getAngle();
 
-            getBody().accelerate2D(bullet->getImpactForce());
+            //m_thisBody()->accelerate2D(bullet->getImpactForce());
             addLife(-bullet->getDamage());
-            _time = rand()%1000;
+            _time = getRandInt(0, 1000);
 
-            if (GameRender::isVisible(this))
+            /*if (GameRender::isVisible(this))
             {
                 gameWorld->addEntity(ExplosionProvider::getBase(pos));
                 if (bullet->getDistance() < 50)
                 {
                     gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
-                    gameWorld->addEntity(Guts::add(&entity->getBody(), pos, bullet->getV()*40.f));
+                    gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
                 }
 
                 if (bullet->getPenetration()>-1)
@@ -173,7 +175,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
                 {
                     gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
                 }
-            }
+            }*/
 
             break;
         }

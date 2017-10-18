@@ -5,7 +5,7 @@ class Guts : public StandardEntity<Guts>
 {
 public:
     Guts();
-    Guts(U_2DBody* anchor, Vec2 pos, Vec2 v);
+    Guts(const Vec2& pos, const Vec2& v);
 
     bool isDone() const;
 
@@ -17,7 +17,6 @@ public:
 
 private:
     Vec2      _initialVelocity;
-    U_2DBody* _anchor;
     bool      _isDone;
     float     _duration;
 

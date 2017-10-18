@@ -115,6 +115,8 @@ void Bot::computeControls(GameWorld& world)
         _changeState(IDLE);
         getTarget(&world);
     }
+
+    m_coord = getBodyCoord();
 }
 
 void Bot::getTarget(GameWorld* world)

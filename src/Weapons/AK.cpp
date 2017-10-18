@@ -76,7 +76,7 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
             world->addEntity(Fire::add(firePos, entityAngle, 0.5));
             world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5));
 
-            Vec2 shellVec(-bulletVel.y+rand()%11-5, bulletVel.x+rand()%11-5);
+            Vec2 shellVec(-bulletVel.y+getRandInt(-5, 5), bulletVel.x+getRandInt(-5, 5));
             Vec2 shellPos(shellsOut);
 
             BulletShell* bulletShell(BulletShell::add(shellPos, shellVec*0.15, entityAngle-PIS2));
