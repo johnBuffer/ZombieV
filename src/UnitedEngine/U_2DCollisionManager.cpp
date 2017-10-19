@@ -12,9 +12,10 @@ GridCell::GridCell()
     _maxIndex=0;
 }
 
-void GridCell::add(U2DBody_ptr body)
+void GridCell::add(U_2DBody* body)
 {
     _bodies[_maxIndex] = body;
+    _bodiesID[_maxIndex] = body->getIndex();
     ++_maxIndex;
 }
 
@@ -233,6 +234,7 @@ void U_2DCollisionManager::update()
         solveConstraints();
     }
     //std::cout << "Phys time : " << c2.getElapsedTime().asMilliseconds() << std::endl;
+    //std::cout << "Constraints " << m_constraints.size() << std::endl;
 
     // friction
     while (U_2DBody::getNext(b))

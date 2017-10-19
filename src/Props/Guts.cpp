@@ -28,12 +28,13 @@ bool Guts::isDone() const
 
 void Guts::initPhysics(GameWorld* world)
 {
-    U_2DBody* body = m_initBody(world);
     float radius = 1.f;
-    _bodies.push_back(m_bodyID);
+
+    U_2DBody* body = m_initBody(world);
     body->setRadius(radius);
     body->setMass(0.005);
 
+    _bodies.push_back(m_bodyID);
     size_t count=getRandInt(5, 10);
     for (size_t i(0); i<count; ++i)
     {
@@ -42,11 +43,12 @@ void Guts::initPhysics(GameWorld* world)
         newBody->setEntity(this);
         newBody->setRadius(radius);
         newBody->setPosition(m_coord+Vec2(getRandInt(-2, 2), getRandInt(-2, 2)));
+        newBody->stop();
         newBody->accelerate2D(_initialVelocity*1.0f);
+        newBody->setMass(0.005);
 
         _constraints.push_back(world->addConstraint(newBodyID, _bodies.back(), 2.0f));
         _bodies.push_back(newBodyID);
-
     }
 }
 
@@ -75,7 +77,7 @@ void Guts::render()
         sf::Vector2f pos(coord.x, coord.y);
 
         sf::VertexArray va(sf::Quads, 4);
-        GraphicUtils::initQuad(va, sf::Vector2f(4, 4), sf::Vector2f(2, 2), 1.0f);
+        GraphicUtils::initQuad(va, sf::Vector2f(6, 6), sf::Vector2f(3, 3), 1.0f);
         GraphicUtils::move(va, pos);
         va[0].color = sf::Color::White;
         va[1].color = sf::Color::Red;

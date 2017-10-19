@@ -88,7 +88,7 @@ void Bullet::update(GameWorld& world)
     {
         for (int i(bodies->_maxIndex); i--;)
         {
-            U2DBody_ptr body    = bodies->_bodies[i];
+            U2DBody_ptr body    = GameWorld::getBodyByID(bodies->_bodiesID[i]);
             WorldEntity* entity = body->getEntity();
 
             /// if collides with entity, update penetration and damage

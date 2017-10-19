@@ -23,7 +23,7 @@ Zombie::Zombie(float x, float y) :
     _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
     _speed = 150;
-    _life  = 100;
+    _life  = 100000;
     _done  = false;
 
     _currentAnimation = _moveAnimation;
@@ -160,7 +160,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
                 if (bullet->getDistance() < 50)
                 {
                     gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
-                    //gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
+                    gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
                 }
 
                 if (bullet->getPenetration()>-1)

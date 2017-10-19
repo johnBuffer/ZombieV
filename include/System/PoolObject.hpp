@@ -28,7 +28,7 @@ private:
 };
 
 template<class T>
-Pool<T> PoolObject<T>::s_pool(10000);
+Pool<T> PoolObject<T>::s_pool(1);
 
 template<class T>
 template<class...Args>

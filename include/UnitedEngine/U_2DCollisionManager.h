@@ -20,6 +20,7 @@ class GameWorld;
 struct GridCell
 {
     std::array<U2DBody_ptr, 1000> _bodies;
+    std::array<BodyID, 1000>      _bodiesID;
 
     int _maxIndex;
 
