@@ -15,6 +15,8 @@ public:
     void render();
     bool isDone() const {return _isDone;}
 
+    void kill(GameWorld* world);
+
     static void init();
 
 private:

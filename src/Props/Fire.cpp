@@ -25,6 +25,11 @@ Fire::Fire(Vec2 pos, float angle, float sizeFactor):
     _sizeFactor = sizeFactor;
 }
 
+void Fire::kill(GameWorld* world)
+{
+    this->remove();
+}
+
 void Fire::render()
 {
     Vec2 pos(getCoord());

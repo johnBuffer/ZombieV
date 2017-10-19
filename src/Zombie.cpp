@@ -160,7 +160,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
                 if (bullet->getDistance() < 50)
                 {
                     gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
-                    gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
+                    //gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
                 }
 
                 if (bullet->getPenetration()>-1)

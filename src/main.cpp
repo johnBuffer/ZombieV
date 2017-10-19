@@ -4,6 +4,7 @@
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
 #include "Bot.hpp"
+#include "Props/Guts.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
@@ -14,8 +15,8 @@ int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
-    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
+    //sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(false);
     //window.setFramerateLimit(60);
 
@@ -33,7 +34,7 @@ int main()
     world.addEntity(&h);
 
     Bot* newBot;
-    for (int i(0); i--;)
+    for (int i(50); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -46,7 +47,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(1); i--;)
+    for (int i(8000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -64,7 +65,7 @@ int main()
     }
 
     int frameCount = 0;
-
+    float ttime = 0;
     while (window.isOpen())
     {
         ++frameCount;
@@ -84,11 +85,14 @@ int main()
         sf::Clock clock;
         world.update();
         int upTime = clock.getElapsedTime().asMilliseconds();
-
+        ttime += upTime;
         system("cls");
-        std::cout << "Logic update time  : " << upTime << "ms" << std::endl;
+        std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
+        std::cout << "Bodies       count : " << U_2DBody::size() << std::endl;
         std::cout << "Bullets      count : " << Bullet::size() << std::endl;
         std::cout << "Zombies      count : " << Zombie::size() << std::endl;
+        std::cout << "Guts         count : " << Guts::size() << std::endl;
+        std::cout << "Fire         count : " << Fire::size() << std::endl;
         std::cout << "Explosions   count : " << Explosion::size() << std::endl;
         std::cout << "Smokes       count : " << Smoke::size() << std::endl;
         std::cout << "BulletShells count : " << BulletShell::size() << std::endl;
@@ -102,7 +106,7 @@ int main()
         GameRender::clear();
 
         world.render();
-        GameRender::display(&window);
+        //GameRender::display(&window);
 
         if (frameCount%20 == 0)
             GameRender::fadeGround();

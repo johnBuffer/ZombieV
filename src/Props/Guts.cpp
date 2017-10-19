@@ -57,6 +57,8 @@ void Guts::kill(GameWorld* world)
 
     for (U_2DConstraint* c : _constraints)
         world->removeConstraint(c);
+
+    this->remove();
 }
 
 void Guts::update(GameWorld& world)
