@@ -21,6 +21,9 @@ public:
     void updateControls(const EventManager& em);
     void update(GameWorld& world);
 
+    static WorldEntity* get
+    static void initClassID(GameWorld* world);
+
 protected:
     bool _releasedWeaponSwap;
     bool _clicking;

@@ -126,3 +126,16 @@ void Hunter::update(GameWorld& world)
     _flashlight->angle = getAngle()+PI;*/
 }
 
+void Hunter::initClassID(GameWorld* world)
+{
+    world->registerEntityClass(Hunter::getObjectAt);
+}
+
+
+
+
+
+
+
+
+

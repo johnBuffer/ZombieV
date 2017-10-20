@@ -22,6 +22,7 @@ public:
 
 protected:
     size_t m_index;
+    static size_t m_classID;
 
 private:
     static Pool<T> s_pool;
@@ -29,6 +30,9 @@ private:
 
 template<class T>
 Pool<T> PoolObject<T>::s_pool(100);
+
+template<class T>
+size_t PoolObject<T>::m_classID;
 
 
 template<class T>

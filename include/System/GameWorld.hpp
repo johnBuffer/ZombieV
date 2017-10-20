@@ -18,6 +18,7 @@
 #include "Turret.hpp"
 #include "Props/Wall.hpp"
 
+typedef WorldEntity*(*AccessFunc)(long);
 
 class GameWorld
 {
@@ -36,8 +37,11 @@ public:
     bool  isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
     const EventManager& getEvents() const {return _eventManager;}
 
+    size_t    registerEntityClass(AccessFunc func);
     BodyID    addBody();
     GridCell* getBodiesAt(const Vec2& coord);
+
+    WorldEntity* getEntityByID(long id);
     static U_2DBody* getBodyByID(BodyID id);
 
 private:
@@ -50,6 +54,8 @@ private:
     EventManager         _eventManager;
 
     void _cleanEntities();
+
+    std::vector<AccessFunc> m_accessFuncs;
 };
 
 #endif // GAMEWORLD_HPP_INCLUDED

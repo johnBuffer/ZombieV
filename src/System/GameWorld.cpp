@@ -107,6 +107,23 @@ U_2DBody* GameWorld::getBodyByID(BodyID id)
     return U_2DCollisionManager::getBodyByID(id);
 }
 
+size_t GameWorld::registerEntityClass(AccessFunc func)
+{
+    m_accessFuncs.push_back(func);
+
+    return m_accessFuncs.size()-1;
+}
+
+WorldEntity* GameWorld::getEntityByID(long id)
+{
+    size_t classID  = (id>>32);
+    size_t entityID = id;
+
+    return m_accessFuncs[classID](entityID);
+}
+
+
+
 
 
 
