@@ -17,11 +17,6 @@ HunterBase::HunterBase() :
 HunterBase::HunterBase(float x, float y) :
     WorldEntity(x, y, 0)
 {
-    U_2DBody* body = m_thisBody();
-    body->setX(x);
-    body->setY(y);
-    body->stop();
-
     _speed = 150;
 
     _state     = HunterState::IDLE;
