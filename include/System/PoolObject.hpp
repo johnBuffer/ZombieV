@@ -30,6 +30,7 @@ private:
 template<class T>
 Pool<T> PoolObject<T>::s_pool(100);
 
+
 template<class T>
 template<class...Args>
 T* PoolObject<T>::add(Args&&... args)

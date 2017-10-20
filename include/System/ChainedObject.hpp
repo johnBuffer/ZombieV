@@ -137,9 +137,10 @@ size_t Pool<T>::createObject(Args&&... args)
         new(&(newPoolItem.object)) T(args...);
         index = newPoolItem.index;
 
-        m_firstObject = index;
-        newPoolItem.nextObject = -1;
+        newPoolItem.nextObject = m_firstObject;
         newPoolItem.prevObject = -1;
+        m_firstObject = index;
+
     }
 
     return index;
