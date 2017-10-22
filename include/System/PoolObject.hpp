@@ -30,7 +30,7 @@ private:
 };
 
 template<class T>
-Pool<T> PoolObject<T>::s_pool(100);
+Pool<T> PoolObject<T>::s_pool(10000);
 
 template<class T>
 size_t PoolObject<T>::m_classID;

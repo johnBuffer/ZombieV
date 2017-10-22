@@ -40,7 +40,7 @@ int main()
     world.addEntity(&h);
 
     Bot* newBot;
-    for (int i(0); i--;)
+    for (int i(50); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -53,7 +53,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(75); i--;)
+    for (int i(4000); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -92,8 +92,8 @@ int main()
         world.update();
         int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
-        system("cls");
-        std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
+        //system("cls");
+        /*std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
         std::cout << "Bodies       count : " << U_2DBody::size() << std::endl;
         std::cout << "Bullets      count : " << Bullet::size() << std::endl;
         std::cout << "Zombies      count : " << Zombie::size() << std::endl;
@@ -102,7 +102,7 @@ int main()
         std::cout << "Explosions   count : " << Explosion::size() << std::endl;
         std::cout << "Smokes       count : " << Smoke::size() << std::endl;
         std::cout << "BulletShells count : " << BulletShell::size() << std::endl;
-        std::cout << "===================================\n" << std::endl;
+        std::cout << "===================================\n" << std::endl;*/
 
         Vec2 p = h.getCoord();
 
