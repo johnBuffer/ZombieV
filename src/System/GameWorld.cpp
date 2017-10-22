@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include "System/GraphicsUtils.hpp"
-
+#include "Hunter.hpp"
+#include "Zombie.hpp"
 #include "Props/Props.hpp"
 #include "Turret.hpp"
 

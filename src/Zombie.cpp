@@ -4,6 +4,7 @@
 #include "Props/Props.hpp"
 #include "Bot.hpp"
 #include "System/Utils.hpp"
+#include "Hunter.hpp"
 
 #include <iostream>
 

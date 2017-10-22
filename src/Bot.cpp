@@ -1,5 +1,6 @@
 #include "Bot.hpp"
 #include "System/GameWorld.hpp"
+#include "Zombie.hpp"
 
 Bot::Bot() :
     HunterBase(0, 0),

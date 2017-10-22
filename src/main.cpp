@@ -3,9 +3,12 @@
 
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
+
 #include "Bot.hpp"
 #include "Props/Props.hpp"
 #include "Turret.hpp"
+#include "Hunter.hpp"
+#include "Zombie.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900

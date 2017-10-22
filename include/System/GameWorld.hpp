@@ -5,8 +5,6 @@
 
 #include "Level.hpp"
 #include "UnitedEngine/UnitedEngine.h"
-#include "Zombie.hpp"
-#include "Hunter.hpp"
 #include "EventManager.hpp"
 #include "Config.hpp"
 #include "GameRender.hpp"
