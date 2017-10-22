@@ -2,9 +2,8 @@
 #define WALL_HPP_INCLUDED
 
 #include "System/WorldEntity.hpp"
-#include "System/DrawableEntity.hpp"
 
-class Wall : public WorldEntity, public DrawableEntity<Wall>
+class Wall : public WorldEntity
 {
 public:
     Wall();

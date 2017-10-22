@@ -25,7 +25,7 @@ GameWorld::GameWorld() :
     Pistol::init();
     Smoke::init();
     Fire::init();
-    Zombie::init();
+    Zombie::initialize();
     Explosion::init();
 }
 

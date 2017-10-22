@@ -2,10 +2,9 @@
 #define WEAPONSTATICS_HPP_INCLUDED
 
 #include "Weapon.hpp"
-#include "System/DrawableEntity.hpp"
 
 template <class T>
-class WeaponStatics : public Weapon, public DrawableEntity<T>
+class WeaponStatics : public Weapon
 {
 protected:
     static size_t _shootTextureID;

@@ -3,7 +3,6 @@
 
 #include "System/StandardEntity.hpp"
 #include "System/LifeForm.hpp"
-#include "System/DrawableEntity.hpp"
 #include "System/ChainedObject.hpp"
 #include <memory>
 
@@ -32,7 +31,7 @@ public:
     bool isDone() const {return _done;}
     bool isMarked() const {return _marked;}
 
-    static void init();
+    static void initialize();
 
 private:
     float _pv;

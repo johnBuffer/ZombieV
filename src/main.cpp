@@ -36,8 +36,8 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
-    size_t classID = world.registerEntityClass(Hunter::getWorldEntityAt);
-    Hunter::setClassID(classID);
+    Hunter::registerObject(&world);
+    Zombie::registerObject(&world);
 
     Hunter& h = *Hunter::add(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
@@ -63,6 +63,8 @@ int main()
         world.addEntity(newZombie);
     }
     waveCount++;
+
+
 
     for (int i(0); i<100; ++i)
     {

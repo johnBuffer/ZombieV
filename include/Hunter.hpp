@@ -21,7 +21,7 @@ public:
     void updateControls(const EventManager& em);
     void update(GameWorld& world);
 
-    static void initClassID(GameWorld* world);
+    static void initialize();
 
 protected:
     bool _releasedWeaponSwap;

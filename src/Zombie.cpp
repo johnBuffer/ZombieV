@@ -134,7 +134,7 @@ void Zombie::render()
     }
 }
 
-void Zombie::init()
+void Zombie::initialize()
 {
     _moveAnimation.setCenter(sf::Vector2f(90, 168));
     _moveTextureID = GameRender::registerTexture("data/textures/zombie/zombie_move.png");
