@@ -13,12 +13,18 @@ Bot::Bot(float x, float y) :
     m_target(nullptr),
     m_getTargetCount(0)
 {
+    Light light;
+    light.color = sf::Color(255, 127, 0);
+    light.intensity = 1.0f;
+    light.radius  = 0;
+    _shootLight = GameRender::getLightEngine().addDurableLight(light);
 
 }
 
 void Bot::update(GameWorld& world)
 {
     computeControls(world);
+
     _currentWeapon->update();
     _time += DT;
 
@@ -41,12 +47,12 @@ void Bot::update(GameWorld& world)
         _state = IDLE;
     }
 
-    //_shootLight->radius = 0;
+    _shootLight->radius = 0;
     if (_state == SHOOTING)
     {
         bool wait = _lastState==SHOOTING;
         _changeAnimation(_currentWeapon->getShootAnimation(), wait);
-        //_shootLight->radius = 350;
+        _shootLight->radius = 350;
     }
     else if (_state == MOVING)
     {
@@ -58,7 +64,7 @@ void Bot::update(GameWorld& world)
         _changeAnimation(_currentWeapon->getIdleAnimation());
     }
 
-    //_shootLight->position = _currentWeapon->getFireOutPosition(this);
+    _shootLight->position = _currentWeapon->getFireOutPosition(this);
     /*_flashlight->position = _shootLight->position;
     _littleLight->position = _shootLight->position;
     _flashlight->angle = getAngle()+PI;*/

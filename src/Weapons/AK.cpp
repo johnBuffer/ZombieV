@@ -2,6 +2,8 @@
 #include "System/GameRender.hpp"
 #include "System/GameWorld.hpp"
 #include "System/Utils.hpp"
+#include "Props/Smoke.hpp"
+
 #include <cmath>
 #include <iostream>
 #include <System/SoundPlayer.hpp>

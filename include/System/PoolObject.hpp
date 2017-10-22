@@ -11,6 +11,7 @@ public:
     static T* add(Args&&...);
 
     size_t getIndex() const {return m_index;}
+    size_t getGlobalIndex() const;
     void remove();
 
     static size_t     size() {return s_pool.size();}
@@ -96,9 +97,17 @@ T* PoolObject<T>::getNext(T*& item)
         item = s_pool.getFirstItem();
     }
 
-    //std::cout << item << " ptr" << std::endl;
-
     return item;
 }
+
+template<class T>
+size_t PoolObject<T>::getGlobalIndex() const
+{
+    uint64_t globalID = ((uint64_t) m_classID << 32) | m_index;
+
+    return globalID;
+}
+
+
 
 #endif // POOLOBJECT_HPP_INCLUDED

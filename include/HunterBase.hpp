@@ -28,7 +28,11 @@ public:
     void render();
 
     HunterState getCurrentState() const {return _state;}
-    bool isDone() const {return false;}
+    bool isDone() const {return _life<=0;}
+
+    void hit(WorldEntity* entity, GameWorld* gameWorld);
+
+    int getLife() const {return _life;}
 
     static void init();
 

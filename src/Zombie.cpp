@@ -1,7 +1,7 @@
 #include "Zombie.hpp"
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
-#include "Props/Guts.hpp"
+#include "Props/Props.hpp"
 #include "Bot.hpp"
 #include "System/Utils.hpp"
 
@@ -23,7 +23,7 @@ Zombie::Zombie(float x, float y) :
     _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
     _speed = 150;
-    _life  = 100000;
+    _life  = 100;
     _done  = false;
 
     _currentAnimation = _moveAnimation;
@@ -81,12 +81,16 @@ void Zombie::update(GameWorld& world)
         }
         else if (_currentAnimation.isDone())
         {
-            if (dist < 2*CELL_SIZE)
+            if (dist < 3*CELL_SIZE)
             {
                 // Need to create damage variable
-                _target->addLife(5);
+                _target->addLife(-5);
+                world.addEntity(ExplosionProvider::getBase(_target->getCoord()));
             }
         }
+
+        if (_target->isDying())
+            _target = nullptr;
     }
     else
     {
@@ -95,10 +99,9 @@ void Zombie::update(GameWorld& world)
 
     if (_life<0)
     {
-        const Vec2 coord = getCoord();
-        world.addEntity(ExplosionProvider::getBig(coord, true));
-        world.addEntity(ExplosionProvider::getBigFast(coord));
-        world.addEntity(ExplosionProvider::getBase(coord));
+        world.addEntity(ExplosionProvider::getBig(m_coord, true));
+        world.addEntity(ExplosionProvider::getBigFast(m_coord));
+        world.addEntity(ExplosionProvider::getBase(m_coord));
         _done = true;
     }
 
@@ -160,18 +163,18 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
                 if (bullet->getDistance() < 50)
                 {
                     gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
-                    gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
+                    //gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
                 }
 
                 if (bullet->getPenetration()>-1)
                 {
-                    gameWorld->addEntity(ExplosionProvider::getThrough(pos, bulletAngle, true));
-                    gameWorld->addEntity(ExplosionProvider::getBigThrough(pos, bulletAngle));
-                    gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle, true));
+                    //gameWorld->addEntity(ExplosionProvider::getThrough(pos, bulletAngle, true));
+                    //gameWorld->addEntity(ExplosionProvider::getBigThrough(pos, bulletAngle));
+                    //gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle, true));
                 }
                 else
                 {
-                    gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
+                    //gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
                 }
             }
 
@@ -179,6 +182,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
         }
         case(EntityTypes::HUNTER) :
         {
+            _target = entity;
             if (_currentState != ATTACKING)
             {
                 _currentState     = ATTACKING;
@@ -202,7 +206,7 @@ void Zombie::initPhysics(GameWorld* world)
 void Zombie::_getTarget()
 {
     Hunter* hunter = nullptr;
-    Hunter* target = nullptr;
+    WorldEntity* target = nullptr;
     float minDist  = -1;
 
     while (Hunter::getNext(hunter))
@@ -210,17 +214,30 @@ void Zombie::_getTarget()
         Vec2 v(hunter->getCoord(), getCoord());
         float dist = v.getNorm2();
 
-        if (dist < minDist|| minDist < 0)
+        if ((dist < minDist|| minDist < 0) && !hunter->isDying())
         {
             minDist = dist;
             target = hunter;
         }
     }
 
+    Bot* b = nullptr;
+    while (Bot::getNext(b))
+    {
+        Vec2 v(b->getCoord(), getCoord());
+        float dist = v.getNorm2();
+
+        if ((dist < minDist|| minDist < 0) && !b->isDying())
+        {
+            minDist = dist;
+            target = b;
+        }
+    }
+
 
     if (target)
     {
-        _target = target;
+        setTarget(target);
     }
 }
 

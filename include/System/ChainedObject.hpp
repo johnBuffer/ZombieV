@@ -108,40 +108,35 @@ size_t Pool<T>::createObject(Args&&... args)
 {
     ++m_size;
     size_t index;
+    PoolItem<T>* newPoolItem = nullptr;
+
+    // If empty slot
     if (m_firstFree != -1)
     {
         index = m_firstFree;
-        m_firstFree = m_data[m_firstFree].nextFree;
-
-        PoolItem<T>& poolItem = m_data[index];
-        new(&poolItem.object) T(args...);
-        poolItem.isAviable = false;
-
-        poolItem.nextObject = m_firstObject;
-        poolItem.prevObject = -1;
-
-        if (m_firstObject != -1)
-            m_data[m_firstObject].prevObject = index;
-
-        m_firstObject = index;
+        m_firstFree = m_data[index].nextFree;
+        newPoolItem = &m_data[index];
     }
-    else
+    else // We need to create a new one
     {
         std::cout << "Capacity overflow" << std::endl;
         m_data.push_back(PoolItem<T>());
 
-        PoolItem<T>& newPoolItem = m_data.back();
-        newPoolItem.index = m_data.size()-1;
-        newPoolItem.isAviable = false;
+        newPoolItem = &m_data.back();
+        newPoolItem->index = m_data.size()-1;
 
-        new(&(newPoolItem.object)) T(args...);
-        index = newPoolItem.index;
-
-        newPoolItem.nextObject = m_firstObject;
-        newPoolItem.prevObject = -1;
-        m_firstObject = index;
-
+        index = newPoolItem->index;
     }
+
+    new(&newPoolItem->object) T(args...);
+    newPoolItem->isAviable = false;
+    newPoolItem->nextObject = m_firstObject;
+    newPoolItem->prevObject = -1;
+
+    if (m_firstObject != -1)
+        m_data[m_firstObject].prevObject = index;
+
+    m_firstObject = index;
 
     return index;
 }

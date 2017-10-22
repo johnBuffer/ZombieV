@@ -72,6 +72,7 @@ void Explosion::update(GameWorld& world)
         p.update();
 
     _ratio -= _decrease;
+    _ratio = _ratio<0?0:_ratio;
 }
 
 /// Add the current explosion in the global Explosion's vertex array

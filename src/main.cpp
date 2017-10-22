@@ -4,20 +4,23 @@
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
 #include "Bot.hpp"
-#include "Props/Guts.hpp"
+#include "Props/Props.hpp"
+#include "Turret.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
 
 #include "System/Utils.hpp"
 
+
+
 int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
-    //sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(false);
+    //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
+    window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
 
     /*Hunter::resize(10);
@@ -30,10 +33,13 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
+    size_t classID = world.registerEntityClass(Hunter::getWorldEntityAt);
+    Hunter::setClassID(classID);
+
     Hunter& h = *Hunter::add(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
-    /*Bot* newBot;
+    Bot* newBot;
     for (int i(0); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
@@ -41,13 +47,13 @@ int main()
         //newBot = Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE);
         newBot = Bot::add(MAP_SIZE/2+rand()%10, MAP_SIZE/2+rand()%10);
         world.addEntity(newBot);
-    }*/
+    }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     int waveCount = 1;
 
-    for (int i(1); i--;)
+    for (int i(75); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -55,7 +61,7 @@ int main()
     }
     waveCount++;
 
-    for (int i(0); i<0; ++i)
+    for (int i(0); i<100; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
@@ -86,7 +92,7 @@ int main()
         world.update();
         int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
-        //system("cls");
+        system("cls");
         std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
         std::cout << "Bodies       count : " << U_2DBody::size() << std::endl;
         std::cout << "Bullets      count : " << Bullet::size() << std::endl;
@@ -107,9 +113,6 @@ int main()
 
         world.render();
         GameRender::display(&window);
-
-        if (frameCount%20 == 0)
-            GameRender::fadeGround();
 
         window.display();
     }

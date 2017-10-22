@@ -10,15 +10,10 @@
 #include "EventManager.hpp"
 #include "Config.hpp"
 #include "GameRender.hpp"
-#include "Weapons/Bullet.hpp"
-#include "Props/ExplosionProvider.hpp"
-#include "Props/Smoke.hpp"
 #include "SoundPlayer.hpp"
 #include "LightEngine/LightEngine.hpp"
-#include "Turret.hpp"
-#include "Props/Wall.hpp"
 
-typedef WorldEntity*(*AccessFunc)(long);
+typedef WorldEntity*(*AccessFunc)(size_t);
 
 class GameWorld
 {

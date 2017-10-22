@@ -1,6 +1,7 @@
 #include "Weapons/Shotgun.hpp"
 #include <System/GameRender.hpp>
 #include <System/GameWorld.hpp>
+#include "Props/Props.hpp"
 
 Shotgun::Shotgun()
 {

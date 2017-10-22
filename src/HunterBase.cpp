@@ -17,6 +17,7 @@ HunterBase::HunterBase() :
 HunterBase::HunterBase(float x, float y) :
     WorldEntity(x, y, 0)
 {
+    _life = 100;
     _speed = 150;
 
     _state     = HunterState::IDLE;
@@ -38,13 +39,7 @@ HunterBase::HunterBase(float x, float y) :
 
     _type = EntityTypes::HUNTER;
 
-    /*Light light;
-    light.color = sf::Color(255, 127, 0);
-    light.intensity = 1.0f;
-    light.radius  = 0;
-    _shootLight = GameRender::getLightEngine().addDurableLight(light);
-
-    light.color = sf::Color(220, 200, 150);
+    /*light.color = sf::Color(220, 200, 150);
     light.intensity = 1.0f;
     light.radius  = 300;
     light.width = 45;
@@ -114,5 +109,10 @@ void HunterBase::_changeAnimation(Animation& anim, bool wait)
 void HunterBase::initPhysics(GameWorld* world)
 {
     m_initBody(world);
+}
+
+void HunterBase::hit(WorldEntity* entity, GameWorld* gameWorld)
+{
+
 }
 

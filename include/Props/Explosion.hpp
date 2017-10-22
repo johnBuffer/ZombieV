@@ -27,7 +27,7 @@ public:
     Explosion();
     Explosion(float x, float y, float angle, float openAngle, float speed, float size, size_t n);
 
-    bool isDone()  const {return _ratio<0;}
+    bool isDone()  const {return _ratio==0;}
     bool isTrace() const {return _isTrace;}
 
     void initPhysics(GameWorld* world) {}

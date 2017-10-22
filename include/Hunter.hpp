@@ -5,14 +5,14 @@
 
 #include "HunterBase.hpp"
 #include "System/LifeForm.hpp"
-#include "System/ChainedObject.hpp"
+#include "System/WorldEntityPool.hpp"
 #include "System/EventManager.hpp"
 #include "System/Animation.hpp"
 
 #include "Weapons/Weapons.hpp"
 #include "LightEngine/LightEngine.hpp"
 
-class Hunter : public HunterBase, public PoolObject<Hunter>
+class Hunter : public HunterBase, public WorldEntityPool<Hunter>
 {
 public:
     Hunter();
@@ -21,7 +21,6 @@ public:
     void updateControls(const EventManager& em);
     void update(GameWorld& world);
 
-    static WorldEntity* get
     static void initClassID(GameWorld* world);
 
 protected:

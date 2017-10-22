@@ -3,8 +3,8 @@
 #include <iostream>
 #include "System/GraphicsUtils.hpp"
 
-#include "Props/Fire.hpp"
-#include "Props/Guts.hpp"
+#include "Props/Props.hpp"
+#include "Turret.hpp"
 
 GameWorld::GameWorld() :
     _dt(0.016),

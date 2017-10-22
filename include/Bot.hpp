@@ -3,7 +3,7 @@
 
 #include "HunterBase.hpp"
 
-class Bot : public HunterBase, public PoolObject<Bot>
+class Bot : public HunterBase, public WorldEntityPool<Bot>
 {
 public:
     Bot();

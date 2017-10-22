@@ -5,7 +5,7 @@
 Explosion* ExplosionProvider::getBase(const Vec2& pos, bool isTrace)
 {
     Explosion* e = Explosion::add(pos.x, pos.y, 360, 0.0f, 3.0f, SCALE*50.0f, 15);
-    e->setDecrease(0.1);
+    e->setDecrease(0.05);
     e->setTrace(isTrace);
 
     return e;
