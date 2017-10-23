@@ -55,7 +55,7 @@ public:
     size_t size() {return m_size;}
     bool getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem);
     std::vector<PoolItem<T>>& getObjects() {return m_data;}
-    PoolItem<T>& getPoolItemAt(size_t i);
+    PoolItem<T>* getPoolItemAt(size_t i);
 
     void remove(int i);
     void resize(size_t size);
@@ -195,15 +195,17 @@ T* Pool<T>::getFirstItem()
         item = &(m_data[m_firstObject].object);
     }
 
-    //std::cout << item << " ptr" << std::endl;
-
     return item;
 }
 
 template<class T>
-PoolItem<T>& Pool<T>::getPoolItemAt(size_t i)
+PoolItem<T>* Pool<T>::getPoolItemAt(size_t i)
 {
-    return m_data[i];
+    PoolItem<T>* item = &m_data[i];
+    if (item->isAviable)
+        return nullptr;
+
+    return item;
 }
 
 

@@ -112,12 +112,12 @@ size_t GameWorld::registerEntityClass(AccessFunc func)
 {
     m_accessFuncs.push_back(func);
 
-    return m_accessFuncs.size()-1;
+    return m_accessFuncs.size();
 }
 
-WorldEntity* GameWorld::getEntityByID(long id)
+WorldEntity* GameWorld::getEntityByID(EntityID id)
 {
-    size_t classID  = (id>>32);
+    size_t classID  = (id>>32)-1;
     size_t entityID = id;
 
     return m_accessFuncs[classID](entityID);

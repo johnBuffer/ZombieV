@@ -8,7 +8,10 @@
 
 #define SCALE 1.0f
 
+#define ENTITY_NULL 0
 typedef WorldEntity* WorldEntityPtr;
+typedef uint64_t EntityID;
+
 
 class GameWorld;
 

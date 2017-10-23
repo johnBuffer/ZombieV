@@ -164,3 +164,9 @@ void Bot::hit(WorldEntity* entity, GameWorld* gameWorld)
             break;
     }
 }
+
+void Bot::initialize()
+{
+    HunterBase::init();
+}
+

@@ -13,6 +13,8 @@ public:
     void setTarget(WorldEntity* entity) {m_target = entity;}
     void update(GameWorld& world);
 
+    static void initialize();
+
 private:
     WorldEntity* m_target;
     size_t m_getTargetCount;

@@ -34,7 +34,7 @@ Zombie::Zombie(float x, float y) :
 
     _currentState = IDLE;
     _marked = false;
-    _target = nullptr;
+    _target = ENTITY_NULL;
 }
 
 Zombie::~Zombie()
@@ -47,7 +47,7 @@ void Zombie::kill(GameWorld* world)
     this->remove();
 }
 
-void Zombie::setTarget(WorldEntity* target)
+void Zombie::setTarget(EntityID target)
 {
     _currentState = MOVING;
     _target = target;
@@ -59,7 +59,9 @@ void Zombie::update(GameWorld& world)
 
     if (_target)
     {
-        Vec2 vTarget(_target->getCoord(), getCoord());
+        WorldEntity* target = world.getEntityByID(_target);
+
+        Vec2 vTarget(target->getCoord(), getCoord());
         Vec2 direction(cos(_angle), sin(_angle));
         Vec2 directionNormal(-direction.y, direction.x);
 
@@ -85,13 +87,13 @@ void Zombie::update(GameWorld& world)
             if (dist < 3*CELL_SIZE)
             {
                 // Need to create damage variable
-                _target->addLife(-5);
-                world.addEntity(ExplosionProvider::getBase(_target->getCoord()));
+                target->addLife(-5);
+                world.addEntity(ExplosionProvider::getBase(target->getCoord()));
             }
         }
 
-        if (_target->isDying())
-            _target = nullptr;
+        if (target->isDying())
+            _target = ENTITY_NULL;
     }
     else
     {
@@ -164,18 +166,18 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
                 if (bullet->getDistance() < 50)
                 {
                     gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
-                    //gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
+                    gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
                 }
 
                 if (bullet->getPenetration()>-1)
                 {
-                    //gameWorld->addEntity(ExplosionProvider::getThrough(pos, bulletAngle, true));
-                    //gameWorld->addEntity(ExplosionProvider::getBigThrough(pos, bulletAngle));
-                    //gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle, true));
+                    gameWorld->addEntity(ExplosionProvider::getThrough(pos, bulletAngle, true));
+                    gameWorld->addEntity(ExplosionProvider::getBigThrough(pos, bulletAngle));
+                    gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle, true));
                 }
                 else
                 {
-                    //gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
+                    gameWorld->addEntity(ExplosionProvider::getHit(pos, bulletAngle+PI, true));
                 }
             }
 
@@ -183,7 +185,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
         }
         case(EntityTypes::HUNTER) :
         {
-            _target = entity;
+            _target = static_cast<Hunter*>(entity)->getGlobalIndex();
             if (_currentState != ATTACKING)
             {
                 _currentState     = ATTACKING;
@@ -206,8 +208,8 @@ void Zombie::initPhysics(GameWorld* world)
 
 void Zombie::_getTarget()
 {
-    Hunter* hunter = nullptr;
-    WorldEntity* target = nullptr;
+    Hunter*  hunter = nullptr;
+    EntityID target = 0;
     float minDist  = -1;
 
     while (Hunter::getNext(hunter))
@@ -218,7 +220,7 @@ void Zombie::_getTarget()
         if ((dist < minDist|| minDist < 0) && !hunter->isDying())
         {
             minDist = dist;
-            target = hunter;
+            target = hunter->getGlobalIndex();
         }
     }
 
@@ -231,7 +233,7 @@ void Zombie::_getTarget()
         if ((dist < minDist|| minDist < 0) && !b->isDying())
         {
             minDist = dist;
-            target = b;
+            target = b->getGlobalIndex();
         }
     }
 

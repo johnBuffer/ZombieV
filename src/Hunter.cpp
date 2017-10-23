@@ -131,7 +131,7 @@ void Hunter::update(GameWorld& world)
 
 void Hunter::initialize()
 {
-
+    HunterBase::init();
 }
 
 

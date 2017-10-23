@@ -34,7 +34,7 @@ public:
     BodyID    addBody();
     GridCell* getBodiesAt(const Vec2& coord);
 
-    WorldEntity* getEntityByID(long id);
+    WorldEntity* getEntityByID(EntityID id);
     static U_2DBody* getBodyByID(BodyID id);
 
 private:

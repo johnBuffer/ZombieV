@@ -21,16 +21,10 @@ int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
-    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
+    //sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
-
-    /*Hunter::resize(10);
-    Bot::resize(20);
-    Smoke::resize(200);
-    Zombie::resize(10000);
-    Bullet::resize(500);*/
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
     GameWorld world;
@@ -38,12 +32,13 @@ int main()
 
     Hunter::registerObject(&world);
     Zombie::registerObject(&world);
+    Bot::registerObject(&world);
 
     Hunter& h = *Hunter::add(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
     Bot* newBot;
-    for (int i(50); i--;)
+    for (int i(0); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -56,7 +51,7 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(4000); i--;)
+    for (int i(10); i--;)
     {
         Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -112,7 +107,7 @@ int main()
         Vec2 p = h.getCoord();
 
         sf::Vector2f playerPosition(p.x, p.y);
-        GameRender::setFocus(playerPosition);
+        //GameRender::setFocus(playerPosition);
 
         GameRender::clear();
 

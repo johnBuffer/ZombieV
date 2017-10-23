@@ -10,8 +10,9 @@ public:
     template<class...Args>
     static T* add(Args&&...);
 
-    size_t getIndex() const {return m_index;}
-    size_t getGlobalIndex() const;
+    size_t   getIndex() const {return m_index;}
+    uint64_t getGlobalIndex() const;
+
     void remove();
 
     static size_t     size() {return s_pool.size();}
@@ -34,7 +35,6 @@ Pool<T> PoolObject<T>::s_pool(10000);
 
 template<class T>
 size_t PoolObject<T>::m_classID;
-
 
 template<class T>
 template<class...Args>
@@ -74,7 +74,7 @@ Vector<T>& PoolObject<T>::getObjects()
 template<class T>
 T* PoolObject<T>::getObjectAt(size_t i)
 {
-    return &(s_pool.getPoolItemAt(i).object);
+    return &(s_pool.getPoolItemAt(i)->object);
 }
 
 template<class T>
@@ -82,12 +82,12 @@ T* PoolObject<T>::getNext(T*& item)
 {
     if (item)
     {
-        PoolItem<T>& poolItem = s_pool.getPoolItemAt(item->m_index);
+        PoolItem<T>& poolItem = *(s_pool.getPoolItemAt(item->m_index));
 
         int nextIndex = poolItem.nextObject;
         if (nextIndex != -1)
         {
-            item = &(s_pool.getPoolItemAt(nextIndex).object);
+            item = &(s_pool.getPoolItemAt(nextIndex)->object);
         }
         else
             item = nullptr;
@@ -101,7 +101,7 @@ T* PoolObject<T>::getNext(T*& item)
 }
 
 template<class T>
-size_t PoolObject<T>::getGlobalIndex() const
+uint64_t PoolObject<T>::getGlobalIndex() const
 {
     uint64_t globalID = ((uint64_t) m_classID << 32) | m_index;
 
