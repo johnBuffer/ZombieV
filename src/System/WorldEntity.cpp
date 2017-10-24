@@ -132,3 +132,8 @@ void WorldEntity::resetTime()
 {
     _time = 0;
 }
+
+EntityID WorldEntity::getGlobalID() const
+{
+    return m_globalID;
+}

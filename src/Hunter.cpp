@@ -21,6 +21,7 @@ Hunter::Hunter(float x, float y) :
     light.radius  = 0;
     _shootLight = GameRender::getLightEngine().addDurableLight(light);
 
+    m_globalID = getGlobalID();
 }
 
 void Hunter::updateControls(const EventManager& em)

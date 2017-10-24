@@ -27,6 +27,7 @@ public:
 
     bool          isDying()      const;
     float         getAngle()     const;
+    EntityID      getGlobalID()  const;
     U_2DBody&     getBody();
     const Vec2&   getCoord()     const;
     const Vec2&   getBodyCoord() const;
@@ -49,7 +50,8 @@ public:
 
 protected:
     /// Engine data
-    size_t _id;
+    size_t   _id;
+    EntityID m_globalID;
 
     /// Physical data
     Vec2   m_coord;
