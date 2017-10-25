@@ -2,23 +2,25 @@
 #define AUTOAIM_HPP_INCLUDED
 
 #include "System/WorldEntity.hpp"
+#include "System/GameWorld.hpp"
 
 class AutoAim
 {
 public:
     AutoAim();
-    AutoAim(WorldEntity* entity, float speed);
+    AutoAim(EntityID entity, float speed);
 
-    void update(float dt);
-    void setTarget(WorldEntity* entity);
+    void update(GameWorld* world, float dt);
+    void setAimingEntity(EntityID entity);
+    void setTarget(EntityID entity);
     void setSpeed(float speed);
 
     float getDelta() const;
     float getDotDist() const;
 
 private:
-    WorldEntity* m_aimingEntity;
-    WorldEntity* m_target;
+    EntityID m_aimingEntity;
+    EntityID m_target;
 
     float m_deltaAngle;
     float m_dotDist;

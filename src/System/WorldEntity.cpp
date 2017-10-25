@@ -63,6 +63,11 @@ U_2DBody* WorldEntity::m_initBody(GameWorld* world)
     return body;
 }
 
+void WorldEntity::setGlobalID(EntityID id)
+{
+    m_globalID = id;
+}
+
 const U_2DBody* WorldEntity::m_thisBody() const
 {
     return U_2DCollisionManager::getBodyByID(m_bodyID);

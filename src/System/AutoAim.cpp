@@ -2,32 +2,40 @@
 #include <cmath>
 
 AutoAim::AutoAim() :
-    m_target(nullptr),
+    m_target(ENTITY_NULL),
     m_dotDist(0.0f),
     m_speed(0.0f)
 {
 
 }
 
-AutoAim::AutoAim(WorldEntity* entity, float speed) :
+AutoAim::AutoAim(EntityID entity, float speed) :
     m_aimingEntity(entity),
     m_speed(speed)
 {
 
 }
 
-void AutoAim::setTarget(WorldEntity* entity)
+void AutoAim::setAimingEntity(EntityID entity)
+{
+    m_aimingEntity = entity;
+}
+
+void AutoAim::setTarget(EntityID entity)
 {
     m_target = entity;
 }
 
 
-void AutoAim::update(float dt)
+void AutoAim::update(GameWorld* world, float dt)
 {
     if (m_target)
     {
-        float angle = m_aimingEntity->getAngle();
-        Vec2 vTarget(m_target->getCoord(), m_aimingEntity->getCoord());
+        WorldEntity* aimingEntity = world->getEntityByID(m_aimingEntity);
+        WorldEntity* target       = world->getEntityByID(m_target);
+
+        float angle = aimingEntity->getAngle();
+        Vec2 vTarget(target->getCoord(), aimingEntity->getCoord());
         Vec2 direction(cos(angle), sin(angle));
         Vec2 directionNormal(-direction.y, direction.x);
 

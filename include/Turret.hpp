@@ -16,7 +16,7 @@ public:
     void update(GameWorld& world);
     void render();
 
-    void setTarget(WorldEntity* entity);
+    void setTarget(EntityID entity);
 
     bool isDone() const {return false;}
 
@@ -35,11 +35,11 @@ private:
 
     Light* light;
 
-    TurretState  m_currentState;
-    WorldEntity* m_target;
-    AutoAim      m_autoAim;
+    TurretState m_currentState;
+    EntityID    m_target;
+    AutoAim     m_autoAim;
 
-    WorldEntity* getTarget(GameWorld* world) const;
+    EntityID getTarget(GameWorld* world) const;
     void fire(GameWorld* world);
 
     BodyID m_barrelBody;

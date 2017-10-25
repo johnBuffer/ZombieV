@@ -4,6 +4,7 @@
 #include "System/StandardEntity.hpp"
 #include "System/LifeForm.hpp"
 #include "System/ChainedObject.hpp"
+#include "System/AutoAim.hpp"
 #include <memory>
 
 class Zombie : public StandardEntity<Zombie>, public LifeForm
@@ -41,6 +42,8 @@ private:
     bool  _done;
 
     ZombieState _currentState;
+
+    AutoAim m_autoAim;
 
     sf::Color _color;
     EntityID  _target;

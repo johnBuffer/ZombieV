@@ -35,6 +35,7 @@ public:
     virtual bool  isDone()       const=0;
     const size_t& getID()        const;
 
+    void setGlobalID(EntityID id);
     void move(float vx, float vy);
     void setDying();
     void setEnemy();

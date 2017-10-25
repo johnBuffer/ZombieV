@@ -19,7 +19,7 @@ Turret::Turret()
 Turret::Turret(float x, float y) :
     StandardEntity(x, y, 0.0f),
     m_fireCooldown(0.1f),
-    m_target(nullptr),
+    m_target(ENTITY_NULL),
     m_autoAim(this, 0.05f)
 {
     m_currentState = Turret::IDLE;
@@ -49,6 +49,7 @@ void Turret::update(GameWorld& world)
     light->radius = 0;
     if (m_target)
     {
+        WorldEntity* target = world.getEntityByID(m_target);
         m_autoAim.update(DT);
 
         if (m_autoAim.getDotDist()<0.25f)
@@ -67,8 +68,8 @@ void Turret::update(GameWorld& world)
         _angle += m_autoAim.getDelta();
 
 
-        if (m_target->isDying())
-            m_target = nullptr;
+        if (target->isDying())
+            m_target = ENTITY_NULL;
     }
     else
     {
@@ -108,7 +109,7 @@ void Turret::fire(GameWorld* world)
 
 }
 
-WorldEntity* Turret::getTarget(GameWorld* world) const
+EntityID Turret::getTarget(GameWorld* world) const
 {
     Vector<Zombie> zombies = Zombie::getObjects();
 
@@ -130,7 +131,7 @@ WorldEntity* Turret::getTarget(GameWorld* world) const
     if (target)
         target->setMarked(true);
 
-    return target;
+    return target->getGlobalID();
 }
 
 void Turret::render()
@@ -175,7 +176,7 @@ void Turret::init()
     s_shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
 }
 
-void Turret::setTarget(WorldEntity* entity)
+void Turret::setTarget(EntityID entity)
 {
     m_target = entity;
     m_autoAim.setTarget(entity);
