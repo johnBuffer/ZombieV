@@ -20,7 +20,7 @@ Turret::Turret(float x, float y) :
     StandardEntity(x, y, 0.0f),
     m_fireCooldown(0.1f),
     m_target(ENTITY_NULL),
-    m_autoAim(this, 0.05f)
+    m_autoAim(0.05f)
 {
     m_currentState = Turret::IDLE;
     m_accuracy     = 0.05f;
@@ -49,8 +49,9 @@ void Turret::update(GameWorld& world)
     light->radius = 0;
     if (m_target)
     {
-        WorldEntity* target = world.getEntityByID(m_target);
-        m_autoAim.update(DT);
+        WorldEntity* target     = world.getEntityByID(m_target);
+
+        m_autoAim.update(world, DT);
 
         if (m_autoAim.getDotDist()<0.25f)
         {
@@ -131,7 +132,7 @@ EntityID Turret::getTarget(GameWorld* world) const
     if (target)
         target->setMarked(true);
 
-    return target->getGlobalID();
+    return target->getID();
 }
 
 void Turret::render()

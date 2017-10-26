@@ -9,8 +9,7 @@ AutoAim::AutoAim() :
 
 }
 
-AutoAim::AutoAim(EntityID entity, float speed) :
-    m_aimingEntity(entity),
+AutoAim::AutoAim(float speed) :
     m_speed(speed)
 {
 
@@ -27,12 +26,12 @@ void AutoAim::setTarget(EntityID entity)
 }
 
 
-void AutoAim::update(GameWorld* world, float dt)
+void AutoAim::update(GameWorld& world, float dt)
 {
     if (m_target)
     {
-        WorldEntity* aimingEntity = world->getEntityByID(m_aimingEntity);
-        WorldEntity* target       = world->getEntityByID(m_target);
+        WorldEntity* aimingEntity = world.getEntityByID(m_aimingEntity);
+        WorldEntity* target       = world.getEntityByID(m_target);
 
         float angle = aimingEntity->getAngle();
         Vec2 vTarget(target->getCoord(), aimingEntity->getCoord());

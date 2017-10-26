@@ -36,7 +36,7 @@ Zombie::Zombie(float x, float y) :
     _marked = false;
     _target = ENTITY_NULL;
 
-    m_globalID = getGlobalID();
+    m_globalID = getGlobalIndex();
 }
 
 Zombie::~Zombie()

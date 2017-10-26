@@ -43,7 +43,6 @@ T* PoolObject<T>::add(Args&&... args)
     size_t index = s_pool.createObject(args...);
     T* newObject = &s_pool[index];
     newObject->m_index = index;
-    newObject->setGlobalID(newObject->getGlobalID());
 
     return newObject;
 }

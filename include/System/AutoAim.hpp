@@ -8,9 +8,9 @@ class AutoAim
 {
 public:
     AutoAim();
-    AutoAim(EntityID entity, float speed);
+    AutoAim(float speed);
 
-    void update(GameWorld* world, float dt);
+    void update(GameWorld& world, float dt);
     void setAimingEntity(EntityID entity);
     void setTarget(EntityID entity);
     void setSpeed(float speed);

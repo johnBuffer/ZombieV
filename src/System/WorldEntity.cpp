@@ -108,9 +108,9 @@ const Vec2& WorldEntity::getCoord() const
     return m_coord;
 }
 
-const size_t& WorldEntity::getID() const
+EntityID WorldEntity::getID() const
 {
-    return _id;
+    return m_globalID;
 }
 
 float WorldEntity::getAngle() const
@@ -136,9 +136,4 @@ void WorldEntity::setLife(float life)
 void WorldEntity::resetTime()
 {
     _time = 0;
-}
-
-EntityID WorldEntity::getGlobalID() const
-{
-    return m_globalID;
 }

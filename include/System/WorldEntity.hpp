@@ -27,13 +27,12 @@ public:
 
     bool          isDying()      const;
     float         getAngle()     const;
-    EntityID      getGlobalID()  const;
+    EntityID      getID()        const;
     U_2DBody&     getBody();
     const Vec2&   getCoord()     const;
     const Vec2&   getBodyCoord() const;
     EntityTypes   getType()      const;
     virtual bool  isDone()       const=0;
-    const size_t& getID()        const;
 
     void setGlobalID(EntityID id);
     void move(float vx, float vy);
