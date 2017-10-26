@@ -8,12 +8,24 @@ template<class T>
 class WorldEntityPool : public PoolObject<T>
 {
 public:
+    template<class...Args>
+    static T*   addEntity(Args&&...);
     static void registerObject(GameWorld* world);
     static void setClassID(size_t id) {T::m_classID = id;}
     static WorldEntity* getWorldEntityAt(size_t index);
 
     static size_t getClassID();
 };
+
+template<class T>
+template<class...Args>
+T* WorldEntityPool<T>::addEntity(Args&&... args)
+{
+    T* newObject = PoolObject<T>::add(args...);
+    newObject->setID(newObject->getGlobalIndex());
+
+    return newObject;
+}
 
 template<class T>
 void WorldEntityPool<T>::registerObject(GameWorld* world)

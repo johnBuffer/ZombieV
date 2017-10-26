@@ -63,7 +63,7 @@ U_2DBody* WorldEntity::m_initBody(GameWorld* world)
     return body;
 }
 
-void WorldEntity::setGlobalID(EntityID id)
+void WorldEntity::setID(EntityID id)
 {
     m_globalID = id;
 }

@@ -34,7 +34,7 @@ public:
     EntityTypes   getType()      const;
     virtual bool  isDone()       const=0;
 
-    void setGlobalID(EntityID id);
+    void setID(EntityID id);
     void move(float vx, float vy);
     void setDying();
     void setEnemy();

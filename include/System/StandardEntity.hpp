@@ -22,7 +22,6 @@ template<class T>
 StandardEntity<T>::StandardEntity(float x, float y, float angle) :
     WorldEntity(x, y, angle)
 {
-    m_globalID = this->getGlobalIndex();
 }
 
 #endif // STANTARDENTITY_HPP_INCLUDED

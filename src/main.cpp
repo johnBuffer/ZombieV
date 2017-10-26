@@ -34,8 +34,10 @@ int main()
     Zombie::registerObject(&world);
     Bot::registerObject(&world);
 
-    Hunter& h = *Hunter::add(MAP_SIZE/2, MAP_SIZE/2);
+    Hunter& h = *Hunter::addEntity(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
+
+    std::cout << "H's ID : " << h.getID() << std::endl;
 
     Bot* newBot;
     for (int i(0); i--;)
@@ -53,10 +55,13 @@ int main()
 
     for (int i(10); i--;)
     {
-        Zombie* newZombie(Zombie::add(rand()%MAP_SIZE, rand()%MAP_SIZE));
+        Zombie* newZombie(Zombie::addEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
         world.addEntity(newZombie);
+        std::cout << "ID : " << newZombie->getID() << std::endl;
+
     }
+    return 0;
     waveCount++;
 
 

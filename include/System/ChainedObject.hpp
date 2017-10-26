@@ -6,6 +6,20 @@
 #include <list>
 #include <memory>
 
+
+/* This classes describes a collection of items chained together
+but in contiguous memory.
+
+So each used slot is connected to its next and previous
+and each free slot is just added in a simple chain of free
+slots
+
+O(1) access, deletion and insertion */
+
+////////////////////////////////////////////////////////////
+
+/* A PoolItem is a slot of the Pool, containing
+chain information and T object data */
 template<class T>
 struct PoolItem
 {
@@ -39,6 +53,10 @@ T& PoolItem<T>::operator*()
     return object;
 };
 
+//////////////////////////////////////////////////////////
+
+/* The pool itself containing all the PoolItems
+It exposes methods to create, access and delete elements */
 template<class T>
 class Pool
 {
@@ -61,13 +79,13 @@ public:
     void resize(size_t size);
 
 private:
-    size_t m_size;
-    int m_firstFree;
-    int m_firstObject;
-    std::vector<PoolItem<T>> m_data;
-
+    size_t m_size; // Number of used slots
+    int m_firstFree; // Index of the first free slot that can be used
+    int m_firstObject; // Index of the first used slot -> start point to iterate only on used slots
+    std::vector<PoolItem<T>> m_data; // Raw contiguous data
 };
 
+// Some syntax sugar
 template<class T> using Vector = std::vector<PoolItem<T>>;
 template<class T> using Ptr    = PoolItem<T>;
 
@@ -78,6 +96,7 @@ Pool<T>::Pool(size_t size) :
     resize(size);
 }
 
+// Initialize data
 template<class T>
 void Pool<T>::resize(size_t size)
 {
@@ -89,7 +108,6 @@ void Pool<T>::resize(size_t size)
     for (size_t i(0); i<size; ++i)
     {
         m_data[i].index = i;
-
         m_data[i].isAviable = true;
         m_data[i].nextFree = i+1;
         m_data[i].nextObject = -1;
@@ -102,45 +120,46 @@ void Pool<T>::resize(size_t size)
     }
 }
 
+// Handles object creation
 template <class T>
 template<class...Args>
 size_t Pool<T>::createObject(Args&&... args)
 {
-    ++m_size;
+    ++m_size; // Update size
     size_t index;
     PoolItem<T>* newPoolItem = nullptr;
 
-    // If empty slot
-    if (m_firstFree != -1)
+    if (m_firstFree != -1) // If empty slot available
     {
-        index = m_firstFree;
-        m_firstFree = m_data[index].nextFree;
+        index = m_firstFree; // Get a free slot
+        m_firstFree = m_data[index].nextFree; // Update next free slot
         newPoolItem = &m_data[index];
     }
     else // We need to create a new one
     {
         std::cout << "Capacity overflow" << std::endl;
-        m_data.push_back(PoolItem<T>());
+        m_data.push_back(PoolItem<T>()); // Create new slot
 
         newPoolItem = &m_data.back();
         newPoolItem->index = m_data.size()-1;
-
-        index = newPoolItem->index;
+        index = newPoolItem->index; // Update index
     }
 
-    new(&newPoolItem->object) T(args...);
-    newPoolItem->isAviable = false;
-    newPoolItem->nextObject = m_firstObject;
-    newPoolItem->prevObject = -1;
+    new(&newPoolItem->object) T(args...); // Create new T object in its slot
+    newPoolItem->isAviable = false; // Update status
+    newPoolItem->nextObject = m_firstObject; // Add it to the chain
+    newPoolItem->prevObject = -1; // No previous since first
 
-    if (m_firstObject != -1)
+    if (m_firstObject != -1) // If first ever
         m_data[m_firstObject].prevObject = index;
 
-    m_firstObject = index;
+    m_firstObject = index; // New head for iteration
 
     return index;
 }
 
+
+//
 template<class T>
 T& Pool<T>::operator[](size_t i)
 {
