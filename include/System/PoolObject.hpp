@@ -3,6 +3,11 @@
 
 #include "System/ChainedObject.hpp"
 
+/* Wrapper to allow creation of "Pooled object"
+e.g. objects that statically handle the storage of their own instances*/
+
+///////////////////////////////////////////////////////////////////////
+
 template<class T>
 class PoolObject
 {
@@ -77,11 +82,13 @@ T* PoolObject<T>::getObjectAt(size_t i)
     return &(s_pool.getPoolItemAt(i)->object);
 }
 
+// Returns the next object in the chain
 template<class T>
 T* PoolObject<T>::getNext(T*& item)
 {
-    if (item)
+    if (item) // If we have a start point
     {
+        // Search for the next
         PoolItem<T>& poolItem = *(s_pool.getPoolItemAt(item->m_index));
 
         int nextIndex = poolItem.nextObject;
@@ -89,16 +96,19 @@ T* PoolObject<T>::getNext(T*& item)
         {
             item = &(s_pool.getPoolItemAt(nextIndex)->object);
         }
-        else
+        else // Does not have next
             item = nullptr;
     }
-    else
+    else // No start point -> returns the first object
     {
         item = s_pool.getFirstItem();
     }
 
     return item;
 }
+
+// Returns the global index of the T object
+// Global means that this index is unique even considering other PoolObject<T>
 
 template<class T>
 uint64_t PoolObject<T>::getGlobalIndex() const

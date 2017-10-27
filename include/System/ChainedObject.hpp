@@ -159,13 +159,14 @@ size_t Pool<T>::createObject(Args&&... args)
 }
 
 
-//
+// Simple T object access
 template<class T>
 T& Pool<T>::operator[](size_t i)
 {
     return m_data[i].object;
 }
 
+// Removes a T object from the pool
 template<class T>
 void Pool<T>::remove(int i)
 {
@@ -175,6 +176,7 @@ void Pool<T>::remove(int i)
     poolItem.isAviable = true;
     m_firstFree = i;
 
+    // Update the chain
     int nextObject = poolItem.nextObject;
     int prevObject = poolItem.prevObject;
 
@@ -193,6 +195,7 @@ void Pool<T>::remove(int i)
     }
 }
 
+// Allows iteration on used slots
 template<class T>
 bool Pool<T>::getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem)
 {
@@ -205,6 +208,7 @@ bool Pool<T>::getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem)
     return false;
 }
 
+// Returns Head of used slots chain
 template<class T>
 T* Pool<T>::getFirstItem()
 {
@@ -217,6 +221,7 @@ T* Pool<T>::getFirstItem()
     return item;
 }
 
+// Simple PoolItem access
 template<class T>
 PoolItem<T>* Pool<T>::getPoolItemAt(size_t i)
 {

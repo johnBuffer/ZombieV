@@ -26,15 +26,14 @@ public:
     void update();
     void render();
 
-    const Level& getLevel()  const {return _level;}
-    bool  isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
+    bool                isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
+    size_t              registerEntityClass(AccessFunc func);
+    BodyID              addBody();
+    GridCell*           getBodiesAt(const Vec2& coord);
+    WorldEntity*     getEntityByID(EntityID id);
+    const Level&        getLevel()  const {return _level;}
     const EventManager& getEvents() const {return _eventManager;}
 
-    size_t    registerEntityClass(AccessFunc func);
-    BodyID    addBody();
-    GridCell* getBodiesAt(const Vec2& coord);
-
-    WorldEntity* getEntityByID(EntityID id);
     static U_2DBody* getBodyByID(BodyID id);
 
 private:
@@ -42,9 +41,8 @@ private:
     Level _level;
 
     std::list<WorldEntity*> _entities;
-
-    U_2DCollisionManager _phyManager;
-    EventManager         _eventManager;
+    U_2DCollisionManager    _phyManager;
+    EventManager            _eventManager;
 
     void _cleanEntities();
 
