@@ -36,7 +36,7 @@ public:
     static bool   isVisible(WorldEntity* entity);
     static bool   isVisible(const Vec2& position, float radius);
     static size_t registerTexture(std::string filename, bool isRepeated=false);
-    const static  std::list<ShadowCaster>& getScreenSpaceShadowCasters();
+    static const  std::list<ShadowCaster>& getScreenSpaceShadowCasters();
 
     static LightEngine& getLightEngine();
     static const sf::Texture& getBlur(const sf::Texture& texture);
@@ -44,22 +44,22 @@ public:
 private:
     static void               _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
     static float              _quality, _zoom, _ratio;
+    static size_t             _groundTextureID;
+    static DynamicBlur        _blur;
     static sf::Vector2u       _renderSize;
     static sf::Vector2f       _focus;
     static sf::Vector2f       _baseOffset;
+    static sf::VertexArray    _groundQuad;
     static sf::RenderTexture  _renderTexture;
     static sf::RenderTexture  _blurTexture;
     static sf::RenderTexture  _groundTexture;
-    static sf::VertexArray    _groundQuad;
-    static DynamicBlur        _blur;
-    static size_t             _groundTextureID;
 
     static void _renderBloom();
     static void _translateToFocus(sf::Transform& transform);
 
     static std::vector<sf::Texture>                  _textures;
-    static std::vector<std::vector<sf::VertexArray>> _vertices;
     static std::list<ShadowCaster>                   _screenSpaceEntities;
+    static std::vector<std::vector<sf::VertexArray>> _vertices;
 
     static LightEngine _lightEngine;
 

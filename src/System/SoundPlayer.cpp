@@ -1,33 +1,42 @@
 #include "System/SoundPlayer.hpp"
 
-std::list<sf::Sound>         SoundPlayer::_sounds;
-std::vector<sf::SoundBuffer> SoundPlayer::_buffers;
+std::vector<SoundHandler> SoundPlayer::_buffers;
 
-size_t SoundPlayer::registerSound(std::string filename)
+void SoundHandler::update()
 {
-    sf::SoundBuffer newBuffer;
-    _buffers.push_back(newBuffer);
-    _buffers.back().loadFromFile(filename);
+    livingSounds.remove_if( [](sf::Sound& s){return s.getStatus() == sf::Sound::Stopped;} );
+}
+
+size_t SoundPlayer::registerSound(std::string filename, size_t maxSounds)
+{
+    _buffers.push_back(SoundHandler());
+    _buffers.back().soundBuffer.loadFromFile(filename);
+    _buffers.back().maxLivingSounds = maxSounds;
 
     return _buffers.size()-1;
 }
 
 void SoundPlayer::playInstanceOf(size_t soundID)
 {
-    _sounds.push_back(sf::Sound());
-    _sounds.back().setBuffer(_buffers[soundID]);
-    _sounds.back().play();
+    SoundHandler& handler = _buffers[soundID];
+    std::list<sf::Sound>& soundList(handler.livingSounds);
 
-    update();
+    soundList.push_back(sf::Sound());
+    sf::Sound& newSound = soundList.back();
+    newSound.setBuffer(_buffers[soundID].soundBuffer);
+    newSound.play();
+
+    if (soundList.size() > handler.maxLivingSounds)
+    {
+        soundList.front().stop();
+        soundList.pop_front();
+    }
+
+    handler.update();
 }
 
 sf::Sound SoundPlayer::getInstanceOf(size_t soundID)
 {
-    sf::Sound sound(_buffers[soundID]);
+    sf::Sound sound(_buffers[soundID].soundBuffer);
     return sound;
-}
-
-void SoundPlayer::update()
-{
-    _sounds.remove_if( [](sf::Sound& s){return s.getStatus() == sf::Sound::Stopped;} );
 }

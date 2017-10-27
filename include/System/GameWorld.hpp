@@ -30,7 +30,7 @@ public:
     size_t              registerEntityClass(AccessFunc func);
     BodyID              addBody();
     GridCell*           getBodiesAt(const Vec2& coord);
-    WorldEntity*     getEntityByID(EntityID id);
+    WorldEntity*        getEntityByID(EntityID id);
     const Level&        getLevel()  const {return _level;}
     const EventManager& getEvents() const {return _eventManager;}
 

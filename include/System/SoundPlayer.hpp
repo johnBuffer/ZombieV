@@ -5,18 +5,24 @@
 #include <string>
 #include <list>
 
+struct SoundHandler
+{
+    size_t maxLivingSounds;
+    sf::SoundBuffer soundBuffer;
+    std::list<sf::Sound> livingSounds;
+
+    void update();
+};
+
 class SoundPlayer
 {
 public:
-    static size_t    registerSound(std::string filename);
     static void      playInstanceOf(size_t soundID);
+    static size_t    registerSound(std::string filename, size_t maxSounds = 10);
     static sf::Sound getInstanceOf(size_t soundID);
 
 private:
-    static std::list<sf::Sound>         _sounds;
-    static std::vector<sf::SoundBuffer> _buffers;
-
-    static void update();
+    static std::vector<SoundHandler> _buffers;
 };
 
 #endif // SOUNDPLAYER_HPP_INCLUDED
