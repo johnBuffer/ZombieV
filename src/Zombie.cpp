@@ -61,9 +61,16 @@ void Zombie::update(GameWorld& world)
     {
         WorldEntity* target = world.getEntityByID(_target);
 
-        Vec2 vTarget(target->getCoord(), getCoord());
+        /*std::cout << target->getCoord().x << std::endl;
+        std::cout << target->getCoord().y << std::endl;
+        std::cout << m_coord.x << std::endl;
+        std::cout << m_coord.y << std::endl;*/
+
+        Vec2 vTarget(target->getCoord(), m_coord);
         Vec2 direction(cos(_angle), sin(_angle));
         Vec2 directionNormal(-direction.y, direction.x);
+
+        /*std::cout << "end" << std::endl;*/
 
         float dist = vTarget.getNorm();
         float vx = vTarget.x/dist;
@@ -94,6 +101,7 @@ void Zombie::update(GameWorld& world)
 
         if (target->isDying())
             _target = ENTITY_NULL;
+
     }
     else
     {
@@ -185,7 +193,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
         }
         case(EntityTypes::HUNTER) :
         {
-            _target = static_cast<Hunter*>(entity)->getGlobalIndex();
+            //_target = static_cast<Hunter*>(entity)->getGlobalIndex();
             if (_currentState != ATTACKING)
             {
                 _currentState     = ATTACKING;
@@ -209,22 +217,22 @@ void Zombie::initPhysics(GameWorld* world)
 void Zombie::_getTarget()
 {
     Hunter*  hunter = nullptr;
-    EntityID target = 0;
+    EntityID target = ENTITY_NULL;
     float minDist  = -1;
 
     while (Hunter::getNext(hunter))
     {
-        Vec2 v(hunter->getCoord(), getCoord());
+        Vec2 v(hunter->getCoord(), m_coord);
         float dist = v.getNorm2();
 
         if ((dist < minDist|| minDist < 0) && !hunter->isDying())
         {
             minDist = dist;
-            target = hunter->getGlobalIndex();
+            target = hunter->getID();
         }
     }
 
-    Bot* b = nullptr;
+    /*Bot* b = nullptr;
     while (Bot::getNext(b))
     {
         Vec2 v(b->getCoord(), getCoord());
@@ -235,7 +243,7 @@ void Zombie::_getTarget()
             minDist = dist;
             target = b->getGlobalIndex();
         }
-    }
+    }*/
 
 
     if (target)

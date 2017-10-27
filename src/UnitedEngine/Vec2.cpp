@@ -1,12 +1,16 @@
 #include "UnitedEngine/Vec2.h"
 #include <cmath>
+#include <iostream>
 
 Vec2::Vec2() : x(0), y(0) {}
 
 Vec2::Vec2(const Vec2& coord1, const Vec2& coord2)
 {
+    //std::cout << "ok" << std::endl;
     x = coord2.x-coord1.x;
     y = coord2.y-coord1.y;
+
+    //std::cout << "x : " << x << " y : " << y << std::endl;
 }
 
 Vec2::Vec2(float cx, float cy) : x(cx), y(cy)

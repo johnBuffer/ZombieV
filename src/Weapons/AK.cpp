@@ -8,6 +8,8 @@
 #include <iostream>
 #include <System/SoundPlayer.hpp>
 
+std::vector<size_t> AK::m_shootSounds;
+
 AK::AK()
 {
     _magazineSize        = 30;
@@ -46,7 +48,7 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
     if (isReady())
     {
         --_currentAmmo;
-        //SoundPlayer::playInstanceOf(_shootSoundID);
+        SoundPlayer::playInstanceOf(m_shootSounds[getRandInt(0, 2)]);
 
         m_fireCooldown.reset();
         float accuracy = (tanh(4.0f*_recoil))*0.05f;
@@ -123,5 +125,7 @@ void AK::init()
     _idleTextureID   = GameRender::registerTexture("data/textures/hunter/hunter_idle.png");
     _reloadTextureID = GameRender::registerTexture("data/textures/hunter/hunter_rifle_reload.png");
 
-    _shootSoundID = SoundPlayer::registerSound("data/fire1.wav");
+    m_shootSounds.push_back(SoundPlayer::registerSound("data/fire1.wav"));
+    m_shootSounds.push_back(SoundPlayer::registerSound("data/fire2.wav"));
+    m_shootSounds.push_back(SoundPlayer::registerSound("data/fire3.wav"));
 }

@@ -21,9 +21,9 @@ int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
-    //sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(true);
+    //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
+    window.setVerticalSyncEnabled(false);
     //window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
@@ -37,10 +37,10 @@ int main()
     Hunter& h = *Hunter::addEntity(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
-    std::cout << "H's ID : " << h.getID() << std::endl;
+    std::cout << "H's ID | ptr : " << h.getID() << " | " << &h << std::endl;
 
     Bot* newBot;
-    for (int i(0); i--;)
+    for (int i(10); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -53,18 +53,18 @@ int main()
 
     int waveCount = 1;
 
-    for (int i(10); i--;)
+    EntityID lastID = 0;
+    for (int i(1000); i--;)
     {
         Zombie* newZombie(Zombie::addEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
         //newZombie->setTarget(&(*Hunter::getObjects().front()));
         world.addEntity(newZombie);
-        std::cout << "ID : " << newZombie->getID() << std::endl;
-
+        lastID = newZombie->getID();
     }
-    return 0;
+
+    std::cout << lastID << std::endl;
+
     waveCount++;
-
-
 
     for (int i(0); i<100; ++i)
     {
@@ -97,8 +97,8 @@ int main()
         world.update();
         int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
-        //system("cls");
-        /*std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
+        /*system("cls");
+        std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
         std::cout << "Bodies       count : " << U_2DBody::size() << std::endl;
         std::cout << "Bullets      count : " << Bullet::size() << std::endl;
         std::cout << "Zombies      count : " << Zombie::size() << std::endl;
@@ -112,7 +112,7 @@ int main()
         Vec2 p = h.getCoord();
 
         sf::Vector2f playerPosition(p.x, p.y);
-        //GameRender::setFocus(playerPosition);
+        GameRender::setFocus(playerPosition);
 
         GameRender::clear();
 
