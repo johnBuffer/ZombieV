@@ -3,6 +3,7 @@
 #include <iostream>
 
 size_t WorldEntity::_entityCount = 0;
+size_t WorldEntity::s_accessTime = 0;
 
 WorldEntity::WorldEntity():
     _id(WorldEntity::_entityCount++),

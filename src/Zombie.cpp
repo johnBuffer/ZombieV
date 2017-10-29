@@ -193,7 +193,7 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
         }
         case(EntityTypes::HUNTER) :
         {
-            //_target = static_cast<Hunter*>(entity)->getGlobalIndex();
+            setTarget(entity->getID());
             if (_currentState != ATTACKING)
             {
                 _currentState     = ATTACKING;

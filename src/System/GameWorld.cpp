@@ -44,7 +44,9 @@ void GameWorld::update()
 {
     _cleanEntities();
 
+    sf::Clock clock;
     _phyManager.update();
+    std::cout << "Phys time " << clock.getElapsedTime().asMilliseconds() << std::endl;
 
     for (WorldEntity* entity : _entities)
     {
@@ -117,10 +119,15 @@ size_t GameWorld::registerEntityClass(AccessFunc func)
 
 WorldEntity* GameWorld::getEntityByID(EntityID id)
 {
+    sf::Clock clock;
+
     size_t classID  = (id>>32)-1;
     size_t entityID = id;
+    WorldEntity* entity = m_accessFuncs[classID](entityID);
 
-    return m_accessFuncs[classID](entityID);
+    WorldEntity::s_accessTime += clock.getElapsedTime().asMicroseconds();
+
+    return entity;
 }
 
 

@@ -48,6 +48,8 @@ public:
     virtual void update(GameWorld& world)=0;
     virtual void render()=0;
 
+    static size_t s_accessTime;
+
 protected:
     /// Engine data
     size_t   _id;
@@ -66,6 +68,8 @@ protected:
     const U_2DBody* m_thisBody() const;
     U_2DBody* m_thisBody();
     U_2DBody* m_initBody(GameWorld* world);
+
+
 
 private:
     static size_t _entityCount;

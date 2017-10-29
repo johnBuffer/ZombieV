@@ -2,6 +2,7 @@
 #define POOLOBJECT_HPP_INCLUDED
 
 #include "System/ChainedObject.hpp"
+#include "SFML/System.hpp"
 
 /* Wrapper to allow creation of "Pooled object"
 e.g. objects that statically handle the storage of their own instances*/
@@ -27,6 +28,8 @@ public:
     static void       removeObject(size_t i);
     static void       resize(size_t size);
 
+    static size_t s_iterationTime;
+
 protected:
     size_t m_index;
     static size_t m_classID;
@@ -40,6 +43,10 @@ Pool<T> PoolObject<T>::s_pool(10000);
 
 template<class T>
 size_t PoolObject<T>::m_classID;
+
+template<class T>
+size_t PoolObject<T>::s_iterationTime = 0;
+
 
 template<class T>
 template<class...Args>
@@ -86,6 +93,7 @@ T* PoolObject<T>::getObjectAt(size_t i)
 template<class T>
 T* PoolObject<T>::getNext(T*& item)
 {
+    sf::Clock clock;
     if (item) // If we have a start point
     {
         // Search for the next
@@ -103,6 +111,8 @@ T* PoolObject<T>::getNext(T*& item)
     {
         item = s_pool.getFirstItem();
     }
+
+    s_iterationTime += clock.getElapsedTime().asMicroseconds();
 
     return item;
 }

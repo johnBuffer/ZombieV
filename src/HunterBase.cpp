@@ -54,6 +54,7 @@ HunterBase::HunterBase(float x, float y) :
 
 void HunterBase::init()
 {
+    std::cout << "INIT HUNTER_BASE" << std::endl;
     _feetTextureID = GameRender::registerTexture("data/textures/hunter/hunter_walk.png");
     _feetAnimation.setTextureID(_feetTextureID);
     _feetAnimation.setCenter(sf::Vector2f(76, 62));

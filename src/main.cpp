@@ -40,12 +40,12 @@ int main()
     std::cout << "H's ID | ptr : " << h.getID() << " | " << &h << std::endl;
 
     Bot* newBot;
-    for (int i(10); i--;)
+    for (int i(50); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
         //newBot = Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE);
-        newBot = Bot::add(MAP_SIZE/2+rand()%10, MAP_SIZE/2+rand()%10);
+        newBot = Bot::addEntity(MAP_SIZE/2+rand()%10, MAP_SIZE/2+rand()%10);
         world.addEntity(newBot);
     }
 
@@ -66,7 +66,7 @@ int main()
 
     waveCount++;
 
-    for (int i(0); i<100; ++i)
+    for (int i(0); i<0; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
@@ -81,6 +81,8 @@ int main()
     {
         ++frameCount;
 
+        WorldEntity::s_accessTime = 0;
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -93,11 +95,15 @@ int main()
 			}
         }
 
+        WorldEntityPool<U_2DBody>::s_iterationTime = 0;
+
+        system("cls");
         sf::Clock clock;
         world.update();
         int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
-        /*system("cls");
+        //system("cls");
+        std::cout << "Iteration time     : " << WorldEntityPool<U_2DBody>::s_iterationTime/1000.0f << std::endl;
         std::cout << "Logic update time  : " << ttime/float(frameCount) << " ms" << std::endl;
         std::cout << "Bodies       count : " << U_2DBody::size() << std::endl;
         std::cout << "Bullets      count : " << Bullet::size() << std::endl;
@@ -107,7 +113,7 @@ int main()
         std::cout << "Explosions   count : " << Explosion::size() << std::endl;
         std::cout << "Smokes       count : " << Smoke::size() << std::endl;
         std::cout << "BulletShells count : " << BulletShell::size() << std::endl;
-        std::cout << "===================================\n" << std::endl;*/
+        std::cout << "===================================\n" << std::endl;
 
         Vec2 p = h.getCoord();
 
