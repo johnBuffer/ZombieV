@@ -44,7 +44,9 @@ void GameWorld::update()
 {
     _cleanEntities();
 
+    sf::Clock c;
     _phyManager.update();
+    std::cout << "Phys time " << c.getElapsedTime().asMilliseconds() << std::endl;
 
     for (WorldEntity* entity : _entities)
     {

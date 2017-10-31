@@ -188,8 +188,8 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
                 float massCoef1 = colliderMass*totalMassCoeff;
                 float massCoef2 = currentMass*totalMassCoeff;
 
-                currentBody->move2D(Vec2( vx*massCoef1,  vy*massCoef1));
-                collider   ->move2D(Vec2(-vx*massCoef2, -vy*massCoef2));
+                currentBody->move2D( vx*massCoef1,  vy*massCoef1);
+                collider   ->move2D(-vx*massCoef2, -vy*massCoef2);
 
 
                 WorldEntity* colliderEntity = collider->getEntity();
