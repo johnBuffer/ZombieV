@@ -1,6 +1,7 @@
 #include "Props/BulletShell.hpp"
 #include "System/GameRender.hpp"
 #include "System/GameWorld.hpp"
+#include "System/Utils.hpp"
 
 #include <iostream>
 
@@ -18,15 +19,15 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
     _vertexArray(sf::Quads, 4)
 {
     _angularVelocity = 0.2f;
-    _ratio  = rand()%5+1;
+
+    if (BulletShell::size() > 250)
+        _ratio  = 0.5f;
+    else
+        _ratio = getRandInt(1, 5);
+
     _isDone = false;
 
     _type = EntityTypes::PROPS;
-
-    /*_b2 = new U_2DBody(Vec2(pos.x, pos.y+2), 0.005);
-    _b2->setRadius(1.5);
-    _b2->stop();
-    _b2->setEntity(this);*/
 }
 
 void BulletShell::kill(GameWorld* world)

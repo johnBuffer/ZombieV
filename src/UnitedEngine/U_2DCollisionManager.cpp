@@ -240,7 +240,7 @@ void U_2DCollisionManager::update()
     while (U_2DBody::getNext(b))
     {
         Vec2 velocity = b->getVelocity();
-        b->accelerate2D(Vec2(-10*velocity.x, -10*velocity.y));
+        b->accelerate2D(-10*velocity.x, -10*velocity.y);
         b->updatePosition(m_timeStep);
     }
 }
