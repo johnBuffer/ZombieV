@@ -50,14 +50,18 @@ void U_2DBody::accelerate2D(float ax, float ay)
 
 void U_2DBody::updatePosition(float timeStep)
 {
-    Vec2 newPosition;
-    newPosition.x = m_position.x+(m_position.x-m_lastPosition.x)+timeStep*m_acceleration.x;
-    newPosition.y = m_position.y+(m_position.y-m_lastPosition.y)+timeStep*m_acceleration.y;
-
     if (!m_static)
     {
+        Vec2 newPosition;
+        newPosition.x = m_position.x+(m_position.x-m_lastPosition.x)+timeStep*m_acceleration.x;
+        newPosition.y = m_position.y+(m_position.y-m_lastPosition.y)+timeStep*m_acceleration.y;
+
         m_lastPosition = m_position;
         m_position = newPosition;
+    }
+    else
+    {
+        m_position = m_lastPosition;
     }
 
     m_acceleration = {};

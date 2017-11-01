@@ -49,8 +49,10 @@ void Turret::update(GameWorld& world)
     light->radius = 0;
     if (m_target)
     {
-        WorldEntity* target     = world.getEntityByID(m_target);
+        WorldEntity* target = world.getEntityByID(m_target);
 
+        m_autoAim.setAimingEntity(getID());
+        m_autoAim.setTarget(m_target);
         m_autoAim.update(world, DT);
 
         if (m_autoAim.getDotDist()<0.25f)
@@ -112,27 +114,30 @@ void Turret::fire(GameWorld* world)
 
 EntityID Turret::getTarget(GameWorld* world) const
 {
-    Vector<Zombie> zombies = Zombie::getObjects();
-
     Zombie* target = nullptr;
+    Zombie* zombie = nullptr;
+
     float minDist  = -1;
 
-    for (Ptr<Zombie>& zombie : zombies)
+    while (Zombie::getNext(zombie))
     {
         Vec2 v(zombie->getCoord(), getCoord());
-        float dist = v.getNorm();
+        float dist = v.getNorm2();
 
         if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
         {
             minDist = dist;
-            target = &(*zombie);
+            target = zombie;
         }
     }
 
     if (target)
+    {
         target->setMarked(true);
+        return target->getID();
+    }
 
-    return target->getID();
+    return ENTITY_NULL;
 }
 
 void Turret::render()
