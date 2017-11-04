@@ -92,7 +92,7 @@ void Turret::fire(GameWorld* world)
     m_fireCooldown.reset();
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 2, 0));
+    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
     newBullet->init(getCoord(), PI+_angle);
     newBullet->setImpactForce(2.0f);
     world->addEntity(newBullet);
@@ -124,7 +124,7 @@ EntityID Turret::getTarget(GameWorld* world) const
         Vec2 v(zombie->getCoord(), getCoord());
         float dist = v.getNorm2();
 
-        if ((dist < minDist && !zombie->isMarked()) || minDist < 0)
+        if (((dist < minDist && !zombie->isMarked()) || minDist < 0) && !zombie->isDying())
         {
             minDist = dist;
             target = zombie;
