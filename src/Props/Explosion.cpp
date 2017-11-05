@@ -78,52 +78,57 @@ void Explosion::update(GameWorld& world)
 /// Add the current explosion in the global Explosion's vertex array
 void Explosion::render()
 {
-    for (Particle& p : _particles)
+    if (_ratio > 0)
     {
-        float x = p._x;
-        float y = p._y;
-
-        float sx;
-        float sy;
-
-        if (_isTrace)
+        for (Particle& p : _particles)
         {
-            int indexA = getRandInt(0, 1000);
-            sx = p._size*_ratio*getRandVx(indexA);
-            sy = p._size*_ratio*getRandVx(indexA);
-        }
-        else
-        {
-            sx = p._size*_ratio*p._vax;
-            sy = p._size*_ratio*p._vay;
-        }
+            float x = p._x;
+            float y = p._y;
 
-        sf::Color color = p._color;
-        if (!_isTrace)
-        {
-            color.a = 255;
-        }
+            float sx;
+            float sy;
 
-        sf::Vertex v1(sf::Vector2f(x+sx, y+sy), color, sf::Vector2f(0 , 0));
-        sf::Vertex v2(sf::Vector2f(x+sy, y-sx), color, sf::Vector2f(70, 0));
-        sf::Vertex v3(sf::Vector2f(x-sx, y-sy), color, sf::Vector2f(70, 76));
-        sf::Vertex v4(sf::Vector2f(x-sy, y+sx), color, sf::Vector2f(0 , 76));
-
-        _vertexArray[0] = v1;
-        _vertexArray[1] = v2;
-        _vertexArray[2] = v3;
-        _vertexArray[3] = v4;
-
-        if (!_isTrace)
-        {
-            if (_traceOnEnd && _ratio-5*_decrease<0.0f)
-                GameRender::addQuad(_textureID, _vertexArray, RenderLayer::GROUND);
+            if (_isTrace)
+            {
+                int indexA = getRandInt(0, 999);
+                sx = p._size*_ratio*getRandVx(indexA);
+                sy = p._size*_ratio*getRandVx(indexA);
+            }
             else
-                GameRender::addQuad(_textureID, _vertexArray, RenderLayer::RENDER);
-        }
-        else
-        {
-            GameRender::addQuad(_textureID, _vertexArray, RenderLayer::GROUND);
+            {
+                sx = p._size*_ratio*p._vax;
+                sy = p._size*_ratio*p._vay;
+            }
+
+            sf::Color color = p._color;
+            if (!_isTrace)
+            {
+                color.a = 255;
+            }
+
+            sf::Vertex v1(sf::Vector2f(x+sx, y+sy), color, sf::Vector2f(0 , 0));
+            sf::Vertex v2(sf::Vector2f(x+sy, y-sx), color, sf::Vector2f(70, 0));
+            sf::Vertex v3(sf::Vector2f(x-sx, y-sy), color, sf::Vector2f(70, 76));
+            sf::Vertex v4(sf::Vector2f(x-sy, y+sx), color, sf::Vector2f(0 , 76));
+
+            _vertexArray[0] = v1;
+            _vertexArray[1] = v2;
+            _vertexArray[2] = v3;
+            _vertexArray[3] = v4;
+
+            if (!_isTrace)
+            {
+                if (_traceOnEnd && _ratio-5*_decrease<0.0f)
+                {
+                    GameRender::addQuad(_textureID, _vertexArray, RenderLayer::GROUND);
+                }
+                else
+                    GameRender::addQuad(_textureID, _vertexArray, RenderLayer::RENDER);
+            }
+            else
+            {
+                GameRender::addQuad(_textureID, _vertexArray, RenderLayer::GROUND);
+            }
         }
     }
 }

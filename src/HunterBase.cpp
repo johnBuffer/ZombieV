@@ -7,6 +7,7 @@
 #include <iostream>
 
 size_t HunterBase::_feetTextureID;
+std::vector<size_t> HunterBase::_stepSounds;
 Animation HunterBase::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
 HunterBase::HunterBase() :
@@ -39,6 +40,8 @@ HunterBase::HunterBase(float x, float y) :
 
     _type = EntityTypes::HUNTER;
 
+    _stepCooldown.setDelay(0.45f);
+
     /*light.color = sf::Color(220, 200, 150);
     light.intensity = 1.0f;
     light.radius  = 300;
@@ -57,11 +60,28 @@ void HunterBase::init()
     _feetTextureID = GameRender::registerTexture("data/textures/hunter/hunter_walk.png");
     _feetAnimation.setTextureID(_feetTextureID);
     _feetAnimation.setCenter(sf::Vector2f(76, 62));
+
+    _stepSounds.resize(5);
+    _stepSounds[0] = SoundPlayer::registerSound("data/Sounds/step1.wav");
+    _stepSounds[1] = SoundPlayer::registerSound("data/Sounds/step2.wav");
+    _stepSounds[2] = SoundPlayer::registerSound("data/Sounds/step3.wav");
+    _stepSounds[3] = SoundPlayer::registerSound("data/Sounds/step4.wav");
+    _stepSounds[4] = SoundPlayer::registerSound("data/Sounds/step5.wav");
+    //
 }
 
 void HunterBase::update(GameWorld& world)
 {
-
+    /*if (_state == MOVING)
+    {
+        _stepCooldown.update(DT);
+        if (_stepCooldown.isReady())
+        {
+            size_t soundID = getRandInt(0, 4);
+            SoundPlayer::playInstanceOf(_stepSounds[soundID]);
+            _stepCooldown.reset();
+        }
+    }*/
 }
 
 void HunterBase::render()

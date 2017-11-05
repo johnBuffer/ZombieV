@@ -210,7 +210,7 @@ void GameRender::renderGround()
     float ty = (_focus.y-_baseOffset.y)*_quality;
 
     groundSprite.setPosition(-tx, -ty);
-    groundSprite.setColor(sf::Color(255, 255, 255, 255));
+    //groundSprite.setColor(sf::Color(255, 255, 255, 255));
     _renderTexture.draw(groundSprite, states);
 }
 

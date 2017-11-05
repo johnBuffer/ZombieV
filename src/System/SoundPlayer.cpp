@@ -7,11 +7,12 @@ void SoundHandler::update()
     livingSounds.remove_if( [](sf::Sound& s){return s.getStatus() == sf::Sound::Stopped;} );
 }
 
-size_t SoundPlayer::registerSound(std::string filename, size_t maxSounds)
+size_t SoundPlayer::registerSound(const std::string& filename, size_t maxSounds)
 {
     _buffers.push_back(SoundHandler());
-    _buffers.back().soundBuffer.loadFromFile(filename);
-    _buffers.back().maxLivingSounds = maxSounds;
+    SoundHandler& handler = _buffers.back();
+    handler.soundBuffer.loadFromFile(filename);
+    handler.maxLivingSounds = maxSounds;
 
     return _buffers.size()-1;
 }

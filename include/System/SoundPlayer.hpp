@@ -18,7 +18,7 @@ class SoundPlayer
 {
 public:
     static void      playInstanceOf(size_t soundID);
-    static size_t    registerSound(std::string filename, size_t maxSounds = 10);
+    static size_t    registerSound(const std::string& filename, size_t maxSounds = 10);
     static sf::Sound getInstanceOf(size_t soundID);
 
 private:

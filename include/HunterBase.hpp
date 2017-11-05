@@ -47,6 +47,7 @@ protected:
     float       _angleTarget;
     HunterState _state;
     HunterState _lastState;
+    Cooldown    _stepCooldown;
 
     sf::VertexArray _vertexArray;
 
@@ -57,6 +58,7 @@ protected:
     float            _feetTime;
     static Animation _feetAnimation;
     static size_t    _feetTextureID;
+    static std::vector<size_t> _stepSounds;
 
     void _changeState(HunterState state);
     void _changeAnimation(Animation& anim, bool wait=true);
