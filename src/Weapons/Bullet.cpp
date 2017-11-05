@@ -98,7 +98,6 @@ void Bullet::update(GameWorld& world)
                 {
                     _recoilForce = (!(_penetration--))?_impact:_impact*0.5f;
                     entity->hit(this, &world);
-                    //pos.move2D(_v);
                     _new = false;
                 }
             }
@@ -132,7 +131,7 @@ void Bullet::render()
 bool Bullet::collidesWith(WorldEntity* entity) const
 {
     float distFactor = 1.0f;
-    Vec2 vec(entity->getCoord(), getCoord());
+    Vec2 vec(entity->getCoord(), m_coord);
 
     return vec.getNorm2() < distFactor*CELL_SIZE*CELL_SIZE;
 }

@@ -20,7 +20,7 @@ BulletShell::BulletShell(const Vec2& pos, const Vec2& velocity, float angle) :
 {
     _angularVelocity = 0.2f;
 
-    if (BulletShell::size() > 250)
+    if (BulletShell::getObjectsCount() > 250)
         _ratio  = 0.5f;
     else
         _ratio = getRandInt(1, 5);

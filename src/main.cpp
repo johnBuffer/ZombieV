@@ -23,7 +23,7 @@ int main()
     settings.antialiasingLevel = 0;
     //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(false);
+    window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
@@ -38,11 +38,9 @@ int main()
     Hunter& h = *Hunter::newEntity(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
-    std::cout << "H's ID | ptr : " << h.getID() << " | " << &h << std::endl;
+    int waveCount = 1;
 
-    //world.addEntity(Turret::newEntity(2000, 2000));
-
-    Bot* newBot;
+    /*Bot* newBot;
     for (int i(75); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
@@ -54,8 +52,6 @@ int main()
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
-    int waveCount = 1;
-
     EntityID lastID = 0;
     for (int i(8000); i--;)
     {
@@ -65,10 +61,6 @@ int main()
         lastID = newZombie->getID();
     }
 
-    std::cout << lastID << std::endl;
-
-    waveCount++;
-
     for (int i(0); i<100; ++i)
     {
         Light light;
@@ -76,13 +68,24 @@ int main()
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
         light.radius   = 200+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);
-    }
+    }*/
 
     int frameCount = 0;
     float ttime = 0;
     while (window.isOpen())
     {
         ++frameCount;
+
+        if (Zombie::getObjectsCount() == 0)
+        {
+            ++waveCount;
+            for (int i(waveCount*waveCount+10); i--;)
+            {
+                Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
+                //newZombie->setTarget(&(*Hunter::getObjects().front()));
+                world.addEntity(newZombie);
+            }
+        }
 
         sf::Event event;
         while (window.pollEvent(event))

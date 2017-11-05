@@ -20,7 +20,7 @@ public:
 
     void remove();
 
-    static size_t     size() {return s_pool.size();}
+    static size_t     getObjectsCount() {return s_pool.size();}
     static T*         getNext(T*& item);
     static T*         getObjectAt(size_t i);
     static Vector<T>& getObjects();
