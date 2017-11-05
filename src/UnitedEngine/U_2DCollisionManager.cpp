@@ -154,10 +154,11 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
     {
         U2DBody_ptr currentBody = bodies[i];
 
+        const Vec2 currentPos(currentBody->getPosition());
         float currentMass   = currentBody->getMass();
         float currentRadius = currentBody->getRadius();
-        float currentX = currentBody->getPosition().x;
-        float currentY = currentBody->getPosition().y;
+        float currentX = currentPos.x;
+        float currentY = currentPos.y;
 
         WorldEntity* currentEntity = currentBody->getEntity();
 
@@ -169,8 +170,9 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
             float minDist = currentRadius+colliderRadius;
             float vx, vy, dist2;
 
-            vx = currentX-collider->getPosition().x;
-            vy = currentY-collider->getPosition().y;
+            const Vec2 colliderPos(collider->getPosition());
+            vx = currentX-colliderPos.x;
+            vy = currentY-colliderPos.y;
 
             dist2 = vx*vx+vy*vy;
 
@@ -190,7 +192,6 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
 
                 currentBody->move2D( vx*massCoef1,  vy*massCoef1);
                 collider   ->move2D(-vx*massCoef2, -vy*massCoef2);
-
 
                 WorldEntity* colliderEntity = collider->getEntity();
 

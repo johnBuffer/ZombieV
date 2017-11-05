@@ -20,10 +20,10 @@ void GraphicUtils::createEntityShadow(WorldEntity* entity)
     float x(pos.x);
     float y(pos.y);
 
-    _shadow[0].position = sf::Vector2f(x-50, y-50);
-    _shadow[1].position = sf::Vector2f(x+50, y-50);
-    _shadow[2].position = sf::Vector2f(x+50, y+50);
-    _shadow[3].position = sf::Vector2f(x-50, y+50);
+    _shadow[0].position = sf::Vector2f(x-55, y-55);
+    _shadow[1].position = sf::Vector2f(x+55, y-55);
+    _shadow[2].position = sf::Vector2f(x+55, y+55);
+    _shadow[3].position = sf::Vector2f(x-55, y+55);
 
     GameRender::addQuad(_shadowTexID, _shadow, RenderLayer::RENDER);
 }

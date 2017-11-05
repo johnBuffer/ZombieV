@@ -1,6 +1,7 @@
 #include "System/Utils.hpp"
 
 #include <cmath>
+#include <sstream>
 
 float getRandInt(int min, int max)
 {
@@ -56,5 +57,12 @@ Vec2 transformVec(const Vec2& v, float r, Vec2 t)
     float sina = sin(r);
 
     return Vec2(v.x*cosa-v.y*sina+t.x, v.x*sina+v.y*cosa+t.y);
+}
+
+std::string intToString(int i)
+{
+    std::stringstream sstr;
+    sstr << i;
+    return sstr.str();
 }
 

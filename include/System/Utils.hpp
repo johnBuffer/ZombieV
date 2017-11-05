@@ -12,4 +12,6 @@ float getAngleFromVec(const sf::Vector2i& v);
 float sign(float f);
 Vec2  transformVec(const Vec2& v, float r, Vec2 t);
 
+std::string intToString(int i);
+
 #endif // UTILS_HPP_INCLUDED

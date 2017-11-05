@@ -14,8 +14,7 @@
 #define WIN_HEIGHT 900
 
 #include "System/Utils.hpp"
-
-
+#include "HUD.hpp"
 
 int main()
 {
@@ -70,6 +69,8 @@ int main()
         GameRender::getLightEngine().addDurableLight(light);
     }*/
 
+    HUD hud;
+
     int frameCount = 0;
     float ttime = 0;
     while (window.isOpen())
@@ -79,7 +80,7 @@ int main()
         if (Zombie::getObjectsCount() == 0)
         {
             ++waveCount;
-            for (int i(waveCount*waveCount+10); i--;)
+            for (int i(waveCount*waveCount+100); i--;)
             {
                 Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
                 //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -101,6 +102,7 @@ int main()
 
         sf::Clock clock;
         world.update();
+        hud.update(world);
         int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
         //system("cls");
@@ -116,7 +118,6 @@ int main()
         std::cout << "===================================\n" << std::endl;*/
 
         Vec2 p = h.getCoord();
-
         sf::Vector2f playerPosition(p.x, p.y);
         GameRender::setFocus(playerPosition);
 
@@ -124,6 +125,7 @@ int main()
 
         world.render();
         GameRender::display(&window);
+        hud.render(&window);
 
         window.display();
     }
