@@ -118,7 +118,7 @@ void Explosion::render()
 
             if (!_isTrace)
             {
-                if (_traceOnEnd && _ratio-5*_decrease<0.0f)
+                if (_traceOnEnd && _ratio-4*_decrease<0.0f)
                 {
                     GameRender::addQuad(_textureID, _vertexArray, RenderLayer::GROUND);
                 }

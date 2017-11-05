@@ -25,7 +25,7 @@ LightEngine GameRender::_lightEngine;
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    _quality = 1.f;
+    _quality = 1.0f;
     _zoom    = 1.75f;
 
     _ratio = _zoom/_quality;
@@ -160,7 +160,7 @@ void GameRender::display(sf::RenderTarget* target)
     _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
 
     /// Draw lights
-    sf::Sprite lightSprite(_lightEngine.render());
+    //sf::Sprite lightSprite(_lightEngine.render());
     //_renderTexture.draw(lightSprite, sf::BlendMultiply);
     _renderTexture.display();
 
@@ -210,7 +210,6 @@ void GameRender::renderGround()
     float ty = (_focus.y-_baseOffset.y)*_quality;
 
     groundSprite.setPosition(-tx, -ty);
-    //groundSprite.setColor(sf::Color(255, 255, 255, 255));
     _renderTexture.draw(groundSprite, states);
 }
 

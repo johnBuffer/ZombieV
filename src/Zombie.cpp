@@ -24,7 +24,7 @@ Zombie::Zombie(float x, float y) :
     _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
     _speed = 150;
-    _life  = 10000;
+    _life  = 100;
     _done  = false;
 
     _currentAnimation = _moveAnimation;
