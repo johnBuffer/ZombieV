@@ -37,7 +37,7 @@ int main()
     Hunter& h = *Hunter::newEntity(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
-    int waveCount = 1;
+    int waveCount = 0;
 
     /*Bot* newBot;
     for (int i(75); i--;)
@@ -80,7 +80,7 @@ int main()
         if (Zombie::getObjectsCount() == 0)
         {
             ++waveCount;
-            for (int i(waveCount*waveCount+100); i--;)
+            for (int i(waveCount*waveCount+10); i--;)
             {
                 Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
                 //newZombie->setTarget(&(*Hunter::getObjects().front()));
@@ -102,7 +102,8 @@ int main()
 
         sf::Clock clock;
         world.update();
-        hud.update(world);
+        hud.update();
+        hud.setCurrentWave(waveCount);
         int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
         //system("cls");
@@ -125,7 +126,7 @@ int main()
 
         world.render();
         GameRender::display(&window);
-        hud.render(&window);
+        hud.render(world, &window);
 
         window.display();
     }

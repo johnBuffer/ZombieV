@@ -14,7 +14,7 @@ AK::AK()
 {
     _magazineSize        = 30;
     _currentAmmo         = 30;
-    _totalAmmo           = 1000;
+    _totalAmmo           = 1000000;
     _recoil              = 0.0f;
 
     m_fireCooldown = Cooldown(0.1f);
