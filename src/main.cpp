@@ -39,7 +39,7 @@ int main()
 
     int waveCount = 0;
 
-    /*Bot* newBot;
+    Bot* newBot;
     for (int i(75); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
@@ -60,14 +60,14 @@ int main()
         lastID = newZombie->getID();
     }
 
-    for (int i(0); i<100; ++i)
+    for (int i(0); i<50; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
         light.radius   = 200+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);
-    }*/
+    }
 
     HUD hud;
 

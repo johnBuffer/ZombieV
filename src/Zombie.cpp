@@ -96,7 +96,7 @@ void Zombie::update(GameWorld& world)
             {
                 // Need to create damage variable
                 target->addLife(-5);
-                //world.addEntity(ExplosionProvider::getBase(target->getCoord()));
+                world.addEntity(ExplosionProvider::getBase(target->getCoord()));
             }
         }
 
