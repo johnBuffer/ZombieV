@@ -42,26 +42,32 @@ public:
     static const sf::Texture& getBlur(const sf::Texture& texture);
 
 private:
-    static void               _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
-    static float              _quality, _zoom, _ratio;
-    static size_t             _groundTextureID;
-    static DynamicBlur        _blur;
-    static sf::Vector2u       _renderSize;
-    static sf::Vector2f       _focus;
-    static sf::Vector2f       _baseOffset;
-    static sf::VertexArray    _groundQuad;
-    static sf::RenderTexture  _renderTexture;
-    static sf::RenderTexture  _blurTexture;
-    static sf::RenderTexture  _groundTexture;
+    GameRender();
+
+    static GameRender* getInstance();
+
+    static GameRender* s_instance;
+
+    static void        _renderVertices(std::vector<sf::VertexArray>& vertices, sf::RenderTexture& target, sf::RenderStates& states);
+    float              _quality, _zoom, _ratio;
+    size_t             _groundTextureID;
+    DynamicBlur        _blur;
+    sf::Vector2u       _renderSize;
+    sf::Vector2f       _focus;
+    sf::Vector2f       _baseOffset;
+    sf::VertexArray    _groundQuad;
+    sf::RenderTexture  _renderTexture;
+    sf::RenderTexture  _blurTexture;
+    sf::RenderTexture  _groundTexture;
 
     static void _renderBloom();
     static void _translateToFocus(sf::Transform& transform);
 
-    static std::vector<sf::Texture>                  _textures;
-    static std::list<ShadowCaster>                   _screenSpaceEntities;
-    static std::vector<std::vector<sf::VertexArray>> _vertices;
+    std::vector<sf::Texture>                  _textures;
+    std::list<ShadowCaster>                   _screenSpaceEntities;
+    std::vector<std::vector<sf::VertexArray>> _vertices;
 
-    static LightEngine _lightEngine;
+    LightEngine _lightEngine;
 
     ///Profiling
     static size_t _drawCalls;
