@@ -36,6 +36,8 @@ public:
     const Level&        getLevel()  const {return _level;}
     const EventManager& getEvents() const {return _eventManager;}
 
+    U_2DCollisionManager& getPhyManager() {return _phyManager;}
+
     static U_2DBody* getBodyByID(BodyID id);
 
 private:

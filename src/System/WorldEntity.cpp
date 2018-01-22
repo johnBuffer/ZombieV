@@ -47,7 +47,7 @@ WorldEntity::~WorldEntity()
 void WorldEntity::move(float vx, float vy)
 {
     U_2DBody* b = m_thisBody();
-    b->stop();
+    //b->stop();
     b->accelerate2D(vx, vy);
 }
 

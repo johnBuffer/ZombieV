@@ -19,10 +19,11 @@ void U_2DBody::init(Vec2 position, float mass, bool included)
     m_position = position;
     m_lastPosition = position;
     m_mass = mass;
+    m_pressuredMass = mass;
     m_acceleration = Vec2();
     m_static = false;
     m_included = false;
-    _pressure = Vec2();
+    m_pressure = 0;
     m_gridChange = true;
 }
 
@@ -108,9 +109,9 @@ void U_2DBody::setStatic(bool isStatic)
     m_static = isStatic;
 }
 
-void U_2DBody::setPressure(Vec2 pressure)
+void U_2DBody::setPressure(float pressure)
 {
-    _pressure = pressure;
+    m_pressure = pressure;
 }
 
 void U_2DBody::setMass(float mass)
@@ -123,10 +124,9 @@ void U_2DBody::setRadius(float radius)
     m_radius = radius;
 }
 
-void U_2DBody::addPressure(Vec2 pressure)
+void U_2DBody::addPressure(float pressure)
 {
-    _pressure.x += pressure.x;
-    _pressure.y += pressure.y;
+    m_pressure += pressure;
 }
 
 const Vec2& U_2DBody::getPosition() const

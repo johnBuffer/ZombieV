@@ -27,6 +27,7 @@ GameWorld::GameWorld() :
     Fire::init();
     Zombie::initialize();
     Explosion::init();
+    Ball::init();
 
     m_score = 0;
 }

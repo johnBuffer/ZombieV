@@ -26,7 +26,7 @@ LightEngine GameRender::_lightEngine;
 void GameRender::initialize(size_t width, size_t height)
 {
     _quality = 1.0f;
-    _zoom    = 1.75f;
+    _zoom    = 1.0f;
 
     _ratio = _zoom/_quality;
     _focus = sf::Vector2f(0.0, 0.0);
@@ -155,7 +155,7 @@ void GameRender::display(sf::RenderTarget* target)
     sf::RenderStates states;
     states.transform = tf;
 
-    renderGround();
+    //renderGround();
 
     _renderVertices(_vertices[RenderLayer::RENDER], _renderTexture, states);
 

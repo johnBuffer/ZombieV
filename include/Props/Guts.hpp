@@ -1,3 +1,6 @@
+#ifndef GUTS_HPP_INCLUDED
+#define GUTS_HPP_INCLUDED
+
 #include <System/StandardEntity.hpp>
 #include <UnitedEngine/U_2DConstraint.h>
 
@@ -27,3 +30,6 @@ private:
 
     static size_t _textureID;
 };
+
+#endif
+

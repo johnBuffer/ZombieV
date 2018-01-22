@@ -1,6 +1,7 @@
 #ifndef PROPS_HPP_INCLUDED
 #define PROPS_HPP_INCLUDED
 
+#include "ball.hpp"
 #include "Guts.hpp"
 #include "Fire.hpp"
 #include "Smoke.hpp"

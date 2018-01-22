@@ -23,11 +23,12 @@ public:
     void setY(float y);
 	void stop();
 	void setStatic(bool isStatic);
-	void setPressure(Vec2 pressure);
-	void addPressure(Vec2 pressure);
+	void setPressure(float pressure);
+	void addPressure(float pressure);
 	void setEntity(WorldEntity* entity);
 	void setMass(float mass);
 	void setRadius(float radius);
+	void updatePressuredMass() {m_pressuredMass = m_mass*(8*m_pressure+0.1);}
 
     const Vec2& getPosition() const;
     Vec2  getVelocity()       const;
@@ -35,6 +36,7 @@ public:
     bool  isIncluded()        const;
     float getMass()           const;
     float getRadius()         const;
+    float getPressuredMass()  const {return m_pressuredMass;}
 
     WorldEntity* getEntity();
     float getAngle(U_2DBody* body);
@@ -42,8 +44,8 @@ public:
 private:
     void init(Vec2 position, float mass, bool included);
 
-    Vec2  m_position, m_lastPosition, m_acceleration, _pressure;
-    float m_radius, m_mass;
+    Vec2  m_position, m_lastPosition, m_acceleration;
+    float m_radius, m_mass, m_pressuredMass, m_pressure;
     bool  m_static, m_included, m_gridChange;
 
     WorldEntity* _entity;

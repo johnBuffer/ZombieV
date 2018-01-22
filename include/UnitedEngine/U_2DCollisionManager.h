@@ -56,11 +56,11 @@ public:
     static U_2DBody* getBodyByID(BodyID id);
 
 private:
-    int   m_nCollisionChecked, m_iterationCount;
+    int   m_nCollisionChecked, m_iterationCount, m_currentIteration;
     float m_timeStep, m_bodySize;
     Vec2  m_mapSize, m_gravity;
 
-    long m_currentIteration;
+    long m_stepsCount;
     int  m_newHash;
 
     std::list<U_2DConstraint> m_constraints;

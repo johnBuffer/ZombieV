@@ -155,7 +155,7 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
         U2DBody_ptr currentBody = bodies[i];
 
         const Vec2 currentPos(currentBody->getPosition());
-        float currentMass   = currentBody->getMass();
+        float currentMass   = currentBody->getPressuredMass();
         float currentRadius = currentBody->getRadius();
         float currentX = currentPos.x;
         float currentY = currentPos.y;
@@ -185,13 +185,20 @@ void U_2DCollisionManager::solveGridCollisions(GridCell& cell)
                 vx *= responseVelocity;
                 vy *= responseVelocity;
 
-                float colliderMass = collider->getMass();
+                float colliderMass = collider->getPressuredMass();
                 float totalMassCoeff = 1.0f/(currentMass+colliderMass);
                 float massCoef1 = colliderMass*totalMassCoeff;
                 float massCoef2 = currentMass*totalMassCoeff;
 
                 currentBody->move2D( vx*massCoef1,  vy*massCoef1);
                 collider   ->move2D(-vx*massCoef2, -vy*massCoef2);
+
+                if (m_currentIteration == m_iterationCount)
+                {
+                    float itc(m_iterationCount);
+                    currentBody->addPressure(deltaDist/itc);
+                    collider   ->addPressure(deltaDist/itc);
+                }
 
                 WorldEntity* colliderEntity = collider->getEntity();
 
@@ -216,21 +223,32 @@ void U_2DCollisionManager::solveCollisions()
 
 void U_2DCollisionManager::update()
 {
-    m_currentIteration++;
+    m_stepsCount++;
 
     m_nCollisionChecked = 0;
     m_newHash = 0;
     applyGravity();
 
-    for (auto &elem : m_grid) elem.second.reset();
     U_2DBody* b = nullptr;
+    /*for (auto &elem : m_grid) elem.second.reset();
     while (U_2DBody::getNext(b))
     {
         addBodyToGrid(b);
-    }
+    }*/
 
+    m_currentIteration = 0;
     for (int i(0); i<m_iterationCount; ++i)
     {
+        ++m_currentIteration;
+
+        if (i%5 == 0)
+        {
+            for (auto &elem : m_grid) elem.second.reset();
+            while (U_2DBody::getNext(b))
+            {
+                addBodyToGrid(b);
+            }
+        }
         solveCollisions();
         solveConstraints();
     }
@@ -240,8 +258,10 @@ void U_2DCollisionManager::update()
     // friction
     while (U_2DBody::getNext(b))
     {
-        Vec2 velocity = b->getVelocity();
-        b->accelerate2D(-10*velocity.x, -10*velocity.y);
+        //Vec2 velocity = b->getVelocity();
+        b->updatePressuredMass();
+        b->setPressure(0);
+        //b->accelerate2D(-10*velocity.x, -10*velocity.y);
         b->updatePosition(m_timeStep);
     }
 }
