@@ -27,6 +27,7 @@ GameWorld::GameWorld() :
     Fire::init();
     Zombie::initialize();
     Explosion::init();
+    Ball::init();
 
     m_score = 0;
 }
@@ -48,7 +49,7 @@ void GameWorld::update()
 
     sf::Clock c;
     _phyManager.update();
-    std::cout << "Phys time " << c.getElapsedTime().asMilliseconds() << std::endl;
+    //std::cout << "Phys time " << c.getElapsedTime().asMilliseconds() << std::endl;
 
     for (WorldEntity* entity : _entities)
     {

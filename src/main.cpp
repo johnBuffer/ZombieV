@@ -9,6 +9,7 @@
 #include "Turret.hpp"
 #include "Hunter.hpp"
 #include "Zombie.hpp"
+#include "Props/Ball.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
@@ -34,38 +35,40 @@ int main()
     Bot::registerObject(&world);
     Turret::registerObject(&world);
 
+    world.getPhyManager().setGravity(Vec2(0, 0));
+    //world.getPhyManager().setPrecision(2);
+
     Hunter& h = *Hunter::newEntity(MAP_SIZE/2, MAP_SIZE/2);
     world.addEntity(&h);
 
     int waveCount = 0;
 
     Bot* newBot;
-    for (int i(75); i--;)
+    for (int i(0); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
         //newBot = Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE);
-        newBot = Bot::newEntity (MAP_SIZE/2+rand()%10, MAP_SIZE/2+rand()%10);
+        newBot = Bot::newEntity(MAP_SIZE/2 + rand()%10, MAP_SIZE/2 + rand()%10);
         world.addEntity(newBot);
     }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
-    EntityID lastID = 0;
-    for (int i(8000); i--;)
+    Zombie* newZombie;
+    for (int i(10); i--;)
     {
-        Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
-        //newZombie->setTarget(&(*Hunter::getObjects().front()));
+        newZombie = Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE);
+        newZombie->setTarget(h.getID());
         world.addEntity(newZombie);
-        lastID = newZombie->getID();
     }
 
-    for (int i(0); i<50; ++i)
+    for (int i(0); i<0; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
-        light.radius   = 200+rand()%150;
+        light.radius   = 300+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);
     }
 
@@ -80,7 +83,7 @@ int main()
         if (Zombie::getObjectsCount() == 0)
         {
             ++waveCount;
-            for (int i(waveCount*waveCount+10); i--;)
+            for (int i(waveCount*waveCount + 10); i--;)
             {
                 Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
                 //newZombie->setTarget(&(*Hunter::getObjects().front()));

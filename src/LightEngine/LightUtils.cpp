@@ -8,7 +8,9 @@ void drawLight(const Light& light, float quality, sf::RenderTexture& texture)
 
     sf::VertexArray va(sf::TriangleFan, nPoints+1);
     va[0].position = sf::Vector2f(position.x, position.y);
-    va[0].color    = light.color;
+
+    float coef  = light.intensity;
+    va[0].color = sf::Color(light.color.r*coef, light.color.g*coef, light.color.b*coef);
 
     sf::Color edgeColor = light.color;
     edgeColor.a = 0.0f;

@@ -18,7 +18,7 @@ Guts::Guts(const Vec2& pos, const Vec2& v) :
 {
     _type   = PROPS;
     _isDone = false;
-    _duration = 5;
+    _duration = 20;
 }
 
 bool Guts::isDone() const
@@ -35,7 +35,7 @@ void Guts::initPhysics(GameWorld* world)
     body->setMass(0.005);
 
     _bodies.push_back(m_bodyID);
-    size_t count=getRandInt(5, 10);
+    size_t count=getRandInt(10, 15);
     for (size_t i(0); i<count; ++i)
     {
         BodyID newBodyID = world->addBody();

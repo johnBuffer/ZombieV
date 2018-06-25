@@ -6,5 +6,6 @@
 #include "Smoke.hpp"
 #include "BulletShell.hpp"
 #include "ExplosionProvider.hpp"
+#include "Ball.hpp"
 
 #endif // PROPS_HPP_INCLUDED

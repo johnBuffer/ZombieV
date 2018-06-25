@@ -19,7 +19,21 @@ Hunter::Hunter(float x, float y) :
     light.color = sf::Color(255, 127, 0);
     light.intensity = 1.0f;
     light.radius  = 0;
+
+    Light flash_light;
+    flash_light.color = sf::Color(255, 255, 255);
+    flash_light.intensity = 0.4f;
+    flash_light.radius  = 400;
+    flash_light.width = 45;
+
+    Light little_light;
+    little_light.color = sf::Color(255, 255, 255);
+    little_light.intensity = 0.2f;
+    little_light.radius  = 75;
+
     _shootLight = GameRender::getLightEngine().addDurableLight(light);
+    _flashlight = GameRender::getLightEngine().addDurableLight(flash_light);
+    _littleLight = GameRender::getLightEngine().addDurableLight(little_light);
 }
 
 void Hunter::updateControls(const EventManager& em)
@@ -124,9 +138,9 @@ void Hunter::update(GameWorld& world)
     }
 
     _shootLight->position = _currentWeapon->getFireOutPosition(this);
-    /*_flashlight->position = _shootLight->position;
     _littleLight->position = _shootLight->position;
-    _flashlight->angle = getAngle()+PI;*/
+    _flashlight->position = _shootLight->position;
+    _flashlight->angle = getAngle()+PI;
 }
 
 void Hunter::initialize()

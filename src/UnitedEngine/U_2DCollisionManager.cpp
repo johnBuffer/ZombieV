@@ -46,7 +46,7 @@ U_2DCollisionManager::U_2DCollisionManager(float timeStep, float bodyRadius, Vec
     m_iterationCount = 2;
     m_currentIteration = 0;
 
-    m_gravity = Vec2(0, 100);
+    m_gravity = Vec2(0, 0);
 }
 
 void U_2DCollisionManager::addBody(U_2DBody* body)

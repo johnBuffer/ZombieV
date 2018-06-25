@@ -54,10 +54,10 @@ void GraphicUtils::initQuad(sf::VertexArray& vertices, sf::Vector2f size, sf::Ve
     float hx = size.x*scale;
     float hy = size.y*scale;
 
-    vertices[0].position = sf::Vector2f(-offsetX, -offsetY);
-    vertices[1].position = sf::Vector2f(hx-offsetX , -offsetY);
-    vertices[2].position = sf::Vector2f(hx-offsetX , hy-offsetY);
-    vertices[3].position = sf::Vector2f(-offsetX, hy-offsetY);
+    vertices[0].position = sf::Vector2f(-offsetX  , -offsetY);
+    vertices[1].position = sf::Vector2f(hx-offsetX, -offsetY);
+    vertices[2].position = sf::Vector2f(hx-offsetX, hy-offsetY);
+    vertices[3].position = sf::Vector2f(-offsetX  , hy-offsetY);
 }
 
 void GraphicUtils::transform(sf::VertexArray& vertices, sf::Vector2f t, float r)

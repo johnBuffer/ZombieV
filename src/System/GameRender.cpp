@@ -42,7 +42,7 @@ void GameRender::initialize(size_t width, size_t height)
         s_instance = new GameRender;
     GameRender& instance = *getInstance();
     instance._quality = 1.0f;
-    instance._zoom    = 1.75f;
+    instance._zoom    = 1.5f;
 
     instance._ratio = instance._zoom/instance._quality;
     instance._focus = sf::Vector2f(0.0, 0.0);
@@ -186,8 +186,8 @@ void GameRender::display(sf::RenderTarget* target)
     instance._renderVertices(instance._vertices[RenderLayer::RENDER], instance._renderTexture, states);
 
     /// Draw lights
-    sf::Sprite lightSprite(instance._lightEngine.render());
-    instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
+    //sf::Sprite lightSprite(instance._lightEngine.render());
+    //instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
     instance._renderTexture.display();
 
     sf::Sprite renderSprite(instance._renderTexture.getTexture());

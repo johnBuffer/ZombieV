@@ -31,7 +31,7 @@ public:
     Animation& getIdleAnimation()   {return _idleAnimation;}
     Animation& getReloadAnimation() {return _reloadAnimation;}
 
-    virtual Vec2 getFireOutPosition(const WorldEntity* entity) const {return Vec2(0, 0);};
+    virtual Vec2 getFireOutPosition(const WorldEntity* entity) const {return Vec2(0, 0);}
     virtual bool fire(GameWorld* world, WorldEntity* entity)=0;
     virtual void reload()=0;
     virtual void update()=0;
