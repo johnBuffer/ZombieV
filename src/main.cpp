@@ -56,7 +56,7 @@ int main()
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     Zombie* newZombie;
-    for (int i(10); i--;)
+    for (int i(200); i--;)
     {
         newZombie = Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE);
         newZombie->setTarget(h.getID());
