@@ -8,7 +8,7 @@ int log2(int i)
 }
 
 DynamicBlur::DynamicBlur() :
-    _downSizeFactor(2.0)
+    _downSizeFactor(2)
 {
     _blurH.loadFromFile("data/shaders/blurH.frag", sf::Shader::Fragment);
     _blurV.loadFromFile("data/shaders/blurV.frag", sf::Shader::Fragment);
@@ -50,7 +50,7 @@ const sf::Texture& DynamicBlur::operator()(const sf::Texture& inputTexture)
     _blurTexture.draw(sf::Sprite(_lowBlurTexture.getTexture()));
 
     int i = 2*_downSizeFactor;
-    while (i >>= 1 > 0.5)
+    while ((i >>= 1) > 0.5)
     {
         _applyBlur(_blurTexture);
 

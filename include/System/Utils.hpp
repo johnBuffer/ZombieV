@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "UnitedEngine/Vec2.h"
 
-float getRandInt(int min, int max);
+int32_t getRandInt(int min, int max);
 float getRandFloat(float min, float max);
 float getRandomAngle();
 float getRandomAngle(float min, float max);

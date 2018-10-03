@@ -46,7 +46,7 @@ private:
     float  _decrease;
     float  _openAngle;
     float  _angle;
-    int    _speed;
+    float  _speed;
     float  _size;
 
     bool   _isTrace;

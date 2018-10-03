@@ -12,7 +12,7 @@ GridCell::GridCell()
     _maxIndex=0;
 }
 
-void GridCell::add(U_2DBody* body)
+void GridCell::create(U_2DBody* body)
 {
     _bodies[_maxIndex] = body;
     _bodiesID[_maxIndex] = body->getIndex();
@@ -72,33 +72,33 @@ void U_2DCollisionManager::addBodyToGrid(U2DBody_ptr body)
     int gridY = bodyY/caseSize;
     int midGrid = caseSize/2;
 
-    m_grid[convertPosToHash(gridX, gridY)].add(body);
+    m_grid[convertPosToHash(gridX, gridY)].create(body);
     if (bodyX%caseSize > midGrid)
     {
-        m_grid[convertPosToHash(gridX+1, gridY)].add(body);
+        m_grid[convertPosToHash(gridX+1, gridY)].create(body);
         if (bodyY%caseSize > midGrid)
         {
-            m_grid[convertPosToHash(gridX  , gridY+1)].add(body);
-            m_grid[convertPosToHash(gridX+1, gridY+1)].add(body);
+            m_grid[convertPosToHash(gridX  , gridY+1)].create(body);
+            m_grid[convertPosToHash(gridX+1, gridY+1)].create(body);
         }
         else
         {
-            m_grid[convertPosToHash(gridX  , gridY-1)].add(body);
-            m_grid[convertPosToHash(gridX+1, gridY-1)].add(body);
+            m_grid[convertPosToHash(gridX  , gridY-1)].create(body);
+            m_grid[convertPosToHash(gridX+1, gridY-1)].create(body);
         }
     }
     else
     {
-        m_grid[convertPosToHash(gridX-1, gridY)].add(body);
+        m_grid[convertPosToHash(gridX-1, gridY)].create(body);
         if (bodyY%caseSize > midGrid)
         {
-            m_grid[convertPosToHash(gridX  , gridY+1)].add(body);
-            m_grid[convertPosToHash(gridX-1, gridY+1)].add(body);
+            m_grid[convertPosToHash(gridX  , gridY+1)].create(body);
+            m_grid[convertPosToHash(gridX-1, gridY+1)].create(body);
         }
         else
         {
-            m_grid[convertPosToHash(gridX  , gridY-1)].add(body);
-            m_grid[convertPosToHash(gridX-1, gridY-1)].add(body);
+            m_grid[convertPosToHash(gridX  , gridY-1)].create(body);
+            m_grid[convertPosToHash(gridX-1, gridY-1)].create(body);
         }
     }
 }
@@ -325,7 +325,7 @@ U_2DConstraint* U_2DCollisionManager::addConstraint(BodyID body1, BodyID body2, 
 
 size_t U_2DCollisionManager::addBody(const Vec2& coord)
 {
-    U_2DBody* newBody = U_2DBody::add(coord, 1.0f, false);
+    U_2DBody* newBody = U_2DBody::create(coord, 1.0f, false);
     newBody->setRadius(m_bodySize*0.5f);
 
     return newBody->getIndex();

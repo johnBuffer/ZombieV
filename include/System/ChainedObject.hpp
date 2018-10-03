@@ -62,24 +62,24 @@ class Pool
 {
 public:
     Pool();
-    Pool(size_t size);
+    Pool(uint32_t size);
 
     template<class...Args>
-    size_t createObject(Args&&...);
+    uint32_t createObject(Args&&...);
 
-    T& operator[](size_t i);
+    T& operator[](uint32_t i);
 
     T* getFirstItem();
-    size_t size() {return m_size;}
+    uint32_t size() {return m_size;}
     bool getNextItem(PoolItem<T>* item, PoolItem<T>*& nextItem);
     std::vector<PoolItem<T>>& getObjects() {return m_data;}
-    PoolItem<T>* getPoolItemAt(size_t i);
+    PoolItem<T>* getPoolItemAt(uint32_t i);
 
     void remove(int i);
-    void resize(size_t size);
+    void resize(uint32_t size);
 
 private:
-    size_t m_size; // Number of used slots
+    uint32_t m_size; // Number of used slots
     int m_firstFree; // Index of the first free slot that can be used
     int m_firstObject; // Index of the first used slot -> start point to iterate only on used slots
     std::vector<PoolItem<T>> m_data; // Raw contiguous data
@@ -90,7 +90,7 @@ template<class T> using Vector = std::vector<PoolItem<T>>;
 template<class T> using Ptr    = PoolItem<T>;
 
 template<class T>
-Pool<T>::Pool(size_t size) :
+Pool<T>::Pool(uint32_t size) :
     m_size(0)
 {
     resize(size);
@@ -98,14 +98,14 @@ Pool<T>::Pool(size_t size) :
 
 // Initialize data
 template<class T>
-void Pool<T>::resize(size_t size)
+void Pool<T>::resize(uint32_t size)
 {
     m_firstFree   = -1;
     m_firstObject = -1;
 
     m_data.resize(size);
 
-    for (size_t i(0); i<size; ++i)
+    for (uint32_t i(0); i<size; ++i)
     {
         m_data[i].index = i;
         m_data[i].isAviable = true;
@@ -123,10 +123,10 @@ void Pool<T>::resize(size_t size)
 // Handles object creation
 template <class T>
 template<class...Args>
-size_t Pool<T>::createObject(Args&&... args)
+uint32_t Pool<T>::createObject(Args&&... args)
 {
     ++m_size; // Update size
-    size_t index;
+    uint32_t index;
     PoolItem<T>* newPoolItem = nullptr;
 
     if (m_firstFree != -1) // If empty slot available
@@ -161,7 +161,7 @@ size_t Pool<T>::createObject(Args&&... args)
 
 // Simple T object access
 template<class T>
-T& Pool<T>::operator[](size_t i)
+T& Pool<T>::operator[](uint32_t i)
 {
     return m_data[i].object;
 }
@@ -223,7 +223,7 @@ T* Pool<T>::getFirstItem()
 
 // Simple PoolItem access
 template<class T>
-PoolItem<T>* Pool<T>::getPoolItemAt(size_t i)
+PoolItem<T>* Pool<T>::getPoolItemAt(uint32_t i)
 {
     PoolItem<T>* item = &m_data[i];
     if (item->isAviable)

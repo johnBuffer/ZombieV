@@ -33,14 +33,14 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     _isTrace(false),
     _vertexArray(sf::Quads, 4)
 {
-    _decrease = 0.1;
+    _decrease = 0.1f;
     _particles.resize(_n);
 
     for (size_t i(_n); i--;)
     {
         Particle& p = _particles[i];
-        float speed = rand()%_speed;
-        float a = getRandInt(-openAngle, openAngle)*DEGRAD+angle;
+        float speed = float(rand()%int(_speed));
+        float a = float(getRandInt(-openAngle, openAngle)*DEGRAD+angle);
 
         int indexA = rand()%1000;
 
@@ -50,7 +50,7 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
         p._vy = speed*sin(a);
         p._vax = getRandVx(indexA);
         p._vay = getRandVy(indexA);
-        p._size = rand()%int(_size)+2;
+        p._size = float(rand()%int(_size)+2);
 
         int color = getRandInt(50, 125);
         int alpha = getRandInt(100, 200);

@@ -35,20 +35,20 @@ bool Pistol::fire(GameWorld* world, WorldEntity* entity)
         _releasedTrigger = false;
 
         float entityAngle(entity->getAngle());
-        Bullet* newBullet = Bullet::add(0.0, 1.5*CELL_SIZE, 7, 0);
+        Bullet* newBullet = Bullet::create(0.0, 1.5*CELL_SIZE, 7, 0);
         newBullet->init(entity->getCoord(), entityAngle);
         world->addEntity(newBullet);
 
         Vec2 bulletVel(newBullet->getV());
         Vec2 smokePos = newBullet->getCoord()+bulletVel*1.25f;
-        world->addEntity(Smoke::add(smokePos, bulletVel*0.01, 0.05, 45));
+        world->addEntity(Smoke::create(smokePos, bulletVel*0.01, 0.05, 45));
 
         Vec2 firePos(newBullet->getCoord()+bulletVel*_fireDist);
-        world->addEntity(Fire::add(firePos, entityAngle+PIS2));
+        world->addEntity(Fire::create(firePos, entityAngle+PIS2));
 
         Vec2 shellVec(-bulletVel.y+rand()%11-5, bulletVel.x+rand()%11-5);
         Vec2 shellPos(newBullet->getCoord()+bulletVel*0.6);
-        world->addEntity(BulletShell::add(shellPos, shellVec*0.075, entityAngle+PIS2));
+        world->addEntity(BulletShell::create(shellPos, shellVec*0.075, entityAngle+PIS2));
 
         return true;
     }

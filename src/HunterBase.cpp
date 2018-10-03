@@ -6,8 +6,8 @@
 
 #include <iostream>
 
-size_t HunterBase::_feetTextureID;
-std::vector<size_t> HunterBase::_stepSounds;
+uint32_t HunterBase::_feetTextureID;
+std::vector<uint32_t> HunterBase::_stepSounds;
 Animation HunterBase::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
 HunterBase::HunterBase() :
@@ -77,7 +77,7 @@ void HunterBase::update(GameWorld& world)
         _stepCooldown.update(DT);
         if (_stepCooldown.isReady())
         {
-            size_t soundID = getRandInt(0, 4);
+            uint32_t soundID = getRandInt(0, 4);
             SoundPlayer::playInstanceOf(_stepSounds[soundID]);
             _stepCooldown.reset();
         }

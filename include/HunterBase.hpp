@@ -32,7 +32,7 @@ public:
 
     void hit(WorldEntity* entity, GameWorld* gameWorld);
 
-    int getLife() const {return _life;}
+    float getLife() const {return _life;}
 
     static void init();
 
@@ -40,7 +40,7 @@ protected:
     std::vector<Weapon*> _weapons;
 
     Weapon*     _currentWeapon;
-    int         _weaponRank;
+    uint32_t    _weaponRank;
     bool        _releasedWeaponSwap;
     bool        _clicking;
     float       _stamina;
@@ -57,8 +57,8 @@ protected:
 
     float            _feetTime;
     static Animation _feetAnimation;
-    static size_t    _feetTextureID;
-    static std::vector<size_t> _stepSounds;
+    static uint32_t    _feetTextureID;
+    static std::vector<uint32_t> _stepSounds;
 
     void _changeState(HunterState state);
     void _changeAnimation(Animation& anim, bool wait=true);

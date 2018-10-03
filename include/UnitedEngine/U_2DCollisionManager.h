@@ -25,7 +25,7 @@ struct GridCell
     int _maxIndex;
 
     GridCell();
-    void add(U2DBody_ptr body);
+    void create(U2DBody_ptr body);
     void reset();
 };
 
@@ -56,7 +56,7 @@ public:
     static U_2DBody* getBodyByID(BodyID id);
 
 private:
-    int   m_nCollisionChecked, m_iterationCount, m_currentIteration;
+    size_t   m_nCollisionChecked, m_iterationCount, m_currentIteration;
     float m_timeStep, m_bodySize;
     Vec2  m_mapSize, m_gravity;
 

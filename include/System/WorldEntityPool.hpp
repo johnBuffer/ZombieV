@@ -21,7 +21,7 @@ template<class T>
 template<class...Args>
 T* WorldEntityPool<T>::newEntity(Args&&... args)
 {
-    T* newObject = PoolObject<T>::add(args...);
+    T* newObject = PoolObject<T>::create(args...);
     newObject->setID(newObject->getGlobalIndex());
 
     return newObject;

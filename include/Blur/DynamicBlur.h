@@ -15,10 +15,10 @@ public:
     const sf::Texture& operator()(const sf::Texture&);
     void blurRenderTexture(sf::RenderTexture& renderTexture);
 
-    void setDownSizeFactor(unsigned int f) {_downSizeFactor = pow(2, f);}
+    void setDownSizeFactor(unsigned int f) {_downSizeFactor = (f>>1);}
 
 private:
-    float _downSizeFactor;
+    int _downSizeFactor;
 
     unsigned int _WIDTH;
     unsigned int _HEIGHT;

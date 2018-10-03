@@ -28,7 +28,7 @@ public:
 	void setEntity(WorldEntity* entity);
 	void setMass(float mass);
 	void setRadius(float radius);
-	void updatePressuredMass() {m_pressuredMass = m_mass*(8*m_pressure+0.1);}
+	void updatePressuredMass() {m_pressuredMass = m_mass*(8.0f*m_pressure+0.1f);}
 
     const Vec2& getPosition() const;
     Vec2  getVelocity()       const;

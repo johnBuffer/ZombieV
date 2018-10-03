@@ -11,6 +11,6 @@
 #define RADDEG 57.2958
 #define DEGRAD 0.0174533
 
-#define DT     0.016
+constexpr float DT = 0.016f;
 
 #endif // CONFIG_HPP_INCLUDED

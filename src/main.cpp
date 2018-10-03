@@ -29,13 +29,10 @@ int main()
     GameWorld world;
     world.initEventHandler(window);
 
-    world.getPhyManager().setGravity(Vec2(0, 10));
-    world.getPhyManager().setPrecision(10);
-
     GameRender::setFocus(sf::Vector2f(375, 375));
 
-    for (int i(1500); i--;)
-        world.addEntity(Ball::add(Vec2(rand()%WIN_WIDTH, rand()%WIN_HEIGHT)));
+	Hunter* player = Hunter::create(700, 700);
+    world.addEntity(player);
 
     int frameCount = 0;
     while (window.isOpen())
@@ -57,7 +54,6 @@ int main()
         world.update();
 
         GameRender::clear();
-
         world.render();
         GameRender::display(&window);
 

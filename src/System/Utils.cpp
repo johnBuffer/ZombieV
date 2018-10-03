@@ -3,7 +3,7 @@
 #include <cmath>
 #include <sstream>
 
-float getRandInt(int min, int max)
+int32_t getRandInt(int min, int max)
 {
     return min+rand()%(max-min+1);
 }
