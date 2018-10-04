@@ -108,14 +108,13 @@ size_t GameRender::registerTexture(std::string filename, bool isRepeated)
     GameRender& instance = *getInstance();
 
     instance._textures.push_back(sf::Texture());
+	instance._textures.back().setRepeated(isRepeated);
+	instance._vertices[RenderLayer::RENDER].push_back(sf::VertexArray(sf::Quads, 0));
+	instance._vertices[RenderLayer::GROUND].push_back(sf::VertexArray(sf::Quads, 0));
+	instance._vertices[RenderLayer::BLOOM].push_back(sf::VertexArray(sf::Quads, 0));
 
     if (instance._textures.back().loadFromFile(filename))
     {
-        instance._textures.back().setRepeated(isRepeated);
-        instance._vertices[RenderLayer::RENDER].push_back(sf::VertexArray(sf::Quads, 0));
-        instance._vertices[RenderLayer::GROUND].push_back(sf::VertexArray(sf::Quads, 0));
-        instance._vertices[RenderLayer::BLOOM ].push_back(sf::VertexArray(sf::Quads, 0));
-
         std::cout << "Add new texture : " << filename << " with ID " << instance._vertices[RenderLayer::RENDER].size() << std::endl;
     }
     else
@@ -186,8 +185,8 @@ void GameRender::display(sf::RenderTarget* target)
     instance._renderVertices(instance._vertices[RenderLayer::RENDER], instance._renderTexture, states);
 
     /// Draw lights
-    //sf::Sprite lightSprite(instance._lightEngine.render());
-    //instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
+    sf::Sprite lightSprite(instance._lightEngine.render());
+    instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
     instance._renderTexture.display();
 
     sf::Sprite renderSprite(instance._renderTexture.getTexture());

@@ -31,7 +31,7 @@ template<class T>
 void WorldEntityPool<T>::registerObject(GameWorld* world)
 {
     T::m_classID = world->registerEntityClass(WorldEntityPool<T>::getWorldEntityAt);
-    //T::initialize();
+    T::initialize();
 }
 
 template<class T>

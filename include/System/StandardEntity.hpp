@@ -10,6 +10,8 @@ class StandardEntity : public WorldEntity, public WorldEntityPool<T>
 public:
     StandardEntity();
     StandardEntity(float x, float y, float angle);
+
+	static void initialize();
 };
 
 template<class T>
@@ -22,6 +24,12 @@ template<class T>
 StandardEntity<T>::StandardEntity(float x, float y, float angle) :
     WorldEntity(x, y, angle)
 {
+}
+
+template<class T>
+void StandardEntity<T>::initialize()
+{
+	T::initialize();
 }
 
 #endif // STANTARDENTITY_HPP_INCLUDED

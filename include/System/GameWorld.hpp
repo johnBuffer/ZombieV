@@ -10,26 +10,28 @@
 #include "GameRender.hpp"
 #include "SoundPlayer.hpp"
 #include "LightEngine/LightEngine.hpp"
+#include <functional>
 
-typedef WorldEntity*(*AccessFunc)(size_t);
+using AccessFunc = std::function<WorldEntity*(uint32_t)>;
 
 class GameWorld
 {
 public:
     GameWorld();
+
+	void initializeWeapons();
     void initEventHandler(sf::RenderWindow& window);
 
     U_2DConstraint* addConstraint(BodyID body1, BodyID body2, float length=0.0);
     void addEntity(WorldEntity* entity);
     void removeBody(BodyID id);
     void removeConstraint(U_2DConstraint* constraint);
-    void addScore(size_t s) {m_score+=s;}
     void update();
     void render();
 
     bool                isInLevelBounds(const Vec2& coord) {return _level.isInBounds(coord);}
-    size_t              registerEntityClass(AccessFunc func);
-    size_t              getScore() const {return m_score;}
+    uint32_t            registerEntityClass(AccessFunc func);
+	// shit
     BodyID              addBody();
     GridCell*           getBodiesAt(const Vec2& coord);
     WorldEntity*        getEntityByID(EntityID id);
@@ -43,7 +45,6 @@ public:
 private:
     float _dt;
     Level _level;
-    size_t m_score;
 
     std::list<WorldEntity*> _entities;
     U_2DCollisionManager    _phyManager;

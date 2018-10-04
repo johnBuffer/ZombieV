@@ -12,3 +12,5 @@ obj/
 ZV/x64/
 *.log
 *.pdb
+*.opendb
+*.idb

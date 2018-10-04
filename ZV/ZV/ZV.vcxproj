@@ -27,7 +27,6 @@
     <ClInclude Include="..\..\include\LightEngine\LightEngine.hpp" />
     <ClInclude Include="..\..\include\LightEngine\LightUtils.hpp" />
     <ClInclude Include="..\..\include\LightEngine\ShadowCaster.hpp" />
-    <ClInclude Include="..\..\include\Props\Ball.hpp" />
     <ClInclude Include="..\..\include\Props\BulletShell.hpp" />
     <ClInclude Include="..\..\include\Props\Explosion.hpp" />
     <ClInclude Include="..\..\include\Props\ExplosionProvider.hpp" />
@@ -85,7 +84,6 @@
     <ClCompile Include="..\..\src\LightEngine\LightUtils.cpp" />
     <ClCompile Include="..\..\src\LightEngine\ShadowCaster.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\Props\Ball.cpp" />
     <ClCompile Include="..\..\src\Props\BulletShell.cpp" />
     <ClCompile Include="..\..\src\Props\Explosion.cpp" />
     <ClCompile Include="..\..\src\Props\ExplosionProvider.cpp" />
@@ -197,16 +195,19 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;SFML_STATIC;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Jean Tampon\Documents\code\cpp\ZombieV\include;C:\lib\SFML-2.5.0-VC15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\lib\SFML-2.5.0-VC15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;opengl32.lib;freetype.lib;winmm.lib;sfml-audio-s-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

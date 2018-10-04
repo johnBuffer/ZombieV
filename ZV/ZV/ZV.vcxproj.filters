@@ -168,9 +168,6 @@
     <ClInclude Include="..\..\include\System\WorldEntityPool.hpp">
       <Filter>Fichiers d%27en-tête\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Props\Ball.hpp">
-      <Filter>Fichiers d%27en-tête\Props</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\Props\BulletShell.hpp">
       <Filter>Fichiers d%27en-tête\Props</Filter>
     </ClInclude>
@@ -249,9 +246,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\LightEngine\ShadowCaster.cpp">
       <Filter>Fichiers sources\LightEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Props\Ball.cpp">
-      <Filter>Fichiers sources\Props</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Props\BulletShell.cpp">
       <Filter>Fichiers sources\Props</Filter>

@@ -94,16 +94,17 @@ void HunterBase::render()
     float x = coord.x;
     float y = coord.y;
 
-    GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), SCALE*0.26f);
-    GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
-    _currentAnimation.applyOnQuad(_vertexArray, _time);
-    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
-    GameRender::addShadowCaster(getCoord(), CELL_SIZE);
-
     GraphicUtils::initQuad(_vertexArray, feetSpriteSize, _feetAnimation.getSpriteCenter(), SCALE*0.3f);
     GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
     _feetAnimation.applyOnQuad(_vertexArray, _feetTime);
     GameRender::addQuad(_feetAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
+
+    GraphicUtils::initQuad(_vertexArray, spriteSize, _currentAnimation.getSpriteCenter(), SCALE*0.26f);
+    GraphicUtils::transform(_vertexArray, sf::Vector2f(x, y), _angle);
+    _currentAnimation.applyOnQuad(_vertexArray, _time);
+    GameRender::addQuad(_currentAnimation.getTexture(), _vertexArray, RenderLayer::RENDER);
+
+    GameRender::addShadowCaster(getCoord(), CELL_SIZE);
 
     GraphicUtils::createEntityShadow(this);
 }
