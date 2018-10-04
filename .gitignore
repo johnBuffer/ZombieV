@@ -4,3 +4,10 @@ obj/
 *.cbp
 *.depend
 *.layout
+*.db
+*.ipch
+*.pdb
+*.ipdb
+*.obj
+*.log
+*.tlog
