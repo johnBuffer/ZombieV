@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\Blur\DynamicBlur.h" />
+    <ClInclude Include="..\..\include\Bot.hpp" />
+    <ClInclude Include="..\..\include\HUD.hpp" />
+    <ClInclude Include="..\..\include\Hunter.hpp" />
+    <ClInclude Include="..\..\include\HunterBase.hpp" />
+    <ClInclude Include="..\..\include\LightEngine\LightEngine.hpp" />
+    <ClInclude Include="..\..\include\LightEngine\LightUtils.hpp" />
+    <ClInclude Include="..\..\include\LightEngine\ShadowCaster.hpp" />
+    <ClInclude Include="..\..\include\Props\Ball.hpp" />
+    <ClInclude Include="..\..\include\Props\BulletShell.hpp" />
+    <ClInclude Include="..\..\include\Props\Explosion.hpp" />
+    <ClInclude Include="..\..\include\Props\ExplosionProvider.hpp" />
+    <ClInclude Include="..\..\include\Props\Fire.hpp" />
+    <ClInclude Include="..\..\include\Props\Guts.hpp" />
+    <ClInclude Include="..\..\include\Props\Props.hpp" />
+    <ClInclude Include="..\..\include\Props\Smoke.hpp" />
+    <ClInclude Include="..\..\include\Props\Wall.hpp" />
+    <ClInclude Include="..\..\include\Props\WoodBox.hpp" />
+    <ClInclude Include="..\..\include\System\Animation.hpp" />
+    <ClInclude Include="..\..\include\System\AutoAim.hpp" />
+    <ClInclude Include="..\..\include\System\ChainedObject.hpp" />
+    <ClInclude Include="..\..\include\System\Config.hpp" />
+    <ClInclude Include="..\..\include\System\Cooldown.hpp" />
+    <ClInclude Include="..\..\include\System\EntityTypes.hpp" />
+    <ClInclude Include="..\..\include\System\EventManager.hpp" />
+    <ClInclude Include="..\..\include\System\GameRender.hpp" />
+    <ClInclude Include="..\..\include\System\GameWorld.hpp" />
+    <ClInclude Include="..\..\include\System\GraphicsUtils.hpp" />
+    <ClInclude Include="..\..\include\System\Level.hpp" />
+    <ClInclude Include="..\..\include\System\LifeForm.hpp" />
+    <ClInclude Include="..\..\include\System\PoolObject.hpp" />
+    <ClInclude Include="..\..\include\System\SoundPlayer.hpp" />
+    <ClInclude Include="..\..\include\System\StandardEntity.hpp" />
+    <ClInclude Include="..\..\include\System\Utils.hpp" />
+    <ClInclude Include="..\..\include\System\WorldEntity.hpp" />
+    <ClInclude Include="..\..\include\System\WorldEntityPool.hpp" />
+    <ClInclude Include="..\..\include\Turret.hpp" />
+    <ClInclude Include="..\..\include\UnitedEngine\Types.hpp" />
+    <ClInclude Include="..\..\include\UnitedEngine\UnitedEngine.h" />
+    <ClInclude Include="..\..\include\UnitedEngine\U_2DBody.h" />
+    <ClInclude Include="..\..\include\UnitedEngine\U_2DCollisionManager.h" />
+    <ClInclude Include="..\..\include\UnitedEngine\U_2DConstraint.h" />
+    <ClInclude Include="..\..\include\UnitedEngine\Vec2.h" />
+    <ClInclude Include="..\..\include\Weapons\AK.hpp" />
+    <ClInclude Include="..\..\include\Weapons\Bullet.hpp" />
+    <ClInclude Include="..\..\include\Weapons\Pistol.hpp" />
+    <ClInclude Include="..\..\include\Weapons\Shotgun.hpp" />
+    <ClInclude Include="..\..\include\Weapons\Turrets\TurretBase.hpp" />
+    <ClInclude Include="..\..\include\Weapons\Weapon.hpp" />
+    <ClInclude Include="..\..\include\Weapons\Weapons.hpp" />
+    <ClInclude Include="..\..\include\Weapons\WeaponStatics.hpp" />
+    <ClInclude Include="..\..\include\Zombie.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Blur\blur.frag" />
+    <None Include="..\..\src\Blur\blur.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Blur\DynamicBlur.cpp" />
+    <ClCompile Include="..\..\src\Bot.cpp" />
+    <ClCompile Include="..\..\src\Hunter.cpp" />
+    <ClCompile Include="..\..\src\HunterBase.cpp" />
+    <ClCompile Include="..\..\src\LightEngine\LightEngine.cpp" />
+    <ClCompile Include="..\..\src\LightEngine\LightUtils.cpp" />
+    <ClCompile Include="..\..\src\LightEngine\ShadowCaster.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\Props\Ball.cpp" />
+    <ClCompile Include="..\..\src\Props\BulletShell.cpp" />
+    <ClCompile Include="..\..\src\Props\Explosion.cpp" />
+    <ClCompile Include="..\..\src\Props\ExplosionProvider.cpp" />
+    <ClCompile Include="..\..\src\Props\Fire.cpp" />
+    <ClCompile Include="..\..\src\Props\Guts.cpp" />
+    <ClCompile Include="..\..\src\Props\Smoke.cpp" />
+    <ClCompile Include="..\..\src\Props\Wall.cpp" />
+    <ClCompile Include="..\..\src\System\Animation.cpp" />
+    <ClCompile Include="..\..\src\System\AutoAim.cpp" />
+    <ClCompile Include="..\..\src\System\Cooldown.cpp" />
+    <ClCompile Include="..\..\src\System\EventManager.cpp" />
+    <ClCompile Include="..\..\src\System\GameRender.cpp" />
+    <ClCompile Include="..\..\src\System\GameWorld.cpp" />
+    <ClCompile Include="..\..\src\System\GraphicsUtils.cpp" />
+    <ClCompile Include="..\..\src\System\Level.cpp" />
+    <ClCompile Include="..\..\src\System\LifeForm.cpp" />
+    <ClCompile Include="..\..\src\System\SoundPlayer.cpp" />
+    <ClCompile Include="..\..\src\System\Utils.cpp" />
+    <ClCompile Include="..\..\src\System\WorldEntity.cpp" />
+    <ClCompile Include="..\..\src\Turret.cpp" />
+    <ClCompile Include="..\..\src\UnitedEngine\U_2DBody.cpp" />
+    <ClCompile Include="..\..\src\UnitedEngine\U_2DCollisionManager.cpp" />
+    <ClCompile Include="..\..\src\UnitedEngine\U_2DConstraint.cpp" />
+    <ClCompile Include="..\..\src\UnitedEngine\Vec2.cpp" />
+    <ClCompile Include="..\..\src\Weapons\AK.cpp" />
+    <ClCompile Include="..\..\src\Weapons\Bullet.cpp" />
+    <ClCompile Include="..\..\src\Weapons\Pistol.cpp" />
+    <ClCompile Include="..\..\src\Weapons\Shotgun.cpp" />
+    <ClCompile Include="..\..\src\Weapons\Weapon.cpp" />
+    <ClCompile Include="..\..\src\Zombie.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{B8227AB6-7483-4ED1-8E30-B84A26329C7D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ZV</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;SFML_STATIC ;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Jean Tampon\Documents\code\cpp\ZombieV\include;C:\lib\SFML-2.5.0-VC15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;opengl32.lib;freetype.lib;winmm.lib;sfml-audio-s.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\lib\SFML-2.5.0-VC15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

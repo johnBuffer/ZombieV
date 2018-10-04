@@ -258,10 +258,10 @@ void U_2DCollisionManager::update()
     // friction
     while (U_2DBody::getNext(b))
     {
-        //Vec2 velocity = b->getVelocity();
+        Vec2 velocity = b->getVelocity();
         b->updatePressuredMass();
         b->setPressure(0);
-        //b->accelerate2D(-10*velocity.x, -10*velocity.y);
+        b->accelerate2D(-10*velocity.x, -10*velocity.y);
         b->updatePosition(m_timeStep);
     }
 }
