@@ -44,7 +44,7 @@ int main()
     int waveCount = 0;
 
     Bot* newBot;
-    for (int i(0); i--;)
+    for (int i(70); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -56,7 +56,7 @@ int main()
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     Zombie* newZombie;
-    for (int i(200); i--;)
+    for (int i(8000); i--;)
     {
         newZombie = Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE);
         newZombie->setTarget(h.getID());
