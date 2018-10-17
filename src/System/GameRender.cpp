@@ -3,26 +3,6 @@
 
 #include <iostream>
 
-/*float              GameRender::_quality;
-float              GameRender::_zoom;
-float              GameRender::_ratio;
-sf::Vector2u       GameRender::_renderSize;
-sf::Vector2f       GameRender::_focus;
-sf::Vector2f       GameRender::_baseOffset;
-sf::RenderTexture  GameRender::_renderTexture;
-sf::RenderTexture  GameRender::_blurTexture;
-sf::RenderTexture  GameRender::_groundTexture;
-sf::VertexArray    GameRender::_groundQuad;
-size_t             GameRender::_groundTextureID;
-size_t             GameRender::_drawCalls;
-
-std::vector<sf::Texture>                  GameRender::_textures;
-std::vector<std::vector<sf::VertexArray>> GameRender::_vertices;
-std::list<ShadowCaster>                   GameRender::_screenSpaceEntities;
-
-DynamicBlur GameRender::_blur;
-LightEngine GameRender::_lightEngine;*/
-
 GameRender* GameRender::s_instance = nullptr;
 size_t      GameRender::_drawCalls = 0;
 
@@ -56,7 +36,7 @@ void GameRender::initialize(size_t width, size_t height)
     instance._blurTexture.create(instance._renderSize.x, instance._renderSize.y);
     instance._groundTexture.create(MAP_SIZE, MAP_SIZE);
 
-    instance._blur.init(instance._renderSize.x*0.5f, instance._renderSize.y*0.5f);
+    instance._blur.init(instance._renderSize.x, instance._renderSize.y);
     instance._blur.setDownSizeFactor(2);
     instance._lightEngine.init(instance._renderSize.x, instance._renderSize.y);
 
@@ -185,8 +165,8 @@ void GameRender::display(sf::RenderTarget* target)
     instance._renderVertices(instance._vertices[RenderLayer::RENDER], instance._renderTexture, states);
 
     /// Draw lights
-    sf::Sprite lightSprite(instance._lightEngine.render());
-    instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
+    //sf::Sprite lightSprite(instance._lightEngine.render());
+    //instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
     instance._renderTexture.display();
 
     sf::Sprite renderSprite(instance._renderTexture.getTexture());

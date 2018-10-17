@@ -8,10 +8,10 @@ int log2(int i)
 }
 
 DynamicBlur::DynamicBlur() :
-    _downSizeFactor(2.0)
+    m_downSizeFactor(2.0)
 {
-    _blurH.loadFromFile("data/shaders/blurH.frag", sf::Shader::Fragment);
-    _blurV.loadFromFile("data/shaders/blurV.frag", sf::Shader::Fragment);
+    m_blurH.loadFromFile("data/shaders/blurH.frag", sf::Shader::Fragment);
+    m_blurV.loadFromFile("data/shaders/blurV.frag", sf::Shader::Fragment);
 }
 
 void DynamicBlur::init(unsigned int textureWidth, unsigned int textureHeight)
@@ -19,52 +19,62 @@ void DynamicBlur::init(unsigned int textureWidth, unsigned int textureHeight)
     _WIDTH  = textureWidth;
     _HEIGHT = textureHeight;
 
-    _blurH.setUniform("WIDTH",  (float)  _WIDTH);
-    _blurH.setUniform("HEIGHT", (float) _HEIGHT);
-    _blurV.setUniform("WIDTH",  (float) _WIDTH);
-    _blurV.setUniform("HEIGHT", (float) _HEIGHT);
+    m_blurH.setUniform("WIDTH",  (float) _WIDTH);
+    m_blurH.setUniform("HEIGHT", (float) _HEIGHT);
+    m_blurV.setUniform("WIDTH",  (float) _WIDTH);
+    m_blurV.setUniform("HEIGHT", (float) _HEIGHT);
 
-    _blurTexture.create(_WIDTH, _HEIGHT);
-    _lowBlurTexture.create(_WIDTH, _HEIGHT);
+    m_blur_tex.create(_WIDTH, _HEIGHT);
+    m_blur_tex_tmp.create(_WIDTH, _HEIGHT);
 }
 
-void DynamicBlur::_applyBlur(sf::RenderTexture& texture)
+void DynamicBlur::_applyBlur(float scale)
 {
-    texture.draw(sf::Sprite(texture.getTexture()), &_blurH);
-    texture.draw(sf::Sprite(texture.getTexture()), &_blurV);
+	sf::VertexArray va(sf::Quads, 4);
+	
+	sf::RenderStates rs;
+	//rs.texture = &m_blur_tex.getTexture();
+	rs.shader = &m_blurH;
+
+	va[0].position = { 0.0f, 0.0f };
+	va[0].texCoords = sf::Vector2f(0.0f, 0.0f);
+
+	va[1].position = sf::Vector2f(_WIDTH*scale, 0.0f);
+	va[1].texCoords = sf::Vector2f(_WIDTH, 0.0f);
+
+	va[2].position = { _WIDTH*scale, _HEIGHT*scale };
+	va[2].texCoords = sf::Vector2f(_WIDTH, _HEIGHT);
+	
+	va[3].position = { 0.0f,  _HEIGHT*scale };
+	va[3].texCoords = sf::Vector2f(0.0f, _HEIGHT);
+
+	m_blur_tex_tmp.draw(va, rs);
+	m_blur_tex_tmp.display();
+
+	// Stage 2
+	sf::Sprite down_scale_sprite_2(m_blur_tex_tmp.getTexture());
+	//down_scale_sprite_2.setTextureRect({0, 0, int32_t(_WIDTH*scale), int32_t(_HEIGHT*scale)});
+	m_blur_tex.draw(down_scale_sprite_2);
 }
 
 const sf::Texture& DynamicBlur::operator()(const sf::Texture& inputTexture)
 {
-    /// Downscale the texture
-    sf::Sprite downscaleSprite(inputTexture);
-    downscaleSprite.setScale(0.5, 0.5);
-    _blurTexture.draw(downscaleSprite);
-    _applyBlur(_blurTexture);
-    _blurTexture.display();
+	m_blur_tex_tmp.clear();
 
-    sf::Sprite downscaledSprite1(_blurTexture.getTexture());
-    downscaledSprite1.setScale(2/float(_downSizeFactor), 2/float(_downSizeFactor));
-    _lowBlurTexture.draw(downscaledSprite1);
-    _lowBlurTexture.display();
-    _blurTexture.draw(sf::Sprite(_lowBlurTexture.getTexture()));
+	sf::Sprite input_sprite(inputTexture);
+	m_blur_tex.draw(input_sprite);
+	m_blur_tex.display();
+	
+	_applyBlur(1.0f);
+	m_blur_tex.display();
 
-    int i = 2*_downSizeFactor;
-    while (i >>= 1 > 0.5)
-    {
-        _applyBlur(_blurTexture);
+	/*sf::Sprite up_scale_sprite(m_blur_tex.getTexture());
+	up_scale_sprite.setScale(2.0f, 2.0f);
+	m_blur_tex_tmp.draw(up_scale_sprite);
 
-        if (i-1)
-        {
-            sf::Sprite upscale(_blurTexture.getTexture());
-            upscale.scale(2, 2);
-            _lowBlurTexture.draw(upscale);
-            _blurTexture.draw(sf::Sprite(_lowBlurTexture.getTexture()));
-        }
-    }
-    _blurTexture.display();
+	m_blur_tex_tmp.display();*/
 
-    return _blurTexture.getTexture();
+	return m_blur_tex.getTexture();
 }
 
 void DynamicBlur::blurRenderTexture(sf::RenderTexture& renderTexture)

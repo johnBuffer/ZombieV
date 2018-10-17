@@ -21,22 +21,26 @@ int main()
     settings.antialiasingLevel = 0;
     //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
-    window.setVerticalSyncEnabled(true);
+    window.setVerticalSyncEnabled(false);
     //window.setFramerateLimit(60);
 
     GameRender::initialize(WIN_WIDTH, WIN_HEIGHT);
-    GameWorld world;
-    world.initEventHandler(window);
+    //GameWorld world;
+    //world.initEventHandler(window);
 
-    Hunter::registerObject(&world);
+    //Hunter::registerObject(&world);
 
-	world.initializeWeapons();
+	//world.initializeWeapons();
 
-    world.getPhyManager().setGravity(Vec2(0, 0));
+    //world.getPhyManager().setGravity(Vec2(0, 0));
     //world.getPhyManager().setPrecision(2);
 
-    Hunter& h = *Hunter::newEntity(MAP_SIZE/2, MAP_SIZE/2);
-    world.addEntity(&h);
+	sf::RenderTexture test_texture;
+	test_texture.create(WIN_WIDTH, WIN_HEIGHT);
+	test_texture.clear();
+
+    //Hunter& h = *Hunter::newEntity(MAP_SIZE/2, MAP_SIZE/2);
+    //world.addEntity(&h);
 
     int waveCount = 0;
 
@@ -47,13 +51,13 @@ int main()
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
         //newBot = Bot::add(rand()%MAP_SIZE, rand()%MAP_SIZE);
         newBot = Bot::newEntity(MAP_SIZE/2 + rand()%10, MAP_SIZE/2 + rand()%10);
-        world.addEntity(newBot);
+        //world.addEntity(newBot);
     }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     Zombie* newZombie;
-    for (int i(100); i--;)
+    /*for (int i(100); i--;)
     {
         newZombie = Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE);
 		int target = h.getID();
@@ -68,24 +72,15 @@ int main()
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
         light.radius   = 300+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);
-    }
+    }*/
+
+	GameRender::setFocus({ 500, 500 });
 
     int frameCount = 0;
     float ttime = 0;
     while (window.isOpen())
     {
         ++frameCount;
-
-        if (Zombie::getObjectsCount() == 0)
-        {
-            ++waveCount;
-            for (int i(waveCount*waveCount + 10); i--;)
-            {
-                Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
-                //newZombie->setTarget(&(*Hunter::getObjects().front()));
-                world.addEntity(newZombie);
-            }
-        }
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -99,30 +94,21 @@ int main()
 			}
         }
 
-        sf::Clock clock;
-        world.update();
-
-		int upTime = clock.getElapsedTime().asMilliseconds();
-        ttime += upTime;
-        //system("cls");
-        /*std::cout << "Logic update time  : " << upTime << " ms (" << ttime/float(frameCount) << " mean )" << std::endl;
-        std::cout << "Bodies       count : " << U_2DBody::size() << std::endl;
-        std::cout << "Bullets      count : " << Bullet::size() << std::endl;
-        std::cout << "Zombies      count : " << Zombie::size() << std::endl;
-        std::cout << "Guts         count : " << Guts::size() << std::endl;
-        std::cout << "Fire         count : " << Fire::size() << std::endl;
-        std::cout << "Explosions   count : " << Explosion::size() << std::endl;
-        std::cout << "Smokes       count : " << Smoke::size() << std::endl;
-        std::cout << "BulletShells count : " << BulletShell::size() << std::endl;
-        std::cout << "===================================\n" << std::endl;*/
-
-        Vec2 p = h.getCoord();
-		GameRender::setFocus({ p.x, p.y });
-
         GameRender::clear();
 
-        world.render();
-        GameRender::display(&window);
+        //world.render();
+
+		test_texture.clear(sf::Color::Red);
+		sf::RectangleShape rect({ 400, 400 });
+		rect.setOrigin({ 200, 200 });
+		rect.setPosition(800, 450);
+		rect.setRotation(frameCount*0.005f);
+		test_texture.draw(rect);
+		test_texture.display();
+
+		sf::Sprite test_sprite(GameRender::getBlur(test_texture.getTexture()));
+        //GameRender::display(&window);
+		window.draw(test_sprite);
 
         window.display();
     }
