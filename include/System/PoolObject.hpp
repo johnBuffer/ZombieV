@@ -5,7 +5,6 @@
 
 /* Wrapper to allow creation of "Pooled object"
 e.g. objects that statically handle the storage of their own instances*/
-
 ///////////////////////////////////////////////////////////////////////
 
 template<class T>
@@ -15,37 +14,40 @@ public:
     template<class...Args>
     static T* add(Args&&...);
 
-    size_t   getIndex() const {return m_index;}
+    uint32_t   getIndex() const {return m_index;}
     uint64_t getGlobalIndex() const;
 
     void remove();
 
-    static size_t     getObjectsCount() {return s_pool.size();}
+    static uint32_t   getObjectsCount() {return s_pool.size();}
     static T*         getNext(T*& item);
-    static T*         getObjectAt(size_t i);
+    static T*         getObjectAt(uint32_t i);
     static Vector<T>& getObjects();
-    static void       removeObject(size_t i);
-    static void       resize(size_t size);
+    static void       removeObject(uint32_t i);
+    static void       resize(uint32_t size);
 
 protected:
-    size_t m_index;
-    static size_t m_classID;
+    uint32_t m_index;
+    static uint32_t m_classID;
 
 private:
     static Pool<T> s_pool;
 };
 
+/* Implementation */
+///////////////////////////////////////////////////////////////////////
+
 template<class T>
 Pool<T> PoolObject<T>::s_pool(10000);
 
 template<class T>
-size_t PoolObject<T>::m_classID;
+uint32_t PoolObject<T>::m_classID;
 
 template<class T>
 template<class...Args>
 T* PoolObject<T>::add(Args&&... args)
 {
-    size_t index = s_pool.createObject(args...);
+    uint32_t index = s_pool.createObject(args...);
     T* newObject = &s_pool[index];
     newObject->m_index = index;
 
@@ -53,7 +55,7 @@ T* PoolObject<T>::add(Args&&... args)
 }
 
 template<class T>
-void PoolObject<T>::removeObject(size_t i)
+void PoolObject<T>::removeObject(uint32_t i)
 {
     s_pool.remove(i);
 }
@@ -65,7 +67,7 @@ void PoolObject<T>::remove()
 }
 
 template<class T>
-void PoolObject<T>::resize(size_t size)
+void PoolObject<T>::resize(uint32_t size)
 {
     s_pool.resize(size);
 }
@@ -77,7 +79,7 @@ Vector<T>& PoolObject<T>::getObjects()
 }
 
 template<class T>
-T* PoolObject<T>::getObjectAt(size_t i)
+T* PoolObject<T>::getObjectAt(uint32_t i)
 {
     return &(s_pool.getPoolItemAt(i)->object);
 }

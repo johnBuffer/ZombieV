@@ -2,7 +2,8 @@
 #include "System/GameWorld.hpp"
 #include <iostream>
 
-size_t WorldEntity::_entityCount = 0;
+uint32_t WorldEntity::_entityCount = 0;
+uint32_t WorldEntity::_entityTypeCount = 0;
 
 WorldEntity::WorldEntity():
     _id(WorldEntity::_entityCount++),
@@ -86,6 +87,11 @@ const Vec2& WorldEntity::getBodyCoord() const
 void WorldEntity::kill(GameWorld* world)
 {
     // deleter
+}
+
+uint32_t WorldEntity::registerEntity()
+{
+	return _entityTypeCount++;
 }
 
 void WorldEntity::setDying()

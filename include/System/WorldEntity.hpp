@@ -48,18 +48,20 @@ public:
     virtual void update(GameWorld& world)=0;
     virtual void render()=0;
 
+	static uint32_t registerEntity();
+
 protected:
     /// Engine data
-    size_t   _id;
+    uint32_t _id;
     EntityID m_globalID;
 
     /// Physical data
-    Vec2   m_coord;
-    size_t m_bodyID;
-    float  _angle;
-    float  _time;
-    float  _life;
-    bool   _isDying;
+    Vec2     m_coord;
+    uint32_t m_bodyID;
+    float    _angle;
+    float    _time;
+    float    _life;
+    bool     _isDying;
 
     EntityTypes _type;
 
@@ -68,7 +70,8 @@ protected:
     U_2DBody* m_initBody(GameWorld* world);
 
 private:
-    static size_t _entityCount;
+	static uint32_t _entityCount;
+	static uint32_t _entityTypeCount;
 
 };
 

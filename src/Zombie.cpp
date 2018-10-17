@@ -43,7 +43,6 @@ Zombie::~Zombie()
 
 void Zombie::kill(GameWorld* world)
 {
-    world->addScore(1);
     world->removeBody(m_bodyID);
     this->remove();
 }

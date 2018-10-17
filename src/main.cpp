@@ -9,13 +9,11 @@
 #include "Turret.hpp"
 #include "Hunter.hpp"
 #include "Zombie.hpp"
-#include "Props/Ball.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
 
 #include "System/Utils.hpp"
-#include "HUD.hpp"
 
 int main()
 {
@@ -31,9 +29,8 @@ int main()
     world.initEventHandler(window);
 
     Hunter::registerObject(&world);
-    Zombie::registerObject(&world);
-    Bot::registerObject(&world);
-    Turret::registerObject(&world);
+
+	world.initializeWeapons();
 
     world.getPhyManager().setGravity(Vec2(0, 0));
     //world.getPhyManager().setPrecision(2);
@@ -44,7 +41,7 @@ int main()
     int waveCount = 0;
 
     Bot* newBot;
-    for (int i(70); i--;)
+    for (int i(0); i--;)
     {
         //world.addEntity(Turret::add(2000+i*100, 2048));
         //Bot* bot = Bot::add(1500+rand()%1000, 1500+ rand()%1000);
@@ -56,14 +53,15 @@ int main()
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
 
     Zombie* newZombie;
-    for (int i(8000); i--;)
+    for (int i(100); i--;)
     {
         newZombie = Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE);
-        newZombie->setTarget(h.getID());
+		int target = h.getID();
+		newZombie->setTarget(target);
         world.addEntity(newZombie);
     }
 
-    for (int i(0); i<0; ++i)
+    for (int i(0); i<10; ++i)
     {
         Light light;
         light.position = Vec2(rand()%2000, rand()%2000);
@@ -71,8 +69,6 @@ int main()
         light.radius   = 300+rand()%150;
         GameRender::getLightEngine().addDurableLight(light);
     }
-
-    HUD hud;
 
     int frameCount = 0;
     float ttime = 0;
@@ -105,9 +101,8 @@ int main()
 
         sf::Clock clock;
         world.update();
-        hud.update();
-        hud.setCurrentWave(waveCount);
-        int upTime = clock.getElapsedTime().asMilliseconds();
+
+		int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
         //system("cls");
         /*std::cout << "Logic update time  : " << upTime << " ms (" << ttime/float(frameCount) << " mean )" << std::endl;
@@ -122,14 +117,12 @@ int main()
         std::cout << "===================================\n" << std::endl;*/
 
         Vec2 p = h.getCoord();
-        sf::Vector2f playerPosition(p.x, p.y);
-        GameRender::setFocus(playerPosition);
+		GameRender::setFocus({ p.x, p.y });
 
         GameRender::clear();
 
         world.render();
         GameRender::display(&window);
-        hud.render(world, &window);
 
         window.display();
     }

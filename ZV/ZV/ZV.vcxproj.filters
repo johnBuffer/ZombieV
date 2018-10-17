@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Weapon">
+      <UniqueIdentifier>{582f5378-4c0d-4e3c-93f0-6262ac985e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Weapon\Turret">
+      <UniqueIdentifier>{a8eab4cc-fad3-465d-93b2-517ad224af84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\UnitedEngine">
+      <UniqueIdentifier>{cab629fa-3892-4080-865f-9231235dcaf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\System">
+      <UniqueIdentifier>{dbbc3a53-4586-4431-a351-bde55d51933d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Props">
+      <UniqueIdentifier>{2f312e2b-ae01-4d39-b651-0b926a78b920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\LightEngine">
+      <UniqueIdentifier>{f38f4770-251c-42b9-bd1a-dd273b0afe0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Blur">
+      <UniqueIdentifier>{3ccf9a19-00f4-4293-a3ee-f5b9d35ae964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Weapon">
+      <UniqueIdentifier>{48711468-f877-498f-8d4f-1315dafa1b71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\UnitedEngine">
+      <UniqueIdentifier>{ca9db557-8d2b-4661-adda-fb8771d555f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\System">
+      <UniqueIdentifier>{cd27ab07-d171-4479-ab72-b2a06f27003d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Props">
+      <UniqueIdentifier>{a4ca0bcc-8dcb-471d-a5a3-81312cbce8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Blur">
+      <UniqueIdentifier>{be84fcbd-d60c-4b6e-a65b-368e2295251a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\LightEngine">
+      <UniqueIdentifier>{982e77c0-ec68-428b-96e2-519c8873e756}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\Bot.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HUD.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Hunter.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HunterBase.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Zombie.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\AK.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\Bullet.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\Pistol.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\Shotgun.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Turret.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\Weapon.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\Weapons.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\WeaponStatics.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Weapons\Turrets\TurretBase.hpp">
+      <Filter>Fichiers d%27en-tête\Weapon\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\UnitedEngine\Types.hpp">
+      <Filter>Fichiers d%27en-tête\UnitedEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\UnitedEngine\U_2DBody.h">
+      <Filter>Fichiers d%27en-tête\UnitedEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\UnitedEngine\U_2DCollisionManager.h">
+      <Filter>Fichiers d%27en-tête\UnitedEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\UnitedEngine\U_2DConstraint.h">
+      <Filter>Fichiers d%27en-tête\UnitedEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\UnitedEngine\UnitedEngine.h">
+      <Filter>Fichiers d%27en-tête\UnitedEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\UnitedEngine\Vec2.h">
+      <Filter>Fichiers d%27en-tête\UnitedEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\Animation.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\AutoAim.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\ChainedObject.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\Config.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\Cooldown.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\EntityTypes.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\EventManager.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\GameRender.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\GameWorld.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\GraphicsUtils.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\Level.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\LifeForm.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\PoolObject.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\SoundPlayer.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\StandardEntity.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\Utils.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\WorldEntity.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System\WorldEntityPool.hpp">
+      <Filter>Fichiers d%27en-tête\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\BulletShell.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\Explosion.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\ExplosionProvider.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\Fire.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\Guts.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\Props.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\Smoke.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\Wall.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Props\WoodBox.hpp">
+      <Filter>Fichiers d%27en-tête\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\LightEngine\LightEngine.hpp">
+      <Filter>Fichiers d%27en-tête\LightEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\LightEngine\LightUtils.hpp">
+      <Filter>Fichiers d%27en-tête\LightEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\LightEngine\ShadowCaster.hpp">
+      <Filter>Fichiers d%27en-tête\LightEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Blur\DynamicBlur.h">
+      <Filter>Fichiers d%27en-tête\Blur</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Blur\blur.frag">
+      <Filter>Fichiers d%27en-tête\Blur</Filter>
+    </None>
+    <None Include="..\..\src\Blur\blur.frag">
+      <Filter>Fichiers sources\Blur</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Bot.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Hunter.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HunterBase.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Turret.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Zombie.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Blur\DynamicBlur.cpp">
+      <Filter>Fichiers sources\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LightEngine\LightEngine.cpp">
+      <Filter>Fichiers sources\LightEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LightEngine\LightUtils.cpp">
+      <Filter>Fichiers sources\LightEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LightEngine\ShadowCaster.cpp">
+      <Filter>Fichiers sources\LightEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\BulletShell.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\Explosion.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\ExplosionProvider.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\Fire.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\Guts.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\Smoke.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Props\Wall.cpp">
+      <Filter>Fichiers sources\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\Animation.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\AutoAim.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\Cooldown.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\EventManager.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\GameRender.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\GameWorld.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\GraphicsUtils.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\Level.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\LifeForm.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\SoundPlayer.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\Utils.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\System\WorldEntity.cpp">
+      <Filter>Fichiers sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UnitedEngine\U_2DBody.cpp">
+      <Filter>Fichiers sources\UnitedEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UnitedEngine\U_2DCollisionManager.cpp">
+      <Filter>Fichiers sources\UnitedEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UnitedEngine\U_2DConstraint.cpp">
+      <Filter>Fichiers sources\UnitedEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UnitedEngine\Vec2.cpp">
+      <Filter>Fichiers sources\UnitedEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Weapons\AK.cpp">
+      <Filter>Fichiers sources\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Weapons\Bullet.cpp">
+      <Filter>Fichiers sources\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Weapons\Pistol.cpp">
+      <Filter>Fichiers sources\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Weapons\Shotgun.cpp">
+      <Filter>Fichiers sources\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Weapons\Weapon.cpp">
+      <Filter>Fichiers sources\Weapon</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
