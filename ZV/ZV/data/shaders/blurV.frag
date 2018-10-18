@@ -6,12 +6,12 @@ uniform float SCALE;
 
 vec4 weight = vec4(0.006, 0.061, 0.242, 0.383);
 
-float WIDTH_STEP = 1.0/WIDTH;
-float HEIGHT_STEP= 1.0/HEIGHT;
+float WIDTH_STEP = 1.0/(WIDTH*SCALE);
+float HEIGHT_STEP= 1.0/(HEIGHT*SCALE);
 
 void main()
 {
-	vec2 pos = vec2(gl_FragCoord.x*WIDTH_STEP, gl_FragCoord.y*HEIGHT_STEP);
+	vec2 pos = vec2(gl_TexCoord[0].x, gl_TexCoord[0].y);
 	vec2 offset = vec2(0, HEIGHT_STEP);
 	
 	vec4 color = texture2D(texture, pos) * weight[3];

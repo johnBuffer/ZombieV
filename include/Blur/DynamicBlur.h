@@ -25,7 +25,7 @@ private:
 
 	sf::RenderTexture m_blur_tex, m_blur_tex_tmp;
 
-    sf::Shader m_blur, m_blurH, m_blurV;
+    sf::Shader m_blur, m_blurH, m_blurV, m_vertex;
 
     void _applyBlur(float scale);
 
