@@ -19,7 +19,6 @@ int main()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    //sf::RenderWindow window(sf::VideoMode(10, 10), "Zombie V", sf::Style::Default, settings);
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Zombie V", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
