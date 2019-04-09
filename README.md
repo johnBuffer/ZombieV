@@ -4,6 +4,12 @@
 ## Example
 ![Zombie](https://github.com/johnBuffer/ZombieV/blob/master/img/illustration.png)
 
+### Video link
+
+ - [Single player](https://www.youtube.com/watch?v=pj3m3Fu3i5A)
+ - [Bots](https://www.youtube.com/watch?v=LflP2BUqJQc)
+ - [Lights](https://www.youtube.com/watch?v=rCyaakRHUJ0)
+
 ## Run demo
 
 In the release folder you will find binaries, each one corresponding to a scenario
