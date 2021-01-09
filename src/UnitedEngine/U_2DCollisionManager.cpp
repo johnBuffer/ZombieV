@@ -64,8 +64,8 @@ long U_2DCollisionManager::convertPosToHash(int x, int y) const
 
 void U_2DCollisionManager::addBodyToGrid(U2DBody_ptr body)
 {
-    int bodyX = body->getPosition().x;
-    int bodyY = body->getPosition().y;
+    int bodyX = static_cast<int32_t>(body->getPosition().x);
+    int bodyY = static_cast<int32_t>(body->getPosition().y);
 
     int caseSize = m_bodySize;
     int gridX = bodyX/caseSize;
@@ -119,8 +119,8 @@ void U_2DCollisionManager::solveBoundCollisions(U2DBody_ptr body)
 {
     int maxX = m_mapSize.x;
     int maxY = m_mapSize.y;
-    int bodyX = body->getPosition().x;
-    int bodyY = body->getPosition().y;
+    int bodyX = static_cast<int32_t>(body->getPosition().x);
+    int bodyY = static_cast<int32_t>(body->getPosition().y);
 
     int radius = m_bodySize*0.5f;
 
@@ -134,7 +134,7 @@ void U_2DCollisionManager::solveBoundCollisions(U2DBody_ptr body)
     }
     if (bodyY-radius-1 < 0)
     {
-        float delta = -bodyY+radius;
+        const float delta = static_cast<float>(-bodyY+radius);
         body->move2D(Vec2(0, delta));
     }
     if (bodyX-radius < 0)

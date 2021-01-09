@@ -44,16 +44,15 @@ const sf::Texture& DynamicBlur::operator()(const sf::Texture& inputTexture)
     _blurTexture.display();
 
     sf::Sprite downscaledSprite1(_blurTexture.getTexture());
-    downscaledSprite1.setScale(2/float(_downSizeFactor), 2/float(_downSizeFactor));
+    downscaledSprite1.setScale(2/_downSizeFactor, 2/_downSizeFactor);
     _lowBlurTexture.draw(downscaledSprite1);
     _lowBlurTexture.display();
     _blurTexture.draw(sf::Sprite(_lowBlurTexture.getTexture()));
 
-    int i = 2*_downSizeFactor;
-    while (i >>= 1 > 0.5)
+    int i = static_cast<int>(_downSizeFactor);
+    while (i > 0)
     {
         _applyBlur(_blurTexture);
-
         if (i-1)
         {
             sf::Sprite upscale(_blurTexture.getTexture());
@@ -61,6 +60,7 @@ const sf::Texture& DynamicBlur::operator()(const sf::Texture& inputTexture)
             _lowBlurTexture.draw(upscale);
             _blurTexture.draw(sf::Sprite(_lowBlurTexture.getTexture()));
         }
+		i >>= 1;
     }
     _blurTexture.display();
 

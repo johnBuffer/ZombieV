@@ -3,15 +3,20 @@
 #include <cmath>
 #include <sstream>
 
-float getRandInt(int min, int max)
+float getRand()
+{
+	constexpr uint32_t range = 10000;
+	return (rand() % range) / static_cast<float>(range);
+}
+
+int getRandInt(int min, int max)
 {
     return min+rand()%(max-min+1);
 }
 
 float getRandFloat(float min, float max)
 {
-    int range = (max-min)*100+1;
-    return min+(std::rand()%range)*0.01f;
+	return min + (max - min) * getRand();
 }
 
 float getRandomAngle()
@@ -21,23 +26,16 @@ float getRandomAngle()
 
 float getRandomAngle(float min, float max)
 {
-    int range = 1000.0*(max-min)+1;
-
-    if (range)
-    {
-        float angle = (rand()%range)*0.001;
-        return angle+min;
-    }
-
-    return 0.0f;
+	return min + (max - min)*getRand();
 }
 
+// Whaaat ? should be a v2f
 float getAngleFromVec(const sf::Vector2i& v)
 {
     float result;
-    float ax = v.x;
-    float ay = v.y;
-    float anorm = sqrt(ax*ax+ay*ay);
+    const float ax = static_cast<float>(v.x);
+    const float ay = static_cast<float>(v.y);
+    const float anorm = sqrt(ax*ax+ay*ay);
 
     result = acos(ax/anorm);
 

@@ -15,7 +15,7 @@ public:
     const sf::Texture& operator()(const sf::Texture&);
     void blurRenderTexture(sf::RenderTexture& renderTexture);
 
-    void setDownSizeFactor(unsigned int f) {_downSizeFactor = pow(2, f);}
+    void setDownSizeFactor(unsigned int f) {_downSizeFactor = powf(2, static_cast<float>(f));}
 
 private:
     float _downSizeFactor;

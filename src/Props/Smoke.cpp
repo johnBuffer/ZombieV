@@ -45,7 +45,7 @@ void Smoke::update(GameWorld& world)
 
 void Smoke::render()
 {
-    float ratio = _ratio+0.25;
+    float ratio = _ratio+0.25f;
     float sx   = ratio*_size*cos(_angle);
     float sy   = ratio*_size*sin(_angle);
 

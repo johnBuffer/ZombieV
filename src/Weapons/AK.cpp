@@ -59,11 +59,11 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
 
         Vec2 bulletOut = transformVec(_bulletOut, entityAngle, entityPos);
 
-        Bullet* newBullet = Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 3);
+        Bullet* newBullet = Bullet::add(bulletAngle, 1.5f*CELL_SIZE, 20, 3);
         newBullet->init(bulletOut, entityAngle);
         world->addEntity(newBullet);
 
-        _recoil += 0.2;
+        _recoil += 0.2f;
         _recoil = _recoil>1.0f?1.0f:_recoil;
 
         if (GameRender::isVisible(entity))
@@ -72,20 +72,20 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
             Vec2 shellsOut = transformVec(_shellsOut, entityAngle, entityPos);
 
             Vec2 bulletVel(newBullet->getV());
-            float v(rand()%25/1000.0f+0.1);
-            world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125, 50));
+            float v(rand()%25/1000.0f+0.1f);
+            world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125f, 50));
 
             Vec2 firePos(fireOut);
             world->addEntity(Fire::add(firePos, entityAngle-PIS2));
-            world->addEntity(Fire::add(firePos, entityAngle, 0.5));
-            world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5));
+            world->addEntity(Fire::add(firePos, entityAngle, 0.5f));
+            world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5f));
 
             Vec2 shellVec(-bulletVel.y+getRandInt(-5, 5), bulletVel.x+getRandInt(-5, 5));
             Vec2 shellPos(shellsOut);
 
-            BulletShell* bulletShell(BulletShell::newEntity(shellPos, shellVec*0.15, entityAngle-PIS2));
+            BulletShell* bulletShell(BulletShell::newEntity(shellPos, shellVec*0.15f, entityAngle-PIS2));
             world->addEntity(bulletShell);
-            world->addEntity(Smoke::add(shellPos, shellVec*0.05, 0.05, 15));
+            world->addEntity(Smoke::add(shellPos, shellVec*0.05f, 0.05f, 15));
         }
 
         return true;
@@ -97,10 +97,10 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
 void AK::reload()
 {
     size_t neededAmmo  = _magazineSize-_currentAmmo;
-    int aviableAmmo = std::min(_totalAmmo, neededAmmo);
+    size_t availableAmmo = std::min(_totalAmmo, neededAmmo);
 
-    _currentAmmo += aviableAmmo;
-    _totalAmmo   -= aviableAmmo;
+    _currentAmmo += availableAmmo;
+    _totalAmmo   -= availableAmmo;
 }
 
 void AK::update()
@@ -109,7 +109,7 @@ void AK::update()
     _recoil -= DT;
     m_fireCooldown.update(DT);
 
-    if (_recoil<0.0) _recoil = 0.0;
+    if (_recoil<0.0f) _recoil = 0.0f;
 }
 
 Vec2 AK::getFireOutPosition(const WorldEntity* entity) const

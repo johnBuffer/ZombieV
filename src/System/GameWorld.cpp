@@ -8,7 +8,7 @@
 #include "Turret.hpp"
 
 GameWorld::GameWorld() :
-    _dt(0.016),
+    _dt(0.016f),
     _level(MAP_SIZE, MAP_SIZE),
     _phyManager(_dt, CELL_SIZE, Vec2(MAP_SIZE, MAP_SIZE), this)
 {
@@ -117,13 +117,13 @@ uint32_t GameWorld::registerEntityClass(AccessFunc func)
 {
     m_accessFuncs.push_back(func);
 
-    return m_accessFuncs.size();
+    return static_cast<uint32_t>(m_accessFuncs.size());
 }
 
 WorldEntity* GameWorld::getEntityByID(EntityID id)
 {
-    uint32_t classID  = (id>>32)-1;
-    uint32_t entityID = id;
+    uint32_t classID  = (static_cast<uint32_t>(id>>32))-1;
+    uint32_t entityID = static_cast<uint32_t>(id);
 
     return m_accessFuncs[classID](entityID);
 }

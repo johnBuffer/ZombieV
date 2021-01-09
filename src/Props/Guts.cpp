@@ -28,15 +28,15 @@ bool Guts::isDone() const
 
 void Guts::initPhysics(GameWorld* world)
 {
-    float radius = 1.f;
+    float radius = 1.0f;
 
     U_2DBody* body = m_initBody(world);
     body->setRadius(radius);
-    body->setMass(0.005);
+    body->setMass(0.005f);
 
     _bodies.push_back(m_bodyID);
-    size_t count=getRandInt(10, 15);
-    for (size_t i(0); i<count; ++i)
+    uint32_t count=getRandInt(10, 15);
+    for (uint32_t i(0); i<count; ++i)
     {
         BodyID newBodyID = world->addBody();
         U_2DBody* newBody = world->getBodyByID(newBodyID);
@@ -45,7 +45,7 @@ void Guts::initPhysics(GameWorld* world)
         newBody->setPosition(m_coord+Vec2(getRandInt(-2, 2), getRandInt(-2, 2)));
         newBody->stop();
         newBody->accelerate2D(_initialVelocity*1.0f);
-        newBody->setMass(0.005);
+        newBody->setMass(0.005f);
 
         _constraints.push_back(world->addConstraint(newBodyID, _bodies.back(), 2.0f));
         _bodies.push_back(newBodyID);

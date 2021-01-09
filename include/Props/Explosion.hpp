@@ -35,7 +35,7 @@ public:
     void render();
     void setTrace(bool isTrace) {_isTrace  = isTrace;}
     void setDecrease(float d)   {_decrease = d;}
-    void setSpeed(float d)      {_speed    = d;}
+    void setSpeed(int32_t d)      { _max_speed = d;}
     void kill(GameWorld* world);
 
     static void init();
@@ -46,7 +46,7 @@ private:
     float  _decrease;
     float  _openAngle;
     float  _angle;
-    int    _speed;
+	int32_t    _max_speed;
     float  _size;
 
     bool   _isTrace;

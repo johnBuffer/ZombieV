@@ -35,8 +35,8 @@ sf::VertexArray GraphicUtils::createQuad(sf::Vector2f size, sf::Vector2f center)
     float offsetX = center.x;
     float offsetY = center.y;
 
-    float hx = size.x*0.5;
-    float hy = size.y*0.5;
+    float hx = size.x*0.5f;
+    float hy = size.y*0.5f;
 
     vertices[0].position = sf::Vector2f(-hx-offsetX, -hy-offsetY);
     vertices[1].position = sf::Vector2f(hx-offsetX , -hy-offsetY);

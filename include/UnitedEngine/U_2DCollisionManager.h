@@ -45,7 +45,7 @@ public:
 
     void addRigidBody(Vec2 pos);
     void setGravity(Vec2 gravityVec) {m_gravity = gravityVec;}
-    void setPrecision(size_t iterationCount) {m_iterationCount = iterationCount;}
+    void setPrecision(uint32_t iterationCount) {m_iterationCount = iterationCount;}
     void solveConstraints();
     void applyExplosion(Vec2 explosionCoord, float force);
     void killBody(BodyID id);
@@ -56,7 +56,7 @@ public:
     static U_2DBody* getBodyByID(BodyID id);
 
 private:
-    int   m_nCollisionChecked, m_iterationCount;
+    uint32_t   m_nCollisionChecked, m_iterationCount;
     float m_timeStep, m_bodySize;
     Vec2  m_mapSize, m_gravity;
 

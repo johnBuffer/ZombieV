@@ -3,26 +3,6 @@
 
 #include <iostream>
 
-/*float              GameRender::_quality;
-float              GameRender::_zoom;
-float              GameRender::_ratio;
-sf::Vector2u       GameRender::_renderSize;
-sf::Vector2f       GameRender::_focus;
-sf::Vector2f       GameRender::_baseOffset;
-sf::RenderTexture  GameRender::_renderTexture;
-sf::RenderTexture  GameRender::_blurTexture;
-sf::RenderTexture  GameRender::_groundTexture;
-sf::VertexArray    GameRender::_groundQuad;
-size_t             GameRender::_groundTextureID;
-size_t             GameRender::_drawCalls;
-
-std::vector<sf::Texture>                  GameRender::_textures;
-std::vector<std::vector<sf::VertexArray>> GameRender::_vertices;
-std::list<ShadowCaster>                   GameRender::_screenSpaceEntities;
-
-DynamicBlur GameRender::_blur;
-LightEngine GameRender::_lightEngine;*/
-
 GameRender* GameRender::s_instance = nullptr;
 size_t      GameRender::_drawCalls = 0;
 
@@ -38,15 +18,18 @@ GameRender* GameRender::getInstance()
 
 void GameRender::initialize(size_t width, size_t height)
 {
-    if (!getInstance())
-        s_instance = new GameRender;
+	if (!getInstance()) {
+		s_instance = new GameRender;
+	}
+
     GameRender& instance = *getInstance();
     instance._quality = 1.0f;
     instance._zoom    = 1.5f;
 
     instance._ratio = instance._zoom/instance._quality;
     instance._focus = sf::Vector2f(0.0, 0.0);
-    instance._renderSize = sf::Vector2u(width*instance._quality, height*instance._quality);
+    instance._renderSize = sf::Vector2u(static_cast<uint32_t>(width*instance._quality), 
+		                                static_cast<uint32_t>(height*instance._quality));
 
     float bx = instance._renderSize.x/(instance._quality*instance._zoom)*0.5f;
     float by = instance._renderSize.y/(instance._quality*instance._zoom)*0.5f;
@@ -56,10 +39,12 @@ void GameRender::initialize(size_t width, size_t height)
     instance._blurTexture.create(instance._renderSize.x, instance._renderSize.y);
     instance._groundTexture.create(MAP_SIZE, MAP_SIZE);
 
-    instance._blur.init(instance._renderSize.x*0.5f, instance._renderSize.y*0.5f);
+    instance._blur.init(instance._renderSize.x / 2,
+		                instance._renderSize.y / 2);
     instance._blur.setDownSizeFactor(2);
     instance._lightEngine.init(instance._renderSize.x, instance._renderSize.y);
 
+	// 3 is the layers count
     instance._vertices.resize(3);
 
     GraphicUtils::init();
@@ -76,8 +61,7 @@ void GameRender::clear()
     GameRender& instance = *getInstance();
     instance._drawCalls = 0;
 
-    for (std::vector<sf::VertexArray>& v : instance._vertices)
-    {
+    for (std::vector<sf::VertexArray>& v : instance._vertices) {
         for (sf::VertexArray& va : v) va.clear();
     }
 
@@ -113,12 +97,10 @@ size_t GameRender::registerTexture(std::string filename, bool isRepeated)
 	instance._vertices[RenderLayer::GROUND].push_back(sf::VertexArray(sf::Quads, 0));
 	instance._vertices[RenderLayer::BLOOM].push_back(sf::VertexArray(sf::Quads, 0));
 
-    if (instance._textures.back().loadFromFile(filename))
-    {
+    if (instance._textures.back().loadFromFile(filename)) {
         std::cout << "Add new texture : " << filename << " with ID " << instance._vertices[RenderLayer::RENDER].size() << std::endl;
     }
-    else
-    {
+    else {
         std::cout << "Error : cannot load'" << filename << "'" << std::endl;
     }
 
@@ -148,7 +130,6 @@ void GameRender::renderVertexArray(const sf::VertexArray& va, sf::RenderTexture&
     sf::RenderStates states;
     instance._translateToFocus(states.transform);
     states.texture = &instance._textures[textureID];
-
     target.draw(va, states);
 }
 
@@ -185,8 +166,8 @@ void GameRender::display(sf::RenderTarget* target)
     instance._renderVertices(instance._vertices[RenderLayer::RENDER], instance._renderTexture, states);
 
     /// Draw lights
-    sf::Sprite lightSprite(instance._lightEngine.render());
-    instance._renderTexture.draw(lightSprite, sf::BlendMultiply);
+    /*sf::Sprite lightSprite(instance._lightEngine.render());
+    instance._renderTexture.draw(lightSprite, sf::BlendMultiply);*/
     instance._renderTexture.display();
 
     sf::Sprite renderSprite(instance._renderTexture.getTexture());
@@ -222,7 +203,7 @@ void GameRender::initGround(size_t textureID, sf::VertexArray& quad)
 
     instance._groundTextureID = textureID;
     instance._groundQuad = quad;
-    instance._groundTexture.clear(sf::Color(0.0, 0.0, 0.0, 0.0));
+    instance._groundTexture.clear(sf::Color(0, 0, 0, 0));
 }
 
 
@@ -233,8 +214,8 @@ void GameRender::renderGround()
 
     sf::RenderStates states;
     instance._renderVertices(instance._vertices[RenderLayer::GROUND], instance._groundTexture, states);
-
     instance._groundTexture.display();
+
     sf::Sprite groundSprite(instance._groundTexture.getTexture());
     groundSprite.setScale(instance._quality, instance._quality);
     float tx = (instance._focus.x-instance._baseOffset.x)*instance._quality;
@@ -248,8 +229,8 @@ void GameRender::fadeGround()
 {
     GameRender& instance = *getInstance();
 
-    sf::Vector2i size(instance._groundTexture.getSize());
-    sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));
+    const sf::Vector2i size(instance._groundTexture.getSize());
+    sf::RectangleShape rectangle(sf::Vector2f(static_cast<float>(size.x), static_cast<float>(size.y)));
     rectangle.setFillColor(sf::Color(255, 255, 255, 254));
     instance._groundTexture.draw(rectangle, sf::BlendMultiply);
 }

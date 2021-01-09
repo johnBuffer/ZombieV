@@ -32,7 +32,7 @@ public:
 
     void hit(WorldEntity* entity, GameWorld* gameWorld);
 
-    int getLife() const {return _life;}
+	int32_t getLife() const {return static_cast<int32_t>(_life);}
 
     static void init();
 
@@ -57,8 +57,8 @@ protected:
 
     float            _feetTime;
     static Animation _feetAnimation;
-    static size_t    _feetTextureID;
-    static std::vector<size_t> _stepSounds;
+    static uint32_t    _feetTextureID;
+    static std::vector<uint32_t> _stepSounds;
 
     void _changeState(HunterState state);
     void _changeAnimation(Animation& anim, bool wait=true);

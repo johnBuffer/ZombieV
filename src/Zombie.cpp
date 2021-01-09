@@ -8,8 +8,8 @@
 
 #include <iostream>
 
-size_t      Zombie::_moveTextureID;
-size_t      Zombie::_attackTextureID;
+uint32_t      Zombie::_moveTextureID;
+uint32_t      Zombie::_attackTextureID;
 Animation   Zombie::_moveAnimation(3, 6, 288, 311, 17, 20);
 Animation   Zombie::_attackAnimation(3, 3, 954/3, 882/3, 9, 20);
 

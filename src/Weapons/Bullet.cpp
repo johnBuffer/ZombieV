@@ -47,8 +47,8 @@ void Bullet::init(const Vec2& pos, float angle)
     m_coord = pos;
     _angle += angle;
 
-    float length = 40;
-    float rectA  = PI/40.0;
+    const float length = 40.0f;
+    const float rectA  = PI/length;
 
     /// Can be optimized : half of these vectors are just opposites of other half
     /// I understand myself

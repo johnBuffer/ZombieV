@@ -28,19 +28,19 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     StandardEntity(x, y, angle),
     _n(n),
     _openAngle(openAngle*0.5f),
-    _speed(speed),
+    _max_speed(static_cast<int32_t>(speed)),
     _size(size),
     _isTrace(false),
     _vertexArray(sf::Quads, 4)
 {
-    _decrease = 0.1;
+    _decrease = 0.1f;
     _particles.resize(_n);
 
     for (size_t i(_n); i--;)
     {
         Particle& p = _particles[i];
-        float speed = rand()%_speed;
-        float a = getRandInt(-openAngle, openAngle)*DEGRAD+angle;
+        float speed = static_cast<float>(rand()%_max_speed);
+        float a = getRandInt(-static_cast<int32_t>(openAngle), static_cast<int32_t>(openAngle))*DEGRAD+angle;
 
         int indexA = rand()%1000;
 
@@ -48,12 +48,12 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
         p._y = y;
         p._vx = speed*cos(a);
         p._vy = speed*sin(a);
-        p._vax = getRandVx(indexA);
+		p._vax = getRandVx(indexA);
         p._vay = getRandVy(indexA);
-        p._size = rand()%int(_size)+2;
+        p._size = static_cast<float>(rand()%int(_size)+2);
 
-        int color = getRandInt(50, 125);
-        int alpha = getRandInt(100, 200);
+        uint8_t color = static_cast<uint8_t>(getRandInt(50, 125));
+		uint8_t alpha = static_cast<uint8_t>(getRandInt(100, 200));
         p._color = sf::Color(color, color, color, alpha);
     }
 
@@ -72,7 +72,7 @@ void Explosion::update(GameWorld& world)
         p.update();
 
     _ratio -= _decrease;
-    _ratio = _ratio<0?0:_ratio;
+    _ratio = std::max(0.0f, _ratio);
 }
 
 /// Add the current explosion in the global Explosion's vertex array
@@ -90,7 +90,7 @@ void Explosion::render()
 
             if (_isTrace)
             {
-                int indexA = getRandInt(0, 999);
+                int indexA = static_cast<int32_t>(getRandInt(0, 999));
                 sx = p._size*_ratio*getRandVx(indexA);
                 sy = p._size*_ratio*getRandVx(indexA);
             }

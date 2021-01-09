@@ -101,7 +101,7 @@ void Turret::fire(GameWorld* world)
     Vec2 smokeOut  = transformVec(Vec2(-60, -2), _angle, getCoord());
 
     Vec2 bulletVel(newBullet->getV());
-    float v(rand()%25/1000.0f+0.1);
+    float v(rand()%25/1000.0f+0.1f);
     world->addEntity(Smoke::add(smokeOut, bulletVel*v, 0.0125, 100));
 
     Vec2 firePos(fireOut);
@@ -149,7 +149,7 @@ void Turret::render()
     float recoilDist  = 10.0f;
     float recoilRatio = m_fireCooldown.getRatio()*recoilDist;
 
-    float textureOffset = m_currentState==Turret::SHOOTING?103:0;
+    const float textureOffset = (m_currentState==Turret::SHOOTING?103.0f:0.0f);
 
     sf::VertexArray va(sf::Quads, 4);
     va[0].texCoords = sf::Vector2f(recoilRatio, textureOffset);
@@ -166,7 +166,7 @@ void Turret::render()
     GraphicUtils::initQuad(va, sf::Vector2f(353, 103), sf::Vector2f(244, 57), SCALE*0.25f);
     GraphicUtils::transform(va, sf::Vector2f(x, y), _angle);
 
-    GraphicUtils::initQuad(vaTripod, sf::Vector2f(373, 206), sf::Vector2f(210, 125), SCALE*0.37);
+    GraphicUtils::initQuad(vaTripod, sf::Vector2f(373, 206), sf::Vector2f(210, 125), SCALE*0.37f);
     GraphicUtils::transform(vaTripod, sf::Vector2f(x, y), 0.0f);
 
     GameRender::addQuad(s_textureID, vaTripod, RenderLayer::RENDER);

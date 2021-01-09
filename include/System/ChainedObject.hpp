@@ -143,7 +143,7 @@ uint32_t Pool<T>::createObject(Args&&... args)
         m_data.push_back(PoolItem<T>()); // Create new slot
 
         newPoolItem = &m_data.back();
-        newPoolItem->index = m_data.size()-1;
+        newPoolItem->index = static_cast<int>(m_data.size())-1;
         index = newPoolItem->index; // Update index
     }
 
