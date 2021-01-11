@@ -5,6 +5,7 @@
 #include "UnitedEngine/Vec2.h"
 
 float getRand();
+float getRandUnder(float max);
 int getRandInt(int min, int max);
 float getRandFloat(float min, float max);
 float getRandomAngle();

@@ -28,14 +28,14 @@ bool ShadowCaster::drawShadow(const Light& light, sf::VertexArray& va, size_t in
     }
     else if (shadowLength > 0)
     {
-        float shadowScale = 1.0f;
-        float invDist     = 1.0f/dist;
+        const float shadowScale = 1.0f;
+        const float invDist     = 1.0f/dist;
         Vec2 nrmLightToCaster(lightToCaster.x*invDist, lightToCaster.y*invDist);
         Vec2 normal(-shadowScale*m_radius*nrmLightToCaster.y, shadowScale*m_radius*nrmLightToCaster.x);
 
-        float normalFactor = 0.5*light.radius*invDist;
-        float midPointX = m_position.x + nrmLightToCaster.x*shadowLength;
-        float midPointY = m_position.y + nrmLightToCaster.y*shadowLength;
+        const float normalFactor = 0.5f*light.radius*invDist;
+        const float midPointX = m_position.x + nrmLightToCaster.x*shadowLength;
+        const float midPointY = m_position.y + nrmLightToCaster.y*shadowLength;
 
         Vec2 midPoint(midPointX                  , midPointY);
         Vec2 pt1(m_position.x+normal.x           , m_position.y+normal.y);

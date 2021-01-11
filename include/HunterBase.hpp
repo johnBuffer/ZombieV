@@ -57,8 +57,8 @@ protected:
 
     float            _feetTime;
     static Animation _feetAnimation;
-    static uint32_t    _feetTextureID;
-    static std::vector<uint32_t> _stepSounds;
+    static uint64_t    _feetTextureID;
+    static std::vector<uint64_t> _stepSounds;
 
     void _changeState(HunterState state);
     void _changeAnimation(Animation& anim, bool wait=true);

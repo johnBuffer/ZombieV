@@ -52,7 +52,7 @@ U_2DCollisionManager::U_2DCollisionManager(float timeStep, float bodyRadius, Vec
 void U_2DCollisionManager::addBody(U_2DBody* body)
 {
     if (!body->getRadius())
-        body->setRadius(m_bodySize*0.45);
+        body->setRadius(m_bodySize*0.45f);
 
     //m_bodies.push_back(body);
 }
@@ -67,10 +67,10 @@ void U_2DCollisionManager::addBodyToGrid(U2DBody_ptr body)
     int bodyX = static_cast<int32_t>(body->getPosition().x);
     int bodyY = static_cast<int32_t>(body->getPosition().y);
 
-    int caseSize = m_bodySize;
-    int gridX = bodyX/caseSize;
-    int gridY = bodyY/caseSize;
-    int midGrid = caseSize/2;
+    const int caseSize = static_cast<int32_t>(m_bodySize);
+    const int gridX = static_cast<int32_t>(bodyX/caseSize);
+    const int gridY = static_cast<int32_t>(bodyY/caseSize);
+    const int midGrid = caseSize/2;
 
     m_grid[convertPosToHash(gridX, gridY)].add(body);
     if (bodyX%caseSize > midGrid)
@@ -117,28 +117,24 @@ void U_2DCollisionManager::applyGravity()
 
 void U_2DCollisionManager::solveBoundCollisions(U2DBody_ptr body)
 {
-    int maxX = m_mapSize.x;
-    int maxY = m_mapSize.y;
-    int bodyX = static_cast<int32_t>(body->getPosition().x);
-    int bodyY = static_cast<int32_t>(body->getPosition().y);
+    const float maxX = m_mapSize.x;
+    const float maxY = m_mapSize.y;
+    const float bodyX = body->getPosition().x;
+    const float bodyY = body->getPosition().y;
 
-    int radius = m_bodySize*0.5f;
+    const float radius = m_bodySize * 0.5f;
 
-    if (bodyY+radius+1 > maxY)
-    {
+    if (bodyY+radius+1 > maxY) {
         body->setY(maxY-radius);
     }
-    if (bodyX+radius+1 > maxX)
-    {
+    if (bodyX+radius+1 > maxX) {
         body->setX(maxX-radius);
     }
-    if (bodyY-radius-1 < 0)
-    {
-        const float delta = static_cast<float>(-bodyY+radius);
+    if (bodyY-radius-1 < 0) {
+        const float delta = -bodyY+radius;
         body->move2D(Vec2(0, delta));
     }
-    if (bodyX-radius < 0)
-    {
+    if (bodyX-radius < 0) {
         body->setX(radius);
     }
 }
@@ -229,7 +225,7 @@ void U_2DCollisionManager::update()
         addBodyToGrid(b);
     }
 
-    for (int i(0); i<m_iterationCount; ++i)
+    for (uint32_t i(0); i<m_iterationCount; ++i)
     {
         solveCollisions();
         solveConstraints();
@@ -274,9 +270,9 @@ void U_2DCollisionManager::applyExplosion(Vec2 explosionCoord, float force)
 
 GridCell* U_2DCollisionManager::getBodyAt(Vec2 coord)
 {
-    int gridX = coord.x/m_bodySize;
-    int gridY = coord.y/m_bodySize;
-    long hash = convertPosToHash(gridX, gridY);
+    const int gridX = static_cast<int32_t>(coord.x/m_bodySize);
+    const int gridY = static_cast<int32_t>(coord.y/m_bodySize);
+    const long hash = convertPosToHash(gridX, gridY);
 
     auto bodies = m_grid.find(hash);
     if (bodies != m_grid.end())
@@ -289,7 +285,7 @@ GridCell* U_2DCollisionManager::getBodyAt(Vec2 coord)
 
 void U_2DCollisionManager::killBody(BodyID id)
 {
-    U_2DBody::getObjectAt(id)->remove();
+    U_2DBody::getObjectAt(static_cast<uint32_t>(id))->remove();
 }
 
 void U_2DCollisionManager::killConstraint(U_2DConstraint* c)
@@ -311,9 +307,9 @@ size_t U_2DCollisionManager::addBody(const Vec2& coord)
     return newBody->getIndex();
 }
 
-U_2DBody* U_2DCollisionManager::getBodyByID(size_t id)
+U_2DBody* U_2DCollisionManager::getBodyByID(BodyID id)
 {
-    return U_2DBody::getObjectAt(id);
+    return U_2DBody::getObjectAt(static_cast<uint32_t>(id));
 }
 
 

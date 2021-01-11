@@ -32,14 +32,14 @@ int main()
 
     world.getPhyManager().setGravity(Vec2(0, 0));
 
-    Hunter& h = *Hunter::newEntity(MAP_SIZE/2, MAP_SIZE/2);
+    Hunter& h = *Hunter::newEntity(static_cast<float>(MAP_SIZE/2), static_cast<float>(MAP_SIZE/2));
     world.addEntity(&h);
 
     int waveCount = 0;
 
     for (int i(2); i--;)
     {
-        world.addEntity(Bot::newEntity(MAP_SIZE / 2 + rand() % 10, MAP_SIZE / 2 + rand() % 10));
+        world.addEntity(Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
     }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
@@ -47,7 +47,7 @@ int main()
     Zombie* newZombie;
     for (int i(100); i--;)
     {
-        newZombie = Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE);
+        newZombie = Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE)));
 		EntityID target = h.getID();
 		newZombie->setTarget(target);
         world.addEntity(newZombie);
@@ -56,9 +56,9 @@ int main()
     for (int i(0); i<10; ++i)
     {
         Light light;
-        light.position = Vec2(rand()%2000, rand()%2000);
+        light.position = Vec2(getRandUnder(2000.0f), getRandUnder(2000.0f));
         light.color    = sf::Color(rand()%255, rand()%255,rand()%255);
-        light.radius   = 300+rand()%150;
+        light.radius   = getRandFloat(300.0f, 450.0f);
         GameRender::getLightEngine().addDurableLight(light);
     }
 
@@ -73,7 +73,7 @@ int main()
             ++waveCount;
             for (int i(waveCount*waveCount + 10); i--;)
             {
-                Zombie* newZombie(Zombie::newEntity(rand()%MAP_SIZE, rand()%MAP_SIZE));
+                Zombie* newZombie(Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE))));
                 //newZombie->setTarget(&(*Hunter::getObjects().front()));
                 world.addEntity(newZombie);
             }

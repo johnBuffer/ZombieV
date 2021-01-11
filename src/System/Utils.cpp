@@ -9,6 +9,11 @@ float getRand()
 	return (rand() % range) / static_cast<float>(range);
 }
 
+float getRandUnder(float max)
+{
+	return getRand() * max;
+}
+
 int getRandInt(int min, int max)
 {
     return min+rand()%(max-min+1);

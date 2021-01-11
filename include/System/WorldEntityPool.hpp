@@ -12,7 +12,7 @@ public:
     static T*   newEntity(Args&&...);
     static void registerObject(GameWorld* world);
     static void setClassID(size_t id) {T::m_classID = id;}
-    static WorldEntity* getWorldEntityAt(size_t index);
+    static WorldEntity* getWorldEntityAt(uint32_t index);
 
     static size_t getClassID();
 };
@@ -35,7 +35,7 @@ void WorldEntityPool<T>::registerObject(GameWorld* world)
 }
 
 template<class T>
-WorldEntity* WorldEntityPool<T>::getWorldEntityAt(size_t index)
+WorldEntity* WorldEntityPool<T>::getWorldEntityAt(uint32_t index)
 {
     WorldEntity* entity = T::getObjectAt(index);
     return entity;

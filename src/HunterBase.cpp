@@ -6,8 +6,8 @@
 
 #include <iostream>
 
-uint32_t HunterBase::_feetTextureID;
-std::vector<uint32_t> HunterBase::_stepSounds;
+uint64_t HunterBase::_feetTextureID;
+std::vector<uint64_t> HunterBase::_stepSounds;
 Animation HunterBase::_feetAnimation = Animation(5, 4, 172, 124, 20, 30);
 
 HunterBase::HunterBase() :
@@ -33,7 +33,7 @@ HunterBase::HunterBase(float x, float y) :
     //_weapons.push_back(new Pistol);
 
     _currentWeapon = _weapons.back();
-    _weaponRank    = _weapons.size()-1;
+    _weaponRank    = static_cast<int32_t>(_weapons.size()-1);
     _currentAnimation = _currentWeapon->getMoveAnimation();
 
     _feetTime = 0.0f;

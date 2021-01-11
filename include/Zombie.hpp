@@ -50,8 +50,8 @@ private:
     Animation _currentAnimation;
 
     sf::VertexArray  _vertexArray;
-    static uint32_t    _moveTextureID;
-    static uint32_t    _attackTextureID;
+    static uint64_t  _moveTextureID;
+    static uint64_t  _attackTextureID;
 
     static Animation _moveAnimation;
     static Animation _attackAnimation;

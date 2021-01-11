@@ -42,7 +42,7 @@ void Guts::initPhysics(GameWorld* world)
         U_2DBody* newBody = world->getBodyByID(newBodyID);
         newBody->setEntity(this);
         newBody->setRadius(radius);
-        newBody->setPosition(m_coord+Vec2(getRandInt(-2, 2), getRandInt(-2, 2)));
+        newBody->setPosition(m_coord+Vec2(getRandFloat(-2.0f, 2.0f), getRandFloat(-2.0f, 2.0f)));
         newBody->stop();
         newBody->accelerate2D(_initialVelocity*1.0f);
         newBody->setMass(0.005f);

@@ -12,8 +12,10 @@ LightEngine::LightEngine() :
 
 void LightEngine::init(size_t width, size_t height)
 {
-    _texture.create(width*m_quality, height*m_quality);
-    _interTexture.create(width*m_quality, height*m_quality);
+	const uint32_t tex_width = static_cast<uint32_t>(width*m_quality);
+	const uint32_t tex_height = static_cast<uint32_t>(height*m_quality);
+    _texture.create(tex_width, tex_height);
+    _interTexture.create(tex_width, tex_height);
 }
 
 void LightEngine::clear()

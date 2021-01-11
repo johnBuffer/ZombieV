@@ -59,7 +59,7 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
 
         Vec2 bulletOut = transformVec(_bulletOut, entityAngle, entityPos);
 
-        Bullet* newBullet = Bullet::add(bulletAngle, 1.5f*CELL_SIZE, 20, 3);
+        Bullet* newBullet = Bullet::add(bulletAngle, 1.5f*CELL_SIZE, 20.0f, 3);
         newBullet->init(bulletOut, entityAngle);
         world->addEntity(newBullet);
 
@@ -73,19 +73,19 @@ bool AK::fire(GameWorld* world, WorldEntity* entity)
 
             Vec2 bulletVel(newBullet->getV());
             float v(rand()%25/1000.0f+0.1f);
-            world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125f, 50));
+            world->addEntity(Smoke::add(fireOut, bulletVel*v, 0.0125f, 50.0f));
 
             Vec2 firePos(fireOut);
             world->addEntity(Fire::add(firePos, entityAngle-PIS2));
             world->addEntity(Fire::add(firePos, entityAngle, 0.5f));
             world->addEntity(Fire::add(firePos, entityAngle+PI, 0.5f));
 
-            Vec2 shellVec(-bulletVel.y+getRandInt(-5, 5), bulletVel.x+getRandInt(-5, 5));
+            Vec2 shellVec(-bulletVel.y + getRandFloat(-5.0f, 5.0f), bulletVel.x + getRandFloat(-5.0f, 5.0f));
             Vec2 shellPos(shellsOut);
 
             BulletShell* bulletShell(BulletShell::newEntity(shellPos, shellVec*0.15f, entityAngle-PIS2));
             world->addEntity(bulletShell);
-            world->addEntity(Smoke::add(shellPos, shellVec*0.05f, 0.05f, 15));
+            world->addEntity(Smoke::add(shellPos, shellVec*0.05f, 0.05f, 15.0f));
         }
 
         return true;

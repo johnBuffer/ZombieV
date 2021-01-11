@@ -54,7 +54,7 @@ void WorldEntity::move(float vx, float vy)
 
 U_2DBody* WorldEntity::m_initBody(GameWorld* world)
 {
-    m_bodyID = world->addBody();
+    m_bodyID = static_cast<uint32_t>(world->addBody());
     U_2DBody* body = m_thisBody();
 
     body->setEntity(this);

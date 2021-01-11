@@ -18,7 +18,7 @@ Animation::Animation(uint32_t sheetW, uint32_t sheetH, uint32_t spriteW, uint32_
     _done = false;
 }
 
-void Animation::setTextureID(uint32_t textureID)
+void Animation::setTextureID(uint64_t textureID)
 {
     _textureID = textureID;
 }
@@ -39,8 +39,8 @@ sf::IntRect Animation::getTexCoord(float time)
 
     currentSprite %= _frameCount;
 
-    const float textureX = static_cast<float>(currentSprite%_sheetW);
-    const float textureY = static_cast<float>(currentSprite/_sheetW);
+    const int32_t textureX = currentSprite%_sheetW;
+    const int32_t textureY = currentSprite/_sheetW;
 
     return sf::IntRect(_spriteW*textureX, _spriteH*textureY,
                        _spriteW         , _spriteH);

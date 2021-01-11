@@ -15,8 +15,8 @@ Particle::Particle()
 
 void Particle::update()
 {
-    _x += _vx+getRandInt(-3, 3);
-    _y += _vy+getRandInt(-3, 3);
+    _x += _vx + getRandFloat(-3.0f, 3.0f);
+    _y += _vy + getRandFloat(-3.0f, 3.0f);
 }
 
 Explosion::Explosion() :
@@ -39,10 +39,10 @@ Explosion::Explosion(float x, float y, float openAngle, float angle, float speed
     for (size_t i(_n); i--;)
     {
         Particle& p = _particles[i];
-        float speed = static_cast<float>(rand()%_max_speed);
-        float a = getRandInt(-static_cast<int32_t>(openAngle), static_cast<int32_t>(openAngle))*DEGRAD+angle;
+        const float speed = static_cast<float>(rand()%_max_speed);
+        const float a = getRandInt(-static_cast<int32_t>(openAngle), static_cast<int32_t>(openAngle))*DEGRAD+angle;
 
-        int indexA = rand()%1000;
+        const int indexA = rand()%1000;
 
         p._x = x;
         p._y = y;

@@ -52,7 +52,7 @@ void Smoke::render()
     float x = m_coord.x;
     float y = m_coord.y;
 
-    sf::Color color(50, 50, 50, (1.0f-_ratio)*200.0f);
+    sf::Color color(50, 50, 50, static_cast<uint8_t>((1.0f-_ratio)*200.0f));
 
     _vertexArray[0] = sf::Vertex(sf::Vector2f(x+sx, y+sy), color, sf::Vector2f(0 , 0));
     _vertexArray[1] = sf::Vertex(sf::Vector2f(x+sy, y-sx), color, sf::Vector2f(256, 0));

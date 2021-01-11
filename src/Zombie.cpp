@@ -8,8 +8,8 @@
 
 #include <iostream>
 
-uint32_t      Zombie::_moveTextureID;
-uint32_t      Zombie::_attackTextureID;
+uint64_t      Zombie::_moveTextureID;
+uint64_t      Zombie::_attackTextureID;
 Animation   Zombie::_moveAnimation(3, 6, 288, 311, 17, 20);
 Animation   Zombie::_attackAnimation(3, 3, 954/3, 882/3, 9, 20);
 
@@ -29,7 +29,7 @@ Zombie::Zombie(float x, float y) :
 
     _currentAnimation = _moveAnimation;
 
-    _time = rand()%100;
+    _time = getRandUnder(100.0f);
     _type = EntityTypes::ZOMBIE;
 
     _currentState = IDLE;
@@ -166,18 +166,18 @@ void Zombie::hit(WorldEntity* entity, GameWorld* gameWorld)
 
             m_thisBody()->accelerate2D(bullet->getImpactForce());
             addLife(-bullet->getDamage());
-            _time = getRandInt(0, 1000);
+            _time = getRandUnder(1000.0f);
 
             if (GameRender::isVisible(this))
             {
                 gameWorld->addEntity(ExplosionProvider::getBase(pos));
-                if (bullet->getDistance() < 50)
+                if (bullet->getDistance() < 50.0f)
                 {
                     gameWorld->addEntity(ExplosionProvider::getClose(pos, bulletAngle));
                     gameWorld->addEntity(Guts::add(pos, bullet->getV()*40.f));
                 }
 
-                if (bullet->getPenetration()>-1)
+                if (bullet->getPenetration() > -1.0f)
                 {
                     gameWorld->addEntity(ExplosionProvider::getThrough(pos, bulletAngle, true));
                     gameWorld->addEntity(ExplosionProvider::getBigThrough(pos, bulletAngle));

@@ -92,7 +92,7 @@ void Turret::fire(GameWorld* world)
     m_fireCooldown.reset();
 
     float bulletAngle(getRandomAngle(-m_accuracy, m_accuracy));
-    Bullet* newBullet(Bullet::add(bulletAngle, 1.5*CELL_SIZE, 20, 0));
+    Bullet* newBullet(Bullet::add(bulletAngle, 1.5f*CELL_SIZE, 20.0f, 0));
     newBullet->init(getCoord(), PI+_angle);
     newBullet->setImpactForce(2.0f);
     world->addEntity(newBullet);
@@ -102,7 +102,7 @@ void Turret::fire(GameWorld* world)
 
     Vec2 bulletVel(newBullet->getV());
     float v(rand()%25/1000.0f+0.1f);
-    world->addEntity(Smoke::add(smokeOut, bulletVel*v, 0.0125, 100));
+    world->addEntity(Smoke::add(smokeOut, bulletVel*v, 0.0125f, 100.0f));
 
     Vec2 firePos(fireOut);
     world->addEntity(Fire::add(firePos, _angle-PIS2, 1.5f));

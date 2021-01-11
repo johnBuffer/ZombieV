@@ -56,7 +56,7 @@ void U_2DConstraint::applyConstraint()
     else
     {
         float delta = dist-m_length;
-        float constraintForce = (delta)*0.5/dist;
+        float constraintForce = (delta)*0.5f/dist;
 
         vx *= constraintForce;
         vy *= constraintForce;
@@ -65,8 +65,8 @@ void U_2DConstraint::applyConstraint()
         {
             if (delta < 0)
             {
-                coeffMass1 = 1;
-                coeffMass2 = 1;
+                coeffMass1 = 1.0f;
+                coeffMass2 = 1.0f;
             }
 
             b2->move2D(Vec2( coeffMass2*vx,  coeffMass2*vy));

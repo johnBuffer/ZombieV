@@ -9,11 +9,14 @@ void drawLight(const Light& light, float quality, sf::RenderTexture& texture)
     sf::VertexArray va(sf::TriangleFan, nPoints+1);
     va[0].position = sf::Vector2f(position.x, position.y);
 
-    float coef  = light.intensity;
-    va[0].color = sf::Color(light.color.r*coef, light.color.g*coef, light.color.b*coef);
+    const float coef  = light.intensity;
+    va[0].color = sf::Color(static_cast<uint8_t>(light.color.r*coef),
+		                    static_cast<uint8_t>(light.color.g*coef),
+		                    static_cast<uint8_t>(light.color.b*coef)
+		                   );
 
     sf::Color edgeColor = light.color;
-    edgeColor.a = 0.0f;
+    edgeColor.a = 0;
 
     float radWidth = light.width*DEGRAD;
     float start = light.angle-radWidth*0.5f+PI;
