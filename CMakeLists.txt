@@ -14,6 +14,7 @@ file(GLOB source_files
 )
 
 set(SOURCES ${source_files})
+set(CMAKE_CXX_STANDARD 11)
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
