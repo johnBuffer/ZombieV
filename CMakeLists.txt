@@ -26,3 +26,13 @@ target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics sfml
 if (UNIX)
    target_link_libraries(${PROJECT_NAME} pthread)
 endif (UNIX)
+
+# Copy data dir to the binary directory
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+if(MSVC)
+   foreach(lib ${SFML_LIBS})
+      get_target_property(lib_path ${lib} LOCATION)
+      file(COPY ${lib_path} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+   endforeach()
+endif(MSVC)
