@@ -15,4 +15,10 @@ ZV/x64/
 *.opendb
 *.idb
 
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+ZombieV
+
 build/
+CMakeFiles/
